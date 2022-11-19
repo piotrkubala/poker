@@ -95,19 +95,25 @@ public class Hand implements Comparable<Hand> {
         return true;
     }
 
+    /**
+     * @return true if there is exactly three of the kind in the hand
+     */
     public boolean hasThreeOfAKind() {
         for (int i = 0; i < rankCounts.length; i++) {
-            if (rankCounts[i] >= 3) {
+            if (rankCounts[i] == 3) {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * @return true if there is exactly one two different pairs in the hand
+     */
     public boolean hasTwoPairs() {
         int pairs = 0;
         for (int i = 0; i < rankCounts.length; i++) {
-            if (rankCounts[i] >= 2) {
+            if (rankCounts[i] == 2) {
                 pairs++;
             }
 
@@ -118,13 +124,17 @@ public class Hand implements Comparable<Hand> {
         return false;
     }
 
+    /**
+     * @return true if there is exactly one pair in the hand
+     */
     public boolean hasPair() {
+        int pairs = 0;
         for (int i = 0; i < rankCounts.length; i++) {
-            if (rankCounts[i] >= 2) {
-                return true;
+            if (rankCounts[i] == 2) {
+                pairs++;
             }
         }
-        return false;
+        return pairs == 1;
     }
 
     public double getHandValue() {
@@ -137,7 +147,7 @@ public class Hand implements Comparable<Hand> {
         }
 
         if (hasFourOfAKind()) {
-            for (int i = 0; i < rankCounts.length; i++) {
+            for (int i = rankCounts.length - 1; i >= 0; i--) {
                 if (rankCounts[i] == 4) {
                     return 8.0 + (i == 1 ? 14 : i) / 15.0;
                 }

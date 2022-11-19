@@ -116,7 +116,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
-  <component name="RunManager" selected="TestNG.HandTest">
+  <component name="RunManager" selected="TestNG.HandTest.testGetHandValue">
     <configuration name="HandTest" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="utils" />
       <extension name="coverage">
@@ -134,7 +134,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HandTest.testHasPair" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="HandTest.testGetHandValue" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="utils" />
       <extension name="coverage">
         <pattern>
@@ -144,7 +144,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
       <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
-      <option name="METHOD_NAME" value="testHasPair" />
+      <option name="METHOD_NAME" value="testGetHandValue" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -152,7 +152,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HandTest.testHasStraight" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="HandTest.testHasFlush" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="utils" />
       <extension name="coverage">
         <pattern>
@@ -162,7 +162,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
       <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
-      <option name="METHOD_NAME" value="testHasStraight" />
+      <option name="METHOD_NAME" value="testHasFlush" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -170,7 +170,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HandTest.testHasThreeOfAKind" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="HandTest.testHasFourOfAKind" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="utils" />
       <extension name="coverage">
         <pattern>
@@ -180,7 +180,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
       <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
-      <option name="METHOD_NAME" value="testHasThreeOfAKind" />
+      <option name="METHOD_NAME" value="testHasFourOfAKind" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -188,7 +188,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HandTest.testHasTwoPair" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="HandTest.testHasStraightFlush" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="utils" />
       <extension name="coverage">
         <pattern>
@@ -198,7 +198,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
       <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
-      <option name="METHOD_NAME" value="testHasTwoPair" />
+      <option name="METHOD_NAME" value="testHasStraightFlush" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -208,11 +208,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="TestNG.HandTest.testGetHandValue" />
+        <item itemvalue="TestNG.HandTest.testHasStraightFlush" />
+        <item itemvalue="TestNG.HandTest.testHasFourOfAKind" />
         <item itemvalue="TestNG.HandTest" />
-        <item itemvalue="TestNG.HandTest.testHasStraight" />
-        <item itemvalue="TestNG.HandTest.testHasThreeOfAKind" />
-        <item itemvalue="TestNG.HandTest.testHasTwoPair" />
-        <item itemvalue="TestNG.HandTest.testHasPair" />
+        <item itemvalue="TestNG.HandTest.testHasFlush" />
       </list>
     </recent_temporary>
   </component>
