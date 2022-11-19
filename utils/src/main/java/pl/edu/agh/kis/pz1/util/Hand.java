@@ -147,23 +147,39 @@ public class Hand implements Comparable<Hand> {
         }
 
         if (hasFourOfAKind()) {
+            double sum = 0.0;
             for (int i = rankCounts.length - 1; i >= 0; i--) {
                 if (rankCounts[i] == 4) {
-                    return 8.0 + (i == 1 ? 14 : i) / 15.0;
+                    sum += (i == 1 ? 14 : i);
+                }
+                else if (rankCounts[i] == 1) {
+                    sum += (i == 1 ? 14 : i) / 15.0;
                 }
             }
+
+            return 8.0 + sum / 15.0;
         }
 
         if (hasFullHouse()) {
+            double sum = 0.0;
             for (int i = 0; i < rankCounts.length; i++) {
                 if (rankCounts[i] == 3) {
-                    return 7.0 + (i == 1 ? 14.0 : i) / 15.0;
+                    sum += (i == 1 ? 14.0 : i);
+                }
+                else if (rankCounts[i] == 2) {
+                    sum += (i == 1 ? 14.0 : i) / 15.0;
                 }
             }
+
+            return 7.0 + sum / 15.0;
         }
 
         if (hasFlush()) {
             double sum = 0.0, multiplier = 1.0;
+            if (cards[0].rank == Card.Rank.ACE) {
+                sum += 14.0;
+                multiplier /= 15.0;
+            }
             for (int i = HAND_SIZE - 1; i >= 0; i--) {
                 sum += cards[i].rank.getRank() * multiplier;
                 multiplier /= 15.0;
@@ -180,11 +196,22 @@ public class Hand implements Comparable<Hand> {
         }
 
         if (hasThreeOfAKind()) {
-            for (int i = 0; i < rankCounts.length; i++) {
+            double sum = 0.0, multiplier = 1.0 / 15.0;
+            if (rankCounts[1] == 1) {
+                sum += 14.0 * multiplier;
+                multiplier /= 15.0;
+            }
+            for (int i = rankCounts.length - 1; i >= 1; i--) {
                 if (rankCounts[i] == 3) {
-                    return 4.0 + (i == 1 ? 14.0 : i) / 15.0;
+                    sum += (i == 1 ? 14.0 : i);
+                }
+                else if (rankCounts[i] == 1 && i != 0) {
+                    sum += (i == 1 ? 14.0 : i) * multiplier;
+                    multiplier /= 15.0;
                 }
             }
+
+            return 4.0 + sum / 15.0;
         }
 
         if (hasTwoPairs()) {
@@ -195,13 +222,13 @@ public class Hand implements Comparable<Hand> {
                 multiplier /= 15.0;
             }
 
-            for (int i = HAND_SIZE - 1; i >= 0; i--) {
-                if (rankCounts[i] == 2) {
+            for (int i = RANKS_NUMBER; i >= 0; i--) {
+                if (rankCounts[i] == 2 && i != 1) {
                     sum += i * multiplier;
                     multiplier /= 15.0;
                 }
-                if (rankCounts[i] == 1) {
-                    sum += i / 225.0;
+                else if (rankCounts[i] == 1) {
+                    sum += (i == 1 ? 14.0 : i) / 225.0;
                 }
             }
 
@@ -210,20 +237,21 @@ public class Hand implements Comparable<Hand> {
 
         if (hasPair()) {
             double sum = 0.0, multiplier = 1.0;
-            if (rankCounts[1] == 2) {
-                sum += 14.0 * multiplier;
-                multiplier /= 15.0;
-            } else {
-                for (int i = HAND_SIZE - 1; i >= 0; i--) {
-                    if (rankCounts[i] == 2) {
-                        sum += i;
-                        multiplier /= 15.0;
-                        break;
-                    }
+
+            for (int i = RANKS_NUMBER; i >= 0; i--) {
+                if (rankCounts[i] == 2) {
+                    sum += (i == 1 ? 14.0 : i) * multiplier;
+                    multiplier /= 15.0;
+                    break;
                 }
             }
 
-            for (int i = HAND_SIZE - 1; i >= 0; i--) {
+            if (rankCounts[1] == 1) {
+                sum += 14.0 * multiplier;
+                multiplier /= 15.0;
+            }
+
+            for (int i = RANKS_NUMBER; i >= 2; i--) {
                 if (rankCounts[i] == 1) {
                     sum += i * multiplier;
                     multiplier /= 15.0;
@@ -235,7 +263,13 @@ public class Hand implements Comparable<Hand> {
 
         {
             double sum = 0.0, multiplier = 1.0;
-            for (int i = HAND_SIZE - 1; i >= 0; i--) {
+
+            for (int i = 0; i < HAND_SIZE && cards[i].rank == Card.Rank.ACE; i++) {
+                sum += 14.0 * multiplier;
+                multiplier /= 15.0;
+            }
+
+            for (int i = HAND_SIZE - 1; i >= 0 && cards[i].rank != Card.Rank.ACE; i--) {
                 sum += cards[i].rank.getRank() * multiplier;
                 multiplier /= 15.0;
             }

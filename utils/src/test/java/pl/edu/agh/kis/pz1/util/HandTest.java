@@ -7,19 +7,6 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HandTest {
-    private Hand handRoyalFlush;
-
-    @BeforeEach
-    public void setUp() {
-        handRoyalFlush = new Hand(new Card[]{
-            new Card(Card.Suit.CLUBS, Card.Rank.ACE),
-            new Card(Card.Suit.CLUBS, Card.Rank.KING),
-            new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
-            new Card(Card.Suit.CLUBS, Card.Rank.JACK),
-            new Card(Card.Suit.CLUBS, Card.Rank.TEN)
-        });
-    }
-
     @Test
     public void testHand() {
         // given
@@ -719,18 +706,117 @@ public class HandTest {
             new Card(Card.Suit.CLUBS, Card.Rank.JACK),
             new Card(Card.Suit.CLUBS, Card.Rank.TEN)
         });
-        Hand fourOfAKind = new Hand(new Card[]{
+        Hand straightFlushHand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.NINE),
+                new Card(Card.Suit.CLUBS, Card.Rank.KING),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.CLUBS, Card.Rank.JACK),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+        Hand fourOfAKindHand = new Hand(new Card[]{
                 new Card(Card.Suit.CLUBS, Card.Rank.TWO),
                 new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
                 new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
                 new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
                 new Card(Card.Suit.HEARTS, Card.Rank.QUEEN)
         });
+        Hand fullHouseHand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.TWO)
+        });
+        Hand flushHand = new Hand(new Card[]{
+                new Card(Card.Suit.DIAMONDS, Card.Rank.EIGHT),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.KING),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.JACK),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.TEN)
+        });
+        Hand straightHand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.NINE),
+                new Card(Card.Suit.CLUBS, Card.Rank.KING),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.CLUBS, Card.Rank.JACK),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+        Hand threeOfAKindHand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.SIX)
+        });
+        Hand twoPairsHand1 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.ACE),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+        Hand twoPairsHand2 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+        Hand pairHand1 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.KING),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+        Hand pairHand2 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.FIVE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.ACE),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+        Hand highCardHand1 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.FIVE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.ACE),
+                new Card(Card.Suit.HEARTS, Card.Rank.TWO)
+        });
+        Hand highCardHand2 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.FIVE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.FOUR),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.JACK),
+                new Card(Card.Suit.HEARTS, Card.Rank.TWO)
+        });
         // when
         double handValue1 = royalFlushHand.getHandValue();
-        double handValue2 = fourOfAKind.getHandValue();
+        double handValue2 = straightFlushHand.getHandValue();
+        double handValue3 = fourOfAKindHand.getHandValue();
+        double handValue4 = fullHouseHand.getHandValue();
+        double handValue5 = flushHand.getHandValue();
+        double handValue6 = straightHand.getHandValue();
+        double handValue7 = threeOfAKindHand.getHandValue();
+        double handValue8 = twoPairsHand1.getHandValue();
+        double handValue9 = twoPairsHand2.getHandValue();
+        double handValue10 = pairHand1.getHandValue();
+        double handValue11 = pairHand2.getHandValue();
+        double handValue12 = highCardHand1.getHandValue();
+        double handValue13 = highCardHand2.getHandValue();
         // then
-        assertEquals(10.0, handValue1, "Hand should have royal flush value");
-        assertEquals(8.8, handValue2, 1.0e-10, "Hand should have four of a kind value");
+        assertEquals(10.0, handValue1, 1.0e-10, "Hand should have royal flush value");
+        assertEquals(9.86666666666666, handValue2, 1.0e-10, "Hand should have four of a straight flush value");
+        assertEquals(8.80888888888888, handValue3, 1.0e-10, "Hand should have four of a kind value");
+        assertEquals(7.80888888888888, handValue4, 1.0e-10, "Hand should have full house value");
+        assertEquals(6.92346732510, handValue5, 1.0e-10, "Hand should have flush value");
+        assertEquals(5.86666666666666, handValue6, 1.0e-10, "Hand should have straight value");
+        assertEquals(4.82725925925, handValue7, 1.0e-10, "Hand should have three of a kind value");
+        assertEquals(3.95466666666666, handValue8, 1.0e-10, "Hand should have two pairs value");
+        assertEquals(3.82192592592, handValue9, 1.0e-10, "Hand should have two pairs value");
+        assertEquals(2.33297777777777, handValue10, 1.0e-10, "Hand should have pair value");
+        assertEquals(2.98822716049, handValue11, 1.0e-10, "Hand should have pair value");
+        assertEquals(1.98822979423, handValue12, 1.0e-10, "Hand should have high card value");
+        assertEquals(1.85045201646, handValue13, 1.0e-10, "Hand should have high card value");
     }
 }

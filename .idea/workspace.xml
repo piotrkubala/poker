@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/main/java/pl/edu/agh/kis/pz1/util/Hand.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/pl/edu/agh/kis/pz1/util/Hand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/test/java/pl/edu/agh/kis/pz1/util/HandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/test/java/pl/edu/agh/kis/pz1/util/HandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/target/classes/pl/edu/agh/kis/pz1/util/Hand.class" beforeDir="false" afterPath="$PROJECT_DIR$/utils/target/classes/pl/edu/agh/kis/pz1/util/Hand.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/target/test-classes/pl/edu/agh/kis/pz1/util/HandTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/utils/target/test-classes/pl/edu/agh/kis/pz1/util/HandTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +117,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
-  <component name="RunManager" selected="TestNG.HandTest.testGetHandValue">
+  <component name="RunManager" selected="TestNG.HandTest">
     <configuration name="HandTest" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="utils" />
       <extension name="coverage">
@@ -208,10 +209,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="TestNG.HandTest" />
         <item itemvalue="TestNG.HandTest.testGetHandValue" />
         <item itemvalue="TestNG.HandTest.testHasStraightFlush" />
         <item itemvalue="TestNG.HandTest.testHasFourOfAKind" />
-        <item itemvalue="TestNG.HandTest" />
         <item itemvalue="TestNG.HandTest.testHasFlush" />
       </list>
     </recent_temporary>
