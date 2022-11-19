@@ -81,16 +81,13 @@ public class Hand implements Comparable<Hand> {
     public boolean hasStraight() {
         for (int i = 0; i < HAND_SIZE - 1; i++) {
             if (cards[i].rank.getRank() + 1 != cards[i + 1].rank.getRank()) {
-                if (i != 0) {
+                if (cards[0].rank != Card.Rank.ACE || cards[HAND_SIZE - 1].rank != Card.Rank.KING) {
                     return false;
                 }
                 for (int j = 1; j < HAND_SIZE - 1; j++) {
-                    if (cards[j].rank.getRank() != cards[j + 1].rank.getRank()) {
+                    if (cards[j].rank.getRank() + 1 != cards[j + 1].rank.getRank()) {
                         return false;
                     }
-                }
-                if (cards[0].rank != Card.Rank.ACE || cards[HAND_SIZE - 1].rank != Card.Rank.KING) {
-                    return false;
                 }
                 return true;
             }
@@ -100,7 +97,7 @@ public class Hand implements Comparable<Hand> {
 
     public boolean hasThreeOfAKind() {
         for (int i = 0; i < rankCounts.length; i++) {
-            if (rankCounts[i] == 3) {
+            if (rankCounts[i] >= 3) {
                 return true;
             }
         }
@@ -110,7 +107,7 @@ public class Hand implements Comparable<Hand> {
     public boolean hasTwoPairs() {
         int pairs = 0;
         for (int i = 0; i < rankCounts.length; i++) {
-            if (rankCounts[i] == 2) {
+            if (rankCounts[i] >= 2) {
                 pairs++;
             }
 
