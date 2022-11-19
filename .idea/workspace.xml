@@ -135,6 +135,42 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="HandTest.testChangeCard" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="utils" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.edu.agh.kis.pz1.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
+      <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
+      <option name="METHOD_NAME" value="testChangeCard" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HandTest.testCompareTo" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="utils" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.edu.agh.kis.pz1.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
+      <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
+      <option name="METHOD_NAME" value="testCompareTo" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="HandTest.testGetHandValue" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="utils" />
       <extension name="coverage">
@@ -146,42 +182,6 @@
       <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
       <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
       <option name="METHOD_NAME" value="testGetHandValue" />
-      <option name="TEST_OBJECT" value="METHOD" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HandTest.testHasFlush" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="utils" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.edu.agh.kis.pz1.util.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
-      <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
-      <option name="METHOD_NAME" value="testHasFlush" />
-      <option name="TEST_OBJECT" value="METHOD" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HandTest.testHasFourOfAKind" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="utils" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.edu.agh.kis.pz1.util.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.edu.agh.kis.pz1.util" />
-      <option name="MAIN_CLASS_NAME" value="pl.edu.agh.kis.pz1.util.HandTest" />
-      <option name="METHOD_NAME" value="testHasFourOfAKind" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -210,10 +210,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="TestNG.HandTest" />
+        <item itemvalue="TestNG.HandTest.testChangeCard" />
+        <item itemvalue="TestNG.HandTest.testCompareTo" />
         <item itemvalue="TestNG.HandTest.testGetHandValue" />
         <item itemvalue="TestNG.HandTest.testHasStraightFlush" />
-        <item itemvalue="TestNG.HandTest.testHasFourOfAKind" />
-        <item itemvalue="TestNG.HandTest.testHasFlush" />
       </list>
     </recent_temporary>
   </component>
@@ -283,6 +283,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/multi_module_two_main$HandTest.ic" NAME="HandTest Coverage Results" MODIFIED="1668887727949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>pl.edu.agh.kis.pz1.util.*</FILTER>
+    </SUITE>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/utils/pom.xml">

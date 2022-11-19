@@ -44,6 +44,16 @@ public class Hand implements Comparable<Hand> {
         sortAndUpdateRanks();
     }
 
+    public void changeCard(int index, Card card) throws IllegalArgumentException {
+        if (index < 0 || index >= HAND_SIZE) {
+            throw new IllegalArgumentException("Index should be in range [0, " + HAND_SIZE + ")");
+        }
+
+        cards[index] = card;
+
+        sortAndUpdateRanks();
+    }
+
     private boolean allTheSameColour() {
         for (int i = 0; i < suitCounts.length; i++) {
             if (suitCounts[i] == HAND_SIZE) {

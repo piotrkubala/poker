@@ -37,6 +37,31 @@ public class HandTest {
     }
 
     @Test
+    public void testChangeCard() {
+        // given
+        Hand hand = new Hand(new Card[]{
+            new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+            new Card(Card.Suit.HEARTS, Card.Rank.KING),
+            new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+            new Card(Card.Suit.DIAMONDS, Card.Rank.JACK),
+            new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+        Card[] expected = new Card[]{
+                new Card(Card.Suit.DIAMONDS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.JACK),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.KING)
+        };
+
+        // when
+        hand.changeCard(0, new Card(Card.Suit.DIAMONDS, Card.Rank.TWO));
+
+        // then
+        assertTrue(expected[0].compareTo(hand.getCards()[0]) == 0, "Cards should be changed");
+    }
+
+    @Test
     public void testHasPair() {
         // given
         Hand handWithout1 = new Hand(new Card[]{
@@ -790,6 +815,7 @@ public class HandTest {
                 new Card(Card.Suit.SPADES, Card.Rank.JACK),
                 new Card(Card.Suit.HEARTS, Card.Rank.TWO)
         });
+
         // when
         double handValue1 = royalFlushHand.getHandValue();
         double handValue2 = straightFlushHand.getHandValue();
@@ -804,6 +830,7 @@ public class HandTest {
         double handValue11 = pairHand2.getHandValue();
         double handValue12 = highCardHand1.getHandValue();
         double handValue13 = highCardHand2.getHandValue();
+
         // then
         assertEquals(10.0, handValue1, 1.0e-10, "Hand should have royal flush value");
         assertEquals(9.86666666666666, handValue2, 1.0e-10, "Hand should have four of a straight flush value");
@@ -818,5 +845,56 @@ public class HandTest {
         assertEquals(2.98822716049, handValue11, 1.0e-10, "Hand should have pair value");
         assertEquals(1.98822979423, handValue12, 1.0e-10, "Hand should have high card value");
         assertEquals(1.85045201646, handValue13, 1.0e-10, "Hand should have high card value");
+    }
+
+    @Test
+    void testCompareTo() {
+        // given
+        Hand hand1 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.FIVE),
+                new Card(Card.Suit.SPADES, Card.Rank.SIX),
+                new Card(Card.Suit.HEARTS, Card.Rank.KING),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+        Hand hand2 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.NINE),
+                new Card(Card.Suit.CLUBS, Card.Rank.KING),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.CLUBS, Card.Rank.JACK),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+        Hand hand3 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.QUEEN)
+        });
+        Hand hand4 = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.THREE),
+                new Card(Card.Suit.SPADES, Card.Rank.SEVEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+
+        // when
+        boolean hand1IsBetterThanHand2 = hand1.compareTo(hand2) > 0;
+        boolean hand2IsBetterThanHand1 = hand2.compareTo(hand1) > 0;
+        boolean hand1IsBetterThanHand3 = hand1.compareTo(hand3) > 0;
+        boolean hand3IsBetterThanHand1 = hand3.compareTo(hand1) > 0;
+        boolean hand1IsBetterThanHand4 = hand1.compareTo(hand4) > 0;
+        boolean hand4IsBetterThanHand1 = hand4.compareTo(hand1) > 0;
+        boolean hand2IsEqualHand2 = hand2.compareTo(hand2) == 0;
+
+        // then
+        assertFalse(hand1IsBetterThanHand2, "Hand 1 should not be better than hand 2");
+        assertTrue(hand2IsBetterThanHand1, "Hand 2 should be better than hand 1");
+        assertFalse(hand1IsBetterThanHand3, "Hand 1 should not be better than hand 3");
+        assertTrue(hand3IsBetterThanHand1, "Hand 3 should be better than hand 1");
+        assertFalse(hand1IsBetterThanHand4, "Hand 1 should not be better than hand 4");
+        assertTrue(hand4IsBetterThanHand1, "Hand 4 should be better than hand 1");
+        assertTrue(hand2IsEqualHand2, "Hand 2 should be equal to hand 2");
     }
 }
