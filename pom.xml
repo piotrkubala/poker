@@ -5,7 +5,7 @@
   <artifactId>multi-module</artifactId>
   <version>1.0</version>
 
-  <name>Przyklad - aplikacja wielomodulowa z dwoma modulami z klasa Main i metoda main</name>
+  <name>Gra w Pokera klient - serwer</name>
   <packaging>pom</packaging>
 
   <!-- Dodane przez pskrzynski -->
@@ -21,26 +21,13 @@
       <module>main2</module>
   </modules>
 
-
   <dependencyManagement>
       <dependencies>
-
           <dependency>
               <groupId>pl.edu.agh.kis.pz1</groupId>
               <artifactId>main1</artifactId>
               <version>${project.version}</version>
           </dependency>
-          <dependency>
-              <groupId>pl.edu.agh.kis.pz1</groupId>
-              <artifactId>main2</artifactId>
-              <version>${project.version}</version>
-          </dependency>
-          <dependency>
-              <groupId>pl.edu.agh.kis.pz1</groupId>
-              <artifactId>utils</artifactId>
-              <version>${project.version}</version>
-          </dependency>
-
       </dependencies>
   </dependencyManagement>
 

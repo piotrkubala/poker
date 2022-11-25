@@ -54,6 +54,16 @@ public class Hand implements Comparable<Hand> {
         sortAndUpdateRanks();
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < HAND_SIZE; i++) {
+            sb.append("(" + i + ") ");
+            sb.append(cards[i].toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
     private boolean allTheSameColour() {
         for (int i = 0; i < suitCounts.length; i++) {
             if (suitCounts[i] == HAND_SIZE) {

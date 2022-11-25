@@ -2,43 +2,54 @@ package pl.edu.agh.kis.pz1.util;
 
 public class Card implements Comparable<Card> {
     public enum Rank {
-        ACE(1),
-        TWO(2),
-        THREE(3),
-        FOUR(4),
-        FIVE(5),
-        SIX(6),
-        SEVEN(7),
-        EIGHT(8),
-        NINE(9),
-        TEN(10),
-        JACK(11),
-        QUEEN(12),
-        KING(13);
+        ACE(1, "Ace"),
+        TWO(2, "Two"),
+        THREE(3, "Three"),
+        FOUR(4, "Four"),
+        FIVE(5, "Five"),
+        SIX(6, "Six"),
+        SEVEN(7, "Seven"),
+        EIGHT(8, "Eight"),
+        NINE(9, "Nine"),
+        TEN(10, "Ten"),
+        JACK(11, "Jack"),
+        QUEEN(12, "Queen"),
+        KING(13, "King");
 
         private int value;
-        private Rank(int _value) {
-            this.value = _value;
+        private String name;
+        private Rank(int value_, String name_) {
+            this.value = value_;
+            this.name = name_;
         }
 
         public int getRank() {
             return this.value;
         }
+        public String getName() {
+            return this.name;
+        }
     }
 
     public enum Suit {
-        HEARTS(3),
-        DIAMONDS(2),
-        SPADES(1),
-        CLUBS(0);
+        HEARTS(3, "Hearts"),
+        DIAMONDS(2, "Diamonds"),
+        SPADES(1, "Spades"),
+        CLUBS(0, "Clubs");
 
         private int value;
-        private Suit(int _value) {
-            this.value = _value;
+        private String name;
+        private Suit(int value_, String name_) {
+            this.value = value_;
+            this.name = name_;
         }
 
         public int getSuit() {
             return this.value;
+        }
+
+        public String getName() {
+            return this.name;
         }
     }
 
@@ -48,6 +59,10 @@ public class Card implements Comparable<Card> {
     Card(Suit cardSuit, Rank cardRank) {
         this.suit = cardSuit;
         this.rank = cardRank;
+    }
+
+    public String toString() {
+        return rank.getName() + " of " + suit.getName();
     }
 
     @Override
