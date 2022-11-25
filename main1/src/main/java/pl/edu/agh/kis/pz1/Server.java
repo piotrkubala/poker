@@ -123,7 +123,7 @@ public class Server {
                 if (gameState != Game.GameState.WAITING_FOR_PLAYERS && gameState != Game.GameState.WAITING_FOR_READY) {
                     writeMessageToClient(key, "The game has already started");
                 } else if (gameState == Game.GameState.WAITING_FOR_READY) {
-                    clients.get(key).setReady();
+                    clients.get(key).setReady(true);
                     writeMessageToClient(key, "Your status is ready now, type \'check\' to see if the game has started");
                 } else {
                     writeMessageToClient(key, "There are not enough players (need " + (playersNumber - game.getReadyPlayersCount()) + " more players)");
@@ -158,7 +158,7 @@ public class Server {
                 if (game.canShowPlayersHand() && clients.get(key).getPlayerHand() != null) {
                     sb.append(clients.get(key).getPlayerHand().toString());
                 } else {
-                    sb.append("You cannot show your hand now");
+                    sb.append("You cannot show your hand now\n");
                 }
 
                 sb.append(game.getPlayersMoneyAndBetAsString());
