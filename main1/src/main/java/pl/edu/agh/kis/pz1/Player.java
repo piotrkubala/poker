@@ -45,4 +45,24 @@ public class Player {
     public Hand getPlayerHand() {
         return playerHand;
     }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public int getBet() {
+        return bet;
+    }
+
+    public int setReady(boolean isReady_) {
+        isReady = isReady_;
+
+        if (isReady) {
+            readyPlayers++;
+        } else {
+            readyPlayers--;
+        }
+
+        return readyPlayers;
+    }
 }

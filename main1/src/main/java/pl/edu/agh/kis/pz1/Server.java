@@ -9,16 +9,14 @@ import java.nio.channels.Selector;
 
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Server {
     private static Logger logger = Logger.getLogger(Server.class.getName());
 
     private Map<SelectionKey, Player> clients = new HashMap<SelectionKey, Player>();
+    private Set<String> chosenNames = new HashSet<String>();
 
     Selector selector;
 
@@ -32,6 +30,7 @@ public class Server {
         playersNumber = playersNumber_;
         portNumber = port_;
         ante = ante_;
+        game = new Game(playersNumber, ante);
 
         try {
             selector = Selector.open();
@@ -50,19 +49,20 @@ public class Server {
             ((SocketChannel) key.channel()).write(buffer);
         } catch (IOException e) {
             logger.severe("Cannot write to client");
+            System.exit(-1);
         }
     }
 
     private void handleCommands(String command, SelectionKey key) {
         String[] commandParts = command.split(" ");
 
-        logger.info("Received command: " + commandParts.toString());
-
         if (commandParts.length == 0) {
             return;
         }
 
         Game.GameState gameState = game.getState();
+
+        boolean isCurrentPlayerMakingAMove = game.isMakingMove(clients.get(key));
 
         switch (commandParts[0]) {
             case "help":
@@ -103,41 +103,66 @@ public class Server {
             case "username":
                 if (gameState != Game.GameState.WAITING_FOR_PLAYERS) {
                     writeMessageToClient(key, "Cannot change username now");
-                    break;
-                }
-
-                if (commandParts.length != 2) {
+                } else if (commandParts.length != 2) {
                     writeMessageToClient(key, "usage: username <username>");
-                    return;
-                }
-
-                if (clients.get(key).getUsername() != null) {
+                } else if (clients.get(key).getUsername() != null) {
                     writeMessageToClient(key, "You have already set your username");
-                    return;
+                } else if (chosenNames.contains(commandParts[1])) {
+                    writeMessageToClient(key, "This username is already taken");
+                } else {
+                    clients.get(key).setName(commandParts[1]);
+                    chosenNames.add(commandParts[1]);
+                    writeMessageToClient(key, "Username set to " + commandParts[1]);
+
+                    if (game.isReady()) {
+                        game.start();
+                    }
                 }
-                clients.get(key).setName(commandParts[1]);
                 break;
             case "start":
-                if (gameState != Game.GameState.WAITING_FOR_PLAYERS) {
+                if (gameState != Game.GameState.WAITING_FOR_PLAYERS && gameState != Game.GameState.WAITING_FOR_READY) {
                     writeMessageToClient(key, "The game has already started");
-                } else if (game.isReady()) {
-                    writeMessageToClient(key, "Game is ready");
+                } else if (gameState == Game.GameState.WAITING_FOR_READY) {
+                    clients.get(key).setReady();
+                    writeMessageToClient(key, "Your status is ready now, type \'check\' to see if the game has started");
                 } else {
-                    writeMessageToClient(key, "There are not enough players (need " + (playersNumber - game.getReadyPlayers()) + " more players)");
+                    writeMessageToClient(key, "There are not enough players (need " + (playersNumber - game.getReadyPlayersCount()) + " more players)");
                 }
                 break;
             case "call":
+                if (!isCurrentPlayerMakingAMove) {
+                    writeMessageToClient(key, "It is not your turn, you cannot call now");
+                    break;
+                }
                 break;
             case "raise":
+                if (!isCurrentPlayerMakingAMove) {
+                    writeMessageToClient(key, "It is not your turn, you cannot raise now");
+                    break;
+                }
                 break;
             case "fold":
+                if (!isCurrentPlayerMakingAMove) {
+                    writeMessageToClient(key, "It is not your turn, you cannot fold now");
+                    break;
+                }
                 break;
             case "show":
-                if (game.canShowPlayersHand()) {
-                    writeMessageToClient(key, "Your hand: " + clients.get(key).getPlayerHand().toString());
+                StringBuilder sb = new StringBuilder();
+
+                if (clients.get(key).getUsername() != null) {
+                    sb.append("Player: " + clients.get(key).getUsername() + "\n");
                 } else {
-                    writeMessageToClient(key, "You cannot show your hand now");
+                    sb.append("Player: UNKNOWN - SET USERNAME \n");
                 }
+                if (game.canShowPlayersHand() && clients.get(key).getPlayerHand() != null) {
+                    sb.append(clients.get(key).getPlayerHand().toString());
+                } else {
+                    sb.append("You cannot show your hand now");
+                }
+
+                sb.append(game.getPlayersMoneyAndBetAsString());
+                writeMessageToClient(key, sb.toString());
                 break;
             default:
                 writeMessageToClient(key, "Unknown command");

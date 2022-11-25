@@ -2,7 +2,6 @@ package pl.edu.agh.kis.pz1;
 
 import pl.edu.agh.kis.pz1.util.Deck;
 
-import java.nio.channels.SelectionKey;
 import java.util.*;
 
 public class Game {
@@ -18,21 +17,27 @@ public class Game {
 
     private GameState state = GameState.WAITING_FOR_PLAYERS;
 
+    private int currentPlayerIndex = 0;
+
     // the 0th player is small blind, the 1st is big blind; all in order
     private Player[] playersByNumber;
     private Vector<Integer> playersOrder;
 
     private Deck gameDeck;
+
+    private int ante;
     private int playersNumber;
     private int readyPlayers = 0;
 
-    public void Game(int playersNumber_) {
+    public Game(int playersNumber_, int ante_) {
         playersNumber = playersNumber_;
+        ante = ante_;
+
         playersOrder = new Vector<Integer>(playersNumber);
         playersByNumber = new Player[playersNumber];
 
         for (int i = 0; i < playersNumber; i++) {
-            playersOrder.set(i, i);
+            playersOrder.add(i);
         }
 
         Collections.shuffle(playersOrder);
@@ -44,7 +49,7 @@ public class Game {
         readyPlayers++;
     }
 
-    public int getReadyPlayers() {
+    public int getReadyPlayersCount() {
         return readyPlayers;
     }
 
@@ -58,5 +63,31 @@ public class Game {
 
     public boolean canShowPlayersHand() {
         return state == GameState.AFTER_SHOWDOWN || state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS;
+    }
+
+    public String getPlayersMoneyAndBetAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < playersNumber; i++) {
+            Player player = playersByNumber[i];
+            if (playersByNumber[i] != null) {
+                sb.append(player.getUsername() + " has " + player.getMoney() + "$ left" + " current bet: " + player.getBet() + "$\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    public Player getCurrentPlayer() {
+        return playersByNumber[currentPlayerIndex];
+    }
+
+    public void nextPlayerMove() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % playersNumber;
+    }
+
+    public boolean isMakingMove(Player player) {
+        return player == getCurrentPlayer() && state == GameState.FIRST_ROUND_BETS && state == GameState.SECOND_ROUND_BETS;
+    }
+
+    public void start() {
     }
 }

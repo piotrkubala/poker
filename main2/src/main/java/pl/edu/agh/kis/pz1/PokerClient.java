@@ -24,24 +24,30 @@ public class PokerClient {
 
         try {
             SocketChannel clientSocket = SocketChannel.open(new InetSocketAddress(serverAddress, portNumber));
-            clientSocket.configureBlocking(false);
 
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
             byte[] bytes = new byte[1024];
 
             while(true) {
-                buffer.clear();
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
 
                 String command = scanner.nextLine();
 
                 if (command.equals("check")) {
-                    logger.info("Check command");
+                    clientSocket.configureBlocking(false);
+
                     if (clientSocket.read(buffer) > 0) {
-                        logger.info("Received message: " + new String(buffer.array()));
+                        System.out.println((new String(buffer.array())).trim());
                     }
+
+                    clientSocket.configureBlocking(true);
 
                     continue;
                 }
+
+                if (command.length() == 0) {
+                    continue;
+                }
+
                 buffer.put(command.getBytes(), 0, command.length());
                 buffer.flip();
 
@@ -52,9 +58,9 @@ public class PokerClient {
                     break;
                 }
 
-                buffer.clear();
-                if (clientSocket.read(buffer) > 0) {
-                    logger.info("Received message: " + new String(buffer.array()));
+                ByteBuffer newBuffer = ByteBuffer.allocate(1024);
+                if (clientSocket.read(newBuffer) > 0) {
+                    System.out.println((new String(newBuffer.array())).trim());
                 }
             }
 
