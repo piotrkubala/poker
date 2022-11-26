@@ -1,5 +1,7 @@
 package pl.edu.agh.kis.pz1;
 
+import pl.edu.agh.kis.pz1.util.Card;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -139,6 +141,7 @@ public class Server {
                         game.start();
 
                         writeMessageToAllClients("The game has started\nYou can check your cards and other stats by typing \'show\'");
+                        writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
                     }
                 } else {
                     writeMessageToClient(key, "There are not enough players (need " + (playersNumber - game.getReadyPlayersCount()) + " more players)");
@@ -207,6 +210,8 @@ public class Server {
                     player.raiseBet(raiseAmount);
                     game.nextPlayerMove();
                     writeMessageToClient(key, "You have raised the bet to " + raiseAmount);
+                    writeMessageToAllClients(player.getUsername() + " has raised the bet to " + raiseAmount);
+                    writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
                 } catch (NumberFormatException e) {
                     writeMessageToClient(key, "usage: raise <amount>");
                 }
@@ -222,10 +227,59 @@ public class Server {
                     break;
                 }
 
-
                 player.setPlaying(false);
                 writeMessageToClient(key, "You have folded");
                 game.nextPlayerMove();
+                writeMessageToAllClients(player.getUsername() + " has folded");
+                writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+                break;
+            case "change":
+                if (gameState != Game.GameState.CARDS_CHANGING) {
+                    writeMessageToClient(key, "You cannot change cards now");
+                    break;
+                }
+                if (player.wereCardsChanged()) {
+                    writeMessageToClient(key, "You have already changed your cards");
+                    break;
+                }
+
+                if (commandParts.length < 2 || commandParts.length > 6) {
+                    writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
+                    break;
+                }
+
+                try {
+                    int[] cardsToChange = new int[commandParts.length - 1];
+                    for (int i = 1; i < commandParts.length; i++) {
+                        cardsToChange[i - 1] = Integer.parseInt(commandParts[i]);
+                        if (cardsToChange[i - 1] < 0 || cardsToChange[i - 1] > 4) {
+                            writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
+                            break;
+                        }
+                    }
+
+                    Card[] newCards = game.getCardsFromDeck(cardsToChange.length);
+                    Card[] oldPlayerCards = player.getPlayerHand().getCards();
+
+                    for (int i = 0; i < cardsToChange.length; i++) {
+                        oldPlayerCards[cardsToChange[i]] = newCards[i];
+                    }
+
+                    player.getPlayerHand().setCards(oldPlayerCards);
+                    player.setCardsChanged(true);
+
+                    writeMessageToAllClients(player.getUsername() + " has changed his cards");
+
+                    if (game.isChangingCardsEnded()) {
+                        game.beginSecondRound();
+                        writeMessageToAllClients("The second round of betting has started");
+                        writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+                    } else {
+                        writeMessageToAllClients("\nWaiting for other players to change their cards (" + (playersNumber - game.getPlayersWhoChangedCardsCount()) + " more players)");
+                    }
+                } catch (NumberFormatException e) {
+                    writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
+                }
                 break;
             case "show":
                 StringBuilder sb = new StringBuilder();

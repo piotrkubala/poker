@@ -1,5 +1,6 @@
 package pl.edu.agh.kis.pz1;
 
+import pl.edu.agh.kis.pz1.util.Card;
 import pl.edu.agh.kis.pz1.util.Deck;
 import pl.edu.agh.kis.pz1.util.Hand;
 
@@ -47,11 +48,14 @@ public class Game {
 
     private int readyPlayersForStart = 0;
 
-    private int stillPlayingPlayers = 4;
+    private int stillPlayingPlayers;
+
+    private int playersWhoChangedCards = 0;
 
     public Game(int playersNumber_, int ante_) {
         playersNumber = playersNumber_;
         ante = ante_;
+        stillPlayingPlayers = playersNumber;
 
         playersOrder = new Vector<Integer>(playersNumber);
         playersByNumber = new Player[playersNumber];
@@ -89,7 +93,7 @@ public class Game {
     }
 
     public boolean canShowPlayersHand() {
-        return state == GameState.AFTER_SHOWDOWN || state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS;
+        return state == GameState.AFTER_SHOWDOWN || state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS || state == GameState.CARDS_CHANGING;
     }
 
     public String getPlayersMoneyAndBetAsString() {
@@ -97,7 +101,9 @@ public class Game {
         for (int i = 0; i < playersNumber; i++) {
             Player player = playersByNumber[i];
             if (playersByNumber[i] != null) {
-                if (player.isSmallBlind()) {
+                if (!player.isPlaying()) {
+                    sb.append("Has ended:   ");
+                } else if (player.isSmallBlind()) {
                     sb.append("Small Blind: ");
                 } else if (player.isBigBlind()) {
                     sb.append("Big Blind:   ");
@@ -105,7 +111,7 @@ public class Game {
                     sb.append("             ");
                 }
 
-                sb.append(player.getUsername() + " has " + player.getMoney() + "$ left" + " current bet: " + player.getBet() + "$\n");
+                sb.append(player.getUsername() + " has " + player.getMoney() + "$ left, current bet: " + player.getBet() + "$\n");
             }
         }
         return sb.toString();
@@ -143,6 +149,10 @@ public class Game {
 
             currentPlayerIndex = 0;
         }
+    }
+
+    public Card[] getCardsFromDeck(int number) {
+        return gameDeck.getCards(number);
     }
 
     // todo
@@ -214,6 +224,27 @@ public class Game {
     }
 
     public boolean isBettingEnded() {
-        return turnsSinceLastBetIncrease == stillPlayingPlayers;
+        return turnsSinceLastBetIncrease >= stillPlayingPlayers;
+    }
+
+    public void increasePlayersWhoChangedCards() {
+        playersWhoChangedCards++;
+    }
+
+    public void decreasePlayersWhoChangedCards() {
+        playersWhoChangedCards--;
+    }
+
+    public boolean isChangingCardsEnded() {
+        return playersWhoChangedCards >= stillPlayingPlayers;
+    }
+
+    public int getPlayersWhoChangedCardsCount() {
+        return playersWhoChangedCards;
+    }
+
+    public void beginSecondRound() {
+        currentPlayerIndex = 0;
+        state = GameState.SECOND_ROUND_BETS;
     }
 }

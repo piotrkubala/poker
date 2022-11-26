@@ -1,8 +1,11 @@
 package pl.edu.agh.kis.pz1;
 
+import pl.edu.agh.kis.pz1.util.Card;
 import pl.edu.agh.kis.pz1.util.Hand;
 
 import java.nio.channels.SelectionKey;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Player {
     private SelectionKey key;
@@ -24,12 +27,18 @@ public class Player {
 
     private boolean isPlaying = true;
 
+    private boolean wereCardsChanged = false;
+
     private Game game;
 
     public Player(SelectionKey key_, int money_, Game game_) {
         key = key_;
         money = money_;
         game = game_;
+    }
+
+    public SelectionKey getKey() {
+        return key;
     }
 
     private void setReady() {
@@ -120,5 +129,23 @@ public class Player {
 
     public boolean isPlaying() {
         return isPlaying;
+    }
+
+    public void setCardsChanged(boolean wereCardsChanged_) {
+        if (wereCardsChanged_ == wereCardsChanged) {
+            return;
+        }
+
+        wereCardsChanged = wereCardsChanged_;
+
+        if (wereCardsChanged) {
+            game.increasePlayersWhoChangedCards();
+        } else {
+            game.decreasePlayersWhoChangedCards();
+        }
+    }
+
+    public boolean wereCardsChanged() {
+        return wereCardsChanged;
     }
 }
