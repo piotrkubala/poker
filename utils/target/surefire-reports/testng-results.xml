@@ -2,100 +2,100 @@
 <testng-results ignored="0" total="22" passed="22" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-11-26T13:44:47 CET" name="Command line suite" finished-at="2022-11-26T13:44:47 CET" duration-ms="129">
+  <suite started-at="2022-11-26T14:15:03 CET" name="Command line suite" finished-at="2022-11-26T14:15:03 CET" duration-ms="140">
     <groups>
     </groups>
-    <test started-at="2022-11-26T13:44:47 CET" name="Command line test" finished-at="2022-11-26T13:44:47 CET" duration-ms="129">
+    <test started-at="2022-11-26T14:15:03 CET" name="Command line test" finished-at="2022-11-26T14:15:03 CET" duration-ms="140">
       <class name="pl.edu.agh.kis.pz1.util.CardTest">
-        <test-method signature="shouldCreateCardObject()[pri:0, instance:pl.edu.agh.kis.pz1.util.CardTest@2b71e916]" started-at="2022-11-26T13:44:47 CET" name="shouldCreateCardObject" finished-at="2022-11-26T13:44:47 CET" duration-ms="13" status="PASS">
+        <test-method signature="shouldCreateCardObject()[pri:0, instance:pl.edu.agh.kis.pz1.util.CardTest@2b71e916]" started-at="2022-11-26T14:15:03 CET" name="shouldCreateCardObject" finished-at="2022-11-26T14:15:03 CET" duration-ms="17" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldCreateCardObject -->
-        <test-method signature="testCompareTo()[pri:0, instance:pl.edu.agh.kis.pz1.util.CardTest@2b71e916]" started-at="2022-11-26T13:44:47 CET" name="testCompareTo" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testCompareTo()[pri:0, instance:pl.edu.agh.kis.pz1.util.CardTest@2b71e916]" started-at="2022-11-26T14:15:03 CET" name="testCompareTo" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCompareTo -->
       </class> <!-- pl.edu.agh.kis.pz1.util.CardTest -->
       <class name="pl.edu.agh.kis.pz1.util.DeckTest">
-        <test-method signature="shouldCreateDeckObject()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T13:44:47 CET" name="shouldCreateDeckObject" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="shouldCreateDeckObject()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T14:15:03 CET" name="shouldCreateDeckObject" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldCreateDeckObject -->
-        <test-method signature="shouldGetCards()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T13:44:47 CET" name="shouldGetCards" finished-at="2022-11-26T13:44:47 CET" duration-ms="0" status="PASS">
+        <test-method signature="shouldGetCards()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T14:15:03 CET" name="shouldGetCards" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldGetCards -->
-        <test-method signature="shouldGetCardsTwice()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T13:44:47 CET" name="shouldGetCardsTwice" finished-at="2022-11-26T13:44:47 CET" duration-ms="0" status="PASS">
+        <test-method signature="shouldGetCardsTwice()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T14:15:03 CET" name="shouldGetCardsTwice" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldGetCardsTwice -->
-        <test-method signature="shouldGetDifferentCards()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T13:44:47 CET" name="shouldGetDifferentCards" finished-at="2022-11-26T13:44:47 CET" duration-ms="0" status="PASS">
+        <test-method signature="shouldGetDifferentCards()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T14:15:03 CET" name="shouldGetDifferentCards" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldGetDifferentCards -->
-        <test-method signature="shouldResetDeck()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T13:44:47 CET" name="shouldResetDeck" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="shouldResetDeck()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T14:15:03 CET" name="shouldResetDeck" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldResetDeck -->
-        <test-method signature="shouldShuffleDeck()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T13:44:47 CET" name="shouldShuffleDeck" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="shouldShuffleDeck()[pri:0, instance:pl.edu.agh.kis.pz1.util.DeckTest@34e9fd99]" started-at="2022-11-26T14:15:03 CET" name="shouldShuffleDeck" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldShuffleDeck -->
       </class> <!-- pl.edu.agh.kis.pz1.util.DeckTest -->
       <class name="pl.edu.agh.kis.pz1.util.HandTest">
-        <test-method signature="testChangeCard()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testChangeCard" finished-at="2022-11-26T13:44:47 CET" duration-ms="2" status="PASS">
+        <test-method signature="testChangeCard()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testChangeCard" finished-at="2022-11-26T14:15:03 CET" duration-ms="3" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testChangeCard -->
-        <test-method signature="testCompareTo()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testCompareTo" finished-at="2022-11-26T13:44:47 CET" duration-ms="2" status="PASS">
+        <test-method signature="testCompareTo()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testCompareTo" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCompareTo -->
-        <test-method signature="testGetCards()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testGetCards" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testGetCards()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testGetCards" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGetCards -->
-        <test-method signature="testGetHandValue()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testGetHandValue" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testGetHandValue()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testGetHandValue" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGetHandValue -->
-        <test-method signature="testHand()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHand" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testHand()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHand" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHand -->
-        <test-method signature="testHasFlush()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasFlush" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testHasFlush()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasFlush" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasFlush -->
-        <test-method signature="testHasFourOfAKind()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasFourOfAKind" finished-at="2022-11-26T13:44:47 CET" duration-ms="0" status="PASS">
+        <test-method signature="testHasFourOfAKind()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasFourOfAKind" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasFourOfAKind -->
-        <test-method signature="testHasFullHouse()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasFullHouse" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testHasFullHouse()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasFullHouse" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasFullHouse -->
-        <test-method signature="testHasPair()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasPair" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testHasPair()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasPair" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasPair -->
-        <test-method signature="testHasRoyalFlush()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasRoyalFlush" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testHasRoyalFlush()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasRoyalFlush" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasRoyalFlush -->
-        <test-method signature="testHasStraight()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasStraight" finished-at="2022-11-26T13:44:47 CET" duration-ms="0" status="PASS">
+        <test-method signature="testHasStraight()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasStraight" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasStraight -->
-        <test-method signature="testHasStraightFlush()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasStraightFlush" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testHasStraightFlush()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasStraightFlush" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasStraightFlush -->
-        <test-method signature="testHasThreeOfAKind()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasThreeOfAKind" finished-at="2022-11-26T13:44:47 CET" duration-ms="0" status="PASS">
+        <test-method signature="testHasThreeOfAKind()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasThreeOfAKind" finished-at="2022-11-26T14:15:03 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasThreeOfAKind -->
-        <test-method signature="testHasTwoPair()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T13:44:47 CET" name="testHasTwoPair" finished-at="2022-11-26T13:44:47 CET" duration-ms="1" status="PASS">
+        <test-method signature="testHasTwoPair()[pri:0, instance:pl.edu.agh.kis.pz1.util.HandTest@45752059]" started-at="2022-11-26T14:15:03 CET" name="testHasTwoPair" finished-at="2022-11-26T14:15:03 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHasTwoPair -->

@@ -18,6 +18,9 @@ public class Player {
 
     private boolean isReady;
 
+    private boolean isSmallBlind = false;
+    private boolean isBigBlind = false;
+
     private Game game;
     private static int readyPlayers = 0;
 
@@ -55,6 +58,10 @@ public class Player {
     }
 
     public int setReady(boolean isReady_) {
+        if (isReady_ == isReady) {
+            return readyPlayers;
+        }
+
         isReady = isReady_;
 
         if (isReady) {
@@ -68,5 +75,21 @@ public class Player {
 
     public void giveHand(Hand hand) {
         playerHand = hand;
+    }
+
+    public void setSmallBlind(boolean isSmallBlind_) {
+        isSmallBlind = isSmallBlind_;
+    }
+
+    public void setBigBlind(boolean isBigBlind_) {
+        isBigBlind = isBigBlind_;
+    }
+
+    public boolean isSmallBlind() {
+        return isSmallBlind;
+    }
+
+    public boolean isBigBlind() {
+        return isBigBlind;
     }
 }

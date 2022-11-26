@@ -24,8 +24,10 @@ public class Main1 {
             portNumber = Integer.parseInt(args[1]);
             ante = Integer.parseInt(args[2]);
 
-            Server gameServer = new Server(playersNumber, portNumber, ante);
-            gameServer.start();
+            while (true) {
+                Server gameServer = new Server(playersNumber, portNumber, ante);
+                gameServer.start();
+            }
         } catch (NumberFormatException e) {
             logger.severe("Wrong arguments");
             logger.info("Usage: java -jar server.jar <number of players> <port>");

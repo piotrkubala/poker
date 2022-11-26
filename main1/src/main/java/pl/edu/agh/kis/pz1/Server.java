@@ -26,6 +26,8 @@ public class Server {
 
     private Game game;
 
+    private boolean stopServer = false;
+
     public Server(int playersNumber_, int port_, int ante_) {
         playersNumber = playersNumber_;
         portNumber = port_;
@@ -73,7 +75,7 @@ public class Server {
         switch (commandParts[0]) {
             case "help":
                 if (commandParts.length == 1) {
-                    writeMessageToClient(key, "Available commands: help, username, exit, check, call, raise, fold, show");
+                    writeMessageToClient(key, "Available commands: help, username, exit, call, raise, fold, show");
                 } else {
                     switch (commandParts[1]) {
                         case "help":
@@ -84,9 +86,6 @@ public class Server {
                             break;
                         case "exit":
                             writeMessageToClient(key, "exit - exits the game");
-                            break;
-                        case "check":
-                            writeMessageToClient(key, "check - checks if server has sent something");
                             break;
                         case "call":
                             writeMessageToClient(key, "call - calls the current bet");
@@ -213,7 +212,9 @@ public class Server {
                 for (SelectionKey clientKey : clients.keySet()) {
                     clientKey.channel().close();
                 }
-                logger.info("Connection closed");
+
+                logger.info("Connection closed, restarting server");
+                stopServer = true;
             } else {
                 handleCommands(data, key);
             }
@@ -231,7 +232,7 @@ public class Server {
 
             logger.info("Server started");
 
-            while (true) {
+            while (!stopServer) {
                 selector.select();
                 logger.info("Selecting");
 
@@ -251,7 +252,11 @@ public class Server {
                     iterator.remove();
                 }
             }
+
+            serverSocket.close();
+            selector.close();
         } catch (IOException e) {
+            logger.severe("Error: " + e.getMessage());
             logger.severe("IO error");
             System.exit(1);
         }

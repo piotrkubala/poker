@@ -19,6 +19,7 @@ public class Game {
     private GameState state = GameState.WAITING_FOR_PLAYERS;
 
     private int currentPlayerIndex = 0;
+    private int currentGamePool = 0;
 
     // the 0th player is small blind, the 1st is big blind; all in order
     private Player[] playersByNumber;
@@ -45,7 +46,14 @@ public class Game {
     }
 
     public void nextPlayerIsReady(Player player) {
-        playersByNumber[playersOrder.elementAt(readyPlayers)] = player;
+        int index = playersOrder.elementAt(readyPlayers);
+
+        if (index == 0) {
+            player.setSmallBlind(true);
+        } else if (index == 1) {
+            player.setBigBlind(true);
+        }
+        playersByNumber[index] = player;
 
         readyPlayers++;
     }
@@ -71,6 +79,14 @@ public class Game {
         for (int i = 0; i < playersNumber; i++) {
             Player player = playersByNumber[i];
             if (playersByNumber[i] != null) {
+                if (player.isSmallBlind()) {
+                    sb.append("Small Blind: ");
+                } else if (player.isBigBlind()) {
+                    sb.append("Big Blind:   ");
+                } else {
+                    sb.append("             ");
+                }
+
                 sb.append(player.getUsername() + " has " + player.getMoney() + "$ left" + " current bet: " + player.getBet() + "$\n");
             }
         }
