@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: pl.edu.agh.kis.pz1.Main2Test
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.139 sec
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.157 sec

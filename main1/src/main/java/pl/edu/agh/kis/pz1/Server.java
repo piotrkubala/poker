@@ -53,6 +53,12 @@ public class Server {
         }
     }
 
+    private void writeMessageToAllClients(String message) {
+        for (SelectionKey key : clients.keySet()) {
+            writeMessageToClient(key, message);
+        }
+    }
+
     private void handleCommands(String command, SelectionKey key) {
         String[] commandParts = command.split(" ");
 
@@ -115,7 +121,9 @@ public class Server {
                     writeMessageToClient(key, "Username set to " + commandParts[1]);
 
                     if (game.isReady()) {
-                        game.start();
+                        game.allPlayersJoined();
+
+                        writeMessageToAllClients("There are enough players now\nType \'start\' to start the game");
                     }
                 }
                 break;
@@ -123,8 +131,12 @@ public class Server {
                 if (gameState != Game.GameState.WAITING_FOR_PLAYERS && gameState != Game.GameState.WAITING_FOR_READY) {
                     writeMessageToClient(key, "The game has already started");
                 } else if (gameState == Game.GameState.WAITING_FOR_READY) {
-                    clients.get(key).setReady(true);
-                    writeMessageToClient(key, "Your status is ready now, type \'check\' to see if the game has started");
+                    writeMessageToClient(key, "Your status is ready now");
+                    if (clients.get(key).setReady(true) == playersNumber) {
+                        game.start();
+
+                        writeMessageToAllClients("The game has started\nYou can check your cards and other stats by typing \'show\'");
+                    }
                 } else {
                     writeMessageToClient(key, "There are not enough players (need " + (playersNumber - game.getReadyPlayersCount()) + " more players)");
                 }
@@ -196,7 +208,11 @@ public class Server {
         if (data.length() > 0) {
             logger.info("Received message: " + data);
             if (data.equals("exit")) {
-                client.close();
+                writeMessageToAllClients("exit");
+
+                for (SelectionKey clientKey : clients.keySet()) {
+                    clientKey.channel().close();
+                }
                 logger.info("Connection closed");
             } else {
                 handleCommands(data, key);

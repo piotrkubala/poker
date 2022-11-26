@@ -8,14 +8,14 @@ public class Deck {
     private Vector<Card> cards = new Vector<Card>();
 
     public Deck() {
-        ResetDeck();
+        resetDeck();
     }
 
     public int getDeckSize() {
         return cards.size();
     }
 
-    public void ResetDeck() {
+    public void resetDeck() {
         cards.clear();
         for (Card.Suit suit : Card.Suit.values()) {
             for (Card.Rank rank : Card.Rank.values()) {
@@ -24,11 +24,11 @@ public class Deck {
         }
     }
 
-    public void Shuffle() {
+    public void shuffle() {
         Collections.shuffle(cards);
     }
 
-    public void Sort() {
+    public void sort() {
         Collections.sort(cards);
     }
 

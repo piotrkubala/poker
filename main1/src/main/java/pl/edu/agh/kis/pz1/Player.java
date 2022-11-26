@@ -65,4 +65,8 @@ public class Player {
 
         return readyPlayers;
     }
+
+    public void giveHand(Hand hand) {
+        playerHand = hand;
+    }
 }

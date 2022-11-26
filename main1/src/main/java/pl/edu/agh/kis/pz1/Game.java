@@ -1,6 +1,7 @@
 package pl.edu.agh.kis.pz1;
 
 import pl.edu.agh.kis.pz1.util.Deck;
+import pl.edu.agh.kis.pz1.util.Hand;
 
 import java.util.*;
 
@@ -85,9 +86,26 @@ public class Game {
     }
 
     public boolean isMakingMove(Player player) {
-        return player == getCurrentPlayer() && state == GameState.FIRST_ROUND_BETS && state == GameState.SECOND_ROUND_BETS;
+        return player == getCurrentPlayer() && (state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS);
+    }
+
+    public void allPlayersJoined() {
+        if (state == GameState.WAITING_FOR_PLAYERS) {
+            state = GameState.WAITING_FOR_READY;
+        }
     }
 
     public void start() {
+        if (state == GameState.WAITING_FOR_READY) {
+            state = GameState.FIRST_ROUND_BETS;
+            gameDeck = new Deck();
+            gameDeck.shuffle();
+
+            for (int i = 0; i < playersNumber; i++) {
+                playersByNumber[i].giveHand(new Hand(gameDeck.getCards(Hand.HAND_SIZE)));
+            }
+
+            currentPlayerIndex = 0;
+        }
     }
 }

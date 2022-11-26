@@ -1,9 +1,6 @@
 package pl.edu.agh.kis.pz1.util;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.testng.annotations.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -83,7 +80,7 @@ public class DeckTest {
         Deck deck = new Deck();
         // when
         deck.getCards(10);
-        deck.ResetDeck();
+        deck.resetDeck();
         //then
         assertEquals(Deck.DECK_SIZE, deck.getDeckSize(), "Deck should contain 52 cards");
     }
@@ -93,7 +90,7 @@ public class DeckTest {
         // given
         Deck deck = new Deck();
         // when
-        deck.Shuffle();
+        deck.shuffle();
         //then
         assertEquals(Deck.DECK_SIZE, deck.getDeckSize(), "Deck should contain 52 cards");
     }
