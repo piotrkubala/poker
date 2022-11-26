@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Server.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">poker-server</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">Server.java</span></div><h1>Server.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+import pl.edu.agh.kis.pz1.util.Card;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.*;
+import java.util.logging.Logger;
+
+public class Server {
+<span class="nc" id="L18">    private static Logger logger = Logger.getLogger(Server.class.getName());</span>
+
+<span class="nc" id="L20">    private Map&lt;SelectionKey, Player&gt; clients = new HashMap&lt;SelectionKey, Player&gt;();</span>
+<span class="nc" id="L21">    private Set&lt;String&gt; chosenNames = new HashSet&lt;String&gt;();</span>
+
+    Selector selector;
+
+    private int playersNumber;
+    private int portNumber;
+    private int ante;
+
+    private Game game;
+
+<span class="nc" id="L31">    private boolean stopServer = false;</span>
+
+<span class="nc" id="L33">    public Server(int playersNumber_, int port_, int ante_) {</span>
+<span class="nc" id="L34">        playersNumber = playersNumber_;</span>
+<span class="nc" id="L35">        portNumber = port_;</span>
+<span class="nc" id="L36">        ante = ante_;</span>
+<span class="nc" id="L37">        game = new Game(playersNumber, ante);</span>
+
+        try {
+<span class="nc" id="L40">            selector = Selector.open();</span>
+<span class="nc" id="L41">        } catch (IOException e) {</span>
+<span class="nc" id="L42">            logger.severe(&quot;Cannot open selector&quot;);</span>
+<span class="nc" id="L43">            System.exit(1);</span>
+<span class="nc" id="L44">        }</span>
+<span class="nc" id="L45">    }</span>
+
+    private void writeMessageToClient(SelectionKey key, String message) {
+<span class="nc" id="L48">        ByteBuffer buffer = ByteBuffer.allocate(1024);</span>
+<span class="nc" id="L49">        buffer.put(message.getBytes());</span>
+<span class="nc" id="L50">        buffer.flip();</span>
+
+        try {
+<span class="nc" id="L53">            ((SocketChannel) key.channel()).write(buffer);</span>
+<span class="nc" id="L54">        } catch (IOException e) {</span>
+<span class="nc" id="L55">            logger.severe(&quot;Cannot write to client&quot;);</span>
+<span class="nc" id="L56">            System.exit(-1);</span>
+<span class="nc" id="L57">        }</span>
+<span class="nc" id="L58">    }</span>
+
+    private void writeMessageToAllClients(String message) {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        for (SelectionKey key : clients.keySet()) {</span>
+<span class="nc" id="L62">            writeMessageToClient(key, message);</span>
+<span class="nc" id="L63">        }</span>
+<span class="nc" id="L64">    }</span>
+
+    private void handleHelpCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (commandParts.length == 1) {</span>
+<span class="nc" id="L68">            writeMessageToClient(key, &quot;Available commands: help, username, exit, call, raise, fold, change, show&quot;);</span>
+        } else {
+<span class="nc bnc" id="L70" title="All 9 branches missed.">            switch (commandParts[1]) {</span>
+                case &quot;help&quot;:
+<span class="nc" id="L72">                    writeMessageToClient(key, &quot;help - shows available commands&quot;);</span>
+<span class="nc" id="L73">                    break;</span>
+                case &quot;username&quot;:
+<span class="nc" id="L75">                    writeMessageToClient(key, &quot;username - sets username&quot;);</span>
+<span class="nc" id="L76">                    break;</span>
+                case &quot;exit&quot;:
+<span class="nc" id="L78">                    writeMessageToClient(key, &quot;exit - exits the game&quot;);</span>
+<span class="nc" id="L79">                    break;</span>
+                case &quot;call&quot;:
+<span class="nc" id="L81">                    writeMessageToClient(key, &quot;call - calls the current bet&quot;);</span>
+<span class="nc" id="L82">                    break;</span>
+                case &quot;raise&quot;:
+<span class="nc" id="L84">                    writeMessageToClient(key, &quot;raise &lt;amount&gt; - raises the current bet&quot;);</span>
+<span class="nc" id="L85">                    break;</span>
+                case &quot;fold&quot;:
+<span class="nc" id="L87">                    writeMessageToClient(key, &quot;fold - folds the current hand&quot;);</span>
+<span class="nc" id="L88">                    break;</span>
+                case &quot;change&quot;:
+<span class="nc" id="L90">                    writeMessageToClient(key, &quot;change &lt;card number 1&gt; [&lt;card number 2&gt;] ... [&lt;card number 5&gt;] - changes cards&quot;);</span>
+<span class="nc" id="L91">                    break;</span>
+                case &quot;show&quot;:
+<span class="nc" id="L93">                    writeMessageToClient(key, &quot;show - shows your current hand and money&quot;);</span>
+<span class="nc" id="L94">                    break;</span>
+                default:
+<span class="nc" id="L96">                    writeMessageToClient(key, &quot;Unknown command&quot;);</span>
+                    break;
+            }
+        }
+<span class="nc" id="L100">    }</span>
+
+    private void handleUsernameCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (gameState != Game.GameState.WAITING_FOR_PLAYERS) {</span>
+<span class="nc" id="L104">            writeMessageToClient(key, &quot;Cannot change username now&quot;);</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        } else if (commandParts.length != 2) {</span>
+<span class="nc" id="L106">            writeMessageToClient(key, &quot;usage: username &lt;username&gt;&quot;);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        } else if (clients.get(key).getUsername() != null) {</span>
+<span class="nc" id="L108">            writeMessageToClient(key, &quot;You have already set your username&quot;);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        } else if (chosenNames.contains(commandParts[1])) {</span>
+<span class="nc" id="L110">            writeMessageToClient(key, &quot;This username is already taken&quot;);</span>
+        } else {
+<span class="nc" id="L112">            clients.get(key).setName(commandParts[1]);</span>
+<span class="nc" id="L113">            chosenNames.add(commandParts[1]);</span>
+<span class="nc" id="L114">            writeMessageToClient(key, &quot;Username set to &quot; + commandParts[1]);</span>
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (game.isReady()) {</span>
+<span class="nc" id="L117">                game.allPlayersJoined();</span>
+
+<span class="nc" id="L119">                writeMessageToAllClients(&quot;There are enough players now\nType \'start\' to start the game&quot;);</span>
+            }
+        }
+<span class="nc" id="L122">    }</span>
+
+    private void handleStartCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+<span class="nc bnc" id="L125" title="All 4 branches missed.">        if (gameState != Game.GameState.WAITING_FOR_PLAYERS &amp;&amp; gameState != Game.GameState.WAITING_FOR_READY) {</span>
+<span class="nc" id="L126">            writeMessageToClient(key, &quot;The game has already started&quot;);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        } else if (gameState == Game.GameState.WAITING_FOR_READY) {</span>
+<span class="nc" id="L128">            writeMessageToClient(key, &quot;Your status is ready now&quot;);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            if (clients.get(key).setStartReady(true) == playersNumber) {</span>
+<span class="nc" id="L130">                game.start();</span>
+
+<span class="nc" id="L132">                writeMessageToAllClients(&quot;The game has started\nYou can check your cards and other stats by typing \'show\'&quot;);</span>
+<span class="nc" id="L133">                writeMessageToClient(game.getCurrentPlayer().getKey(), &quot;Now it is your turn&quot;);</span>
+            }
+        } else {
+<span class="nc" id="L136">            writeMessageToClient(key, &quot;There are not enough players (need &quot; + (playersNumber - game.getReadyPlayersCount()) + &quot; more players)&quot;);</span>
+        }
+<span class="nc" id="L138">    }</span>
+
+    private void handleCallCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+<span class="nc bnc" id="L141" title="All 4 branches missed.">        if (gameState != Game.GameState.FIRST_ROUND_BETS &amp;&amp; gameState != Game.GameState.SECOND_ROUND_BETS) {</span>
+<span class="nc" id="L142">            writeMessageToClient(key, &quot;You cannot call now, the game is not in betting phase&quot;);</span>
+<span class="nc" id="L143">            return;</span>
+        }
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (!isCurrentPlayerMakingAMove) {</span>
+<span class="nc" id="L146">            writeMessageToClient(key, &quot;It is not your turn, you cannot call now&quot;);</span>
+<span class="nc" id="L147">            return;</span>
+        }
+<span class="nc" id="L149">    }</span>
+
+    private void handleRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+<span class="nc bnc" id="L152" title="All 4 branches missed.">        if (gameState != Game.GameState.FIRST_ROUND_BETS &amp;&amp; gameState != Game.GameState.SECOND_ROUND_BETS) {</span>
+<span class="nc" id="L153">            writeMessageToClient(key, &quot;You cannot raise now, the game is not in betting phase&quot;);</span>
+<span class="nc" id="L154">            return;</span>
+        }
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (!isCurrentPlayerMakingAMove) {</span>
+<span class="nc" id="L157">            writeMessageToClient(key, &quot;It is not your turn, you cannot raise now&quot;);</span>
+<span class="nc" id="L158">            return;</span>
+        }
+
+<span class="nc" id="L161">        int minRaise = game.getCurrentBet();</span>
+<span class="nc" id="L162">        int maxRaise = player.getMoney() + player.getBet();</span>
+<span class="nc bnc" id="L163" title="All 4 branches missed.">        if (player.isBigBlind() &amp;&amp; player.getBet() == 0) {</span>
+<span class="nc" id="L164">            minRaise = game.getCurrentBet() * 2;</span>
+
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (minRaise &gt; player.getMoney()) {</span>
+<span class="nc" id="L167">                minRaise = player.getMoney();</span>
+            }
+        }
+
+<span class="nc bnc" id="L171" title="All 4 branches missed.">        if (player.isSmallBlind() &amp;&amp; player.getBet() == 0) {</span>
+<span class="nc" id="L172">            minRaise = 1;</span>
+        }
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (maxRaise &lt; minRaise) {</span>
+<span class="nc" id="L176">            writeMessageToClient(key, &quot;You cannot raise, you have already bet all your money&quot;);</span>
+<span class="nc" id="L177">            return;</span>
+        }
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (commandParts.length != 2) {</span>
+<span class="nc" id="L181">            StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L182">            sb.append(&quot;usage: raise &lt;amount&gt;\n&quot;);</span>
+
+<span class="nc" id="L184">            sb.append(&quot;You can raise from &quot;);</span>
+<span class="nc" id="L185">            sb.append(minRaise);</span>
+<span class="nc" id="L186">            sb.append(&quot; to &quot;);</span>
+<span class="nc" id="L187">            sb.append(maxRaise);</span>
+
+<span class="nc" id="L189">            writeMessageToClient(key, sb.toString());</span>
+<span class="nc" id="L190">            return;</span>
+        }
+
+        try {
+<span class="nc" id="L194">            int raiseAmount = Integer.parseInt(commandParts[1]);</span>
+
+<span class="nc bnc" id="L196" title="All 4 branches missed.">            if (raiseAmount &lt; minRaise || raiseAmount &gt; maxRaise) {</span>
+<span class="nc" id="L197">                writeMessageToClient(key, &quot;You cannot bet this amount&quot;);</span>
+<span class="nc" id="L198">                return;</span>
+            }
+
+<span class="nc" id="L201">            player.raiseBet(raiseAmount);</span>
+<span class="nc" id="L202">            game.nextPlayerMove();</span>
+<span class="nc" id="L203">            writeMessageToClient(key, &quot;You have raised the bet to &quot; + raiseAmount);</span>
+<span class="nc" id="L204">            writeMessageToAllClients(player.getUsername() + &quot; has raised the bet to &quot; + raiseAmount);</span>
+<span class="nc" id="L205">            writeMessageToClient(game.getCurrentPlayer().getKey(), &quot;Now it is your turn&quot;);</span>
+<span class="nc" id="L206">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L207">            writeMessageToClient(key, &quot;usage: raise &lt;amount&gt;&quot;);</span>
+<span class="nc" id="L208">        }</span>
+<span class="nc" id="L209">    }</span>
+
+    private void handleFoldCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+<span class="nc bnc" id="L212" title="All 4 branches missed.">        if (gameState != Game.GameState.FIRST_ROUND_BETS &amp;&amp; gameState != Game.GameState.SECOND_ROUND_BETS) {</span>
+<span class="nc" id="L213">            writeMessageToClient(key, &quot;You cannot fold now, the game is not in betting phase&quot;);</span>
+<span class="nc" id="L214">            return;</span>
+        }
+<span class="nc bnc" id="L216" title="All 2 branches missed.">        if (!isCurrentPlayerMakingAMove) {</span>
+<span class="nc" id="L217">            writeMessageToClient(key, &quot;It is not your turn, you cannot fold now&quot;);</span>
+<span class="nc" id="L218">            return;</span>
+        }
+
+<span class="nc" id="L221">        player.setPlaying(false);</span>
+<span class="nc" id="L222">        writeMessageToClient(key, &quot;You have folded&quot;);</span>
+<span class="nc" id="L223">        game.nextPlayerMove();</span>
+<span class="nc" id="L224">        writeMessageToAllClients(player.getUsername() + &quot; has folded&quot;);</span>
+<span class="nc" id="L225">        writeMessageToClient(game.getCurrentPlayer().getKey(), &quot;Now it is your turn&quot;);</span>
+<span class="nc" id="L226">    }</span>
+
+    private void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+<span class="nc bnc" id="L229" title="All 2 branches missed.">        if (gameState != Game.GameState.CARDS_CHANGING) {</span>
+<span class="nc" id="L230">            writeMessageToClient(key, &quot;You cannot change cards now&quot;);</span>
+<span class="nc" id="L231">            return;</span>
+        }
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (player.wereCardsChanged()) {</span>
+<span class="nc" id="L234">            writeMessageToClient(key, &quot;You have already changed your cards&quot;);</span>
+<span class="nc" id="L235">            return;</span>
+        }
+
+<span class="nc bnc" id="L238" title="All 4 branches missed.">        if (commandParts.length &lt; 2 || commandParts.length &gt; 6) {</span>
+<span class="nc" id="L239">            writeMessageToClient(key, &quot;usage: change &lt;card1&gt; [&lt;card2&gt;] ... [&lt;card5&gt;]&quot;);</span>
+<span class="nc" id="L240">            return;</span>
+        }
+
+        try {
+<span class="nc" id="L244">            int[] cardsToChange = new int[commandParts.length - 1];</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            for (int i = 1; i &lt; commandParts.length; i++) {</span>
+<span class="nc" id="L246">                cardsToChange[i - 1] = Integer.parseInt(commandParts[i]);</span>
+<span class="nc bnc" id="L247" title="All 4 branches missed.">                if (cardsToChange[i - 1] &lt; 0 || cardsToChange[i - 1] &gt; 4) {</span>
+<span class="nc" id="L248">                    writeMessageToClient(key, &quot;usage: change &lt;card1&gt; [&lt;card2&gt;] ... [&lt;card5&gt;]&quot;);</span>
+<span class="nc" id="L249">                    return;</span>
+                }
+            }
+
+<span class="nc" id="L253">            Card[] newCards = game.getCardsFromDeck(cardsToChange.length);</span>
+<span class="nc" id="L254">            Card[] oldPlayerCards = player.getPlayerHand().getCards();</span>
+
+<span class="nc bnc" id="L256" title="All 2 branches missed.">            for (int i = 0; i &lt; cardsToChange.length; i++) {</span>
+<span class="nc" id="L257">                oldPlayerCards[cardsToChange[i]] = newCards[i];</span>
+            }
+
+<span class="nc" id="L260">            player.getPlayerHand().setCards(oldPlayerCards);</span>
+<span class="nc" id="L261">            player.setCardsChanged(true);</span>
+
+<span class="nc" id="L263">            writeMessageToAllClients(player.getUsername() + &quot; has changed his cards&quot;);</span>
+
+<span class="nc bnc" id="L265" title="All 2 branches missed.">            if (game.isChangingCardsEnded()) {</span>
+<span class="nc" id="L266">                game.beginSecondRound();</span>
+<span class="nc" id="L267">                writeMessageToAllClients(&quot;The second round of betting has started&quot;);</span>
+<span class="nc" id="L268">                writeMessageToClient(game.getCurrentPlayer().getKey(), &quot;Now it is your turn&quot;);</span>
+            } else {
+<span class="nc" id="L270">                writeMessageToAllClients(&quot;\nWaiting for other players to change their cards (&quot; + (playersNumber - game.getPlayersWhoChangedCardsCount()) + &quot; more players)&quot;);</span>
+            }
+<span class="nc" id="L272">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L273">            writeMessageToClient(key, &quot;usage: change &lt;card1&gt; [&lt;card2&gt;] ... [&lt;card5&gt;]&quot;);</span>
+<span class="nc" id="L274">        }</span>
+<span class="nc" id="L275">    }</span>
+
+    private void handleShowCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+<span class="nc" id="L278">        StringBuilder sb = new StringBuilder();</span>
+
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (clients.get(key).getUsername() != null) {</span>
+<span class="nc" id="L281">            sb.append(&quot;Player: &quot; + clients.get(key).getUsername() + &quot;\n&quot;);</span>
+        } else {
+<span class="nc" id="L283">            sb.append(&quot;Player: UNKNOWN - SET USERNAME \n&quot;);</span>
+        }
+<span class="nc" id="L285">        sb.append(&quot;Current game state: &quot; + gameState.getName() + &quot;\n&quot;);</span>
+<span class="nc bnc" id="L286" title="All 4 branches missed.">        if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {</span>
+<span class="nc" id="L287">            sb.append(&quot;Current bet: &quot; + game.getCurrentBet() + &quot;\n&quot;);</span>
+<span class="nc" id="L288">            sb.append(&quot;Current player to make a move: &quot; + game.getCurrentPlayer().getUsername() + &quot;\n&quot;);</span>
+        }
+<span class="nc bnc" id="L290" title="All 4 branches missed.">        if (game.canShowPlayersHand() &amp;&amp; clients.get(key).getPlayerHand() != null) {</span>
+<span class="nc" id="L291">            sb.append(clients.get(key).getPlayerHand().toString());</span>
+        } else {
+<span class="nc" id="L293">            sb.append(&quot;You cannot show your hand now\n&quot;);</span>
+        }
+
+<span class="nc" id="L296">        sb.append(game.getPlayersMoneyAndBetAsString());</span>
+<span class="nc" id="L297">        writeMessageToClient(key, sb.toString());</span>
+<span class="nc" id="L298">    }</span>
+
+    private void handleCommands(String command, SelectionKey key) {
+<span class="nc" id="L301">        String[] commandParts = command.split(&quot; &quot;);</span>
+
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        if (commandParts.length == 0) {</span>
+<span class="nc" id="L304">            return;</span>
+        }
+
+<span class="nc" id="L307">        Game.GameState gameState = game.getState();</span>
+
+<span class="nc" id="L309">        boolean isCurrentPlayerMakingAMove = game.isMakingMove(clients.get(key));</span>
+<span class="nc" id="L310">        Player player = clients.get(key);</span>
+
+<span class="nc bnc" id="L312" title="All 9 branches missed.">        switch (commandParts[0]) {</span>
+            case &quot;help&quot;:
+<span class="nc" id="L314">                handleHelpCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);</span>
+<span class="nc" id="L315">                break;</span>
+            case &quot;username&quot;:
+<span class="nc" id="L317">                handleUsernameCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);</span>
+<span class="nc" id="L318">                break;</span>
+            case &quot;start&quot;:
+<span class="nc" id="L320">                handleStartCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);</span>
+<span class="nc" id="L321">                break;</span>
+            case &quot;call&quot;:
+<span class="nc" id="L323">                handleCallCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);</span>
+<span class="nc" id="L324">                break;</span>
+            case &quot;raise&quot;:
+<span class="nc" id="L326">                handleRaiseCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);</span>
+<span class="nc" id="L327">                break;</span>
+            case &quot;fold&quot;:
+<span class="nc" id="L329">                handleFoldCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);</span>
+<span class="nc" id="L330">                break;</span>
+            case &quot;change&quot;:
+<span class="nc" id="L332">                handleChangeCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);</span>
+<span class="nc" id="L333">                break;</span>
+            case &quot;show&quot;:
+<span class="nc" id="L335">                handleShowCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);</span>
+<span class="nc" id="L336">                break;</span>
+            default:
+<span class="nc" id="L338">                writeMessageToClient(key, &quot;Unknown command&quot;);</span>
+                break;
+        }
+
+<span class="nc" id="L342">        checkForPhaseEnd(key, gameState);</span>
+<span class="nc" id="L343">    }</span>
+
+    private void checkForPhaseEnd(SelectionKey key, Game.GameState gameState) {
+<span class="nc bnc" id="L346" title="All 4 branches missed.">        if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">            if (game.isGameFinished()) {</span>
+<span class="nc" id="L348">                game.end();</span>
+<span class="nc" id="L349">                writeMessageToAllClients(&quot;The game has ended\nType \'show\' to see the results&quot;);</span>
+            }
+
+<span class="nc bnc" id="L352" title="All 2 branches missed.">            if (gameState == Game.GameState.FIRST_ROUND_BETS) {</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">                if (game.isBettingEnded()) {</span>
+<span class="nc" id="L354">                    game.beginChangingCards();</span>
+                }
+            } else {
+
+            }
+        }
+<span class="nc" id="L360">    }</span>
+
+    private void handleAccept(ServerSocketChannel mySocket, SelectionKey key) throws IOException {
+<span class="nc" id="L363">        logger.info(&quot;Accepting connection&quot;);</span>
+
+<span class="nc" id="L365">        SocketChannel clientSocket = mySocket.accept();</span>
+<span class="nc" id="L366">        clientSocket.configureBlocking(false);</span>
+
+<span class="nc" id="L368">        SelectionKey clientKey = clientSocket.register(selector, SelectionKey.OP_READ);</span>
+
+<span class="nc" id="L370">        clients.put(clientKey, new Player(clientKey, ante, game));</span>
+<span class="nc" id="L371">    }</span>
+
+    private void handleRead(SelectionKey key) throws IOException {
+<span class="nc" id="L374">        logger.info(&quot;Reading data&quot;);</span>
+
+<span class="nc" id="L376">        SocketChannel client = (SocketChannel) key.channel();</span>
+
+<span class="nc" id="L378">        ByteBuffer buffer = ByteBuffer.allocate(1024);</span>
+<span class="nc" id="L379">        client.read(buffer);</span>
+
+<span class="nc" id="L381">        String data = new String(buffer.array()).trim();</span>
+
+<span class="nc" id="L383">        logger.info(&quot;Received data length: &quot; + data.length());</span>
+
+<span class="nc bnc" id="L385" title="All 2 branches missed.">        if (data.length() &gt; 0) {</span>
+<span class="nc" id="L386">            logger.info(&quot;Received message: &quot; + data);</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">            if (data.equals(&quot;exit&quot;)) {</span>
+<span class="nc" id="L388">                writeMessageToAllClients(&quot;exit&quot;);</span>
+
+<span class="nc bnc" id="L390" title="All 2 branches missed.">                for (SelectionKey clientKey : clients.keySet()) {</span>
+<span class="nc" id="L391">                    clientKey.channel().close();</span>
+<span class="nc" id="L392">                }</span>
+
+<span class="nc" id="L394">                logger.info(&quot;Connection closed, restarting server&quot;);</span>
+<span class="nc" id="L395">                stopServer = true;</span>
+            } else {
+<span class="nc" id="L397">                handleCommands(data, key);</span>
+            }
+        }
+<span class="nc" id="L400">    }</span>
+
+    public void start() {
+        try {
+<span class="nc" id="L404">            ServerSocketChannel socket = ServerSocketChannel.open();</span>
+<span class="nc" id="L405">            ServerSocket serverSocket = socket.socket();</span>
+<span class="nc" id="L406">            serverSocket.bind(new InetSocketAddress(&quot;localhost&quot;, portNumber));</span>
+<span class="nc" id="L407">            socket.configureBlocking(false);</span>
+<span class="nc" id="L408">            int ops = socket.validOps();</span>
+<span class="nc" id="L409">            socket.register(selector, ops, null);</span>
+
+<span class="nc" id="L411">            logger.info(&quot;Server started&quot;);</span>
+
+<span class="nc bnc" id="L413" title="All 2 branches missed.">            while (!stopServer) {</span>
+<span class="nc" id="L414">                selector.select();</span>
+<span class="nc" id="L415">                logger.info(&quot;Selecting&quot;);</span>
+
+<span class="nc" id="L417">                Set&lt;SelectionKey&gt; selectedKeys = selector.selectedKeys();</span>
+<span class="nc" id="L418">                Iterator&lt;SelectionKey&gt; iterator = selectedKeys.iterator();</span>
+
+<span class="nc bnc" id="L420" title="All 2 branches missed.">                while (iterator.hasNext()) {</span>
+<span class="nc" id="L421">                    SelectionKey key = iterator.next();</span>
+
+<span class="nc bnc" id="L423" title="All 2 branches missed.">                    if (key.isAcceptable()) {</span>
+                        // zaakceptuj połączenie
+<span class="nc" id="L425">                        handleAccept(socket, key);</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">                    } else if (key.isReadable()) {</span>
+                        // odczytaj przesłane dane
+<span class="nc" id="L428">                        handleRead(key);</span>
+                    }
+<span class="nc" id="L430">                    iterator.remove();</span>
+<span class="nc" id="L431">                }</span>
+<span class="nc" id="L432">            }</span>
+
+<span class="nc" id="L434">            serverSocket.close();</span>
+<span class="nc" id="L435">            selector.close();</span>
+<span class="nc" id="L436">        } catch (IOException e) {</span>
+<span class="nc" id="L437">            logger.severe(&quot;Error: &quot; + e.getMessage());</span>
+<span class="nc" id="L438">            logger.severe(&quot;IO error&quot;);</span>
+<span class="nc" id="L439">            System.exit(1);</span>
+<span class="nc" id="L440">        }</span>
+<span class="nc" id="L441">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

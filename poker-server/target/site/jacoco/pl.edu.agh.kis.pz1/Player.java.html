@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">poker-server</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+import pl.edu.agh.kis.pz1.util.Card;
+import pl.edu.agh.kis.pz1.util.Hand;
+
+import java.nio.channels.SelectionKey;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Player {
+    private SelectionKey key;
+
+    private String name;
+
+    private int money;
+<span class="nc" id="L16">    private int bet = 0;</span>
+
+<span class="nc" id="L18">    private boolean folded = false;</span>
+
+    private Hand playerHand;
+
+<span class="nc" id="L22">    private boolean isReady = false;</span>
+<span class="nc" id="L23">    private boolean isStartReady = false;</span>
+
+<span class="nc" id="L25">    private boolean isSmallBlind = false;</span>
+<span class="nc" id="L26">    private boolean isBigBlind = false;</span>
+
+<span class="nc" id="L28">    private boolean isPlaying = true;</span>
+
+<span class="nc" id="L30">    private boolean wereCardsChanged = false;</span>
+
+    private Game game;
+
+<span class="nc" id="L34">    public Player(SelectionKey key_, int money_, Game game_) {</span>
+<span class="nc" id="L35">        key = key_;</span>
+<span class="nc" id="L36">        money = money_;</span>
+<span class="nc" id="L37">        game = game_;</span>
+<span class="nc" id="L38">    }</span>
+
+    public SelectionKey getKey() {
+<span class="nc" id="L41">        return key;</span>
+    }
+
+    private void setReady() {
+<span class="nc" id="L45">        game.nextPlayerIsReady(this);</span>
+<span class="nc" id="L46">        isReady = true;</span>
+<span class="nc" id="L47">    }</span>
+
+    public void setName(String name_) {
+<span class="nc" id="L50">        name = name_;</span>
+
+<span class="nc" id="L52">        setReady();</span>
+<span class="nc" id="L53">    }</span>
+
+    public String getUsername() {
+<span class="nc" id="L56">        return name;</span>
+    }
+
+    public Hand getPlayerHand() {
+<span class="nc" id="L60">        return playerHand;</span>
+    }
+
+    public int getMoney() {
+<span class="nc" id="L64">        return money;</span>
+    }
+
+    public int getBet() {
+<span class="nc" id="L68">        return bet;</span>
+    }
+
+    public int setStartReady(boolean isReady_) {
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (isReady_ == isStartReady) {</span>
+<span class="nc" id="L73">            return game.getReadyPlayersForStart();</span>
+        }
+
+<span class="nc" id="L76">        isStartReady = isReady_;</span>
+
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (isStartReady) {</span>
+<span class="nc" id="L79">            game.increaseReadyPlayersForStart();</span>
+        } else {
+<span class="nc" id="L81">            game.decreaseReadyPlayersForStart();</span>
+        }
+
+<span class="nc" id="L84">        return game.getReadyPlayersForStart();</span>
+    }
+
+    public void giveHand(Hand hand) {
+<span class="nc" id="L88">        playerHand = hand;</span>
+<span class="nc" id="L89">    }</span>
+
+    public void setSmallBlind(boolean isSmallBlind_) {
+<span class="nc" id="L92">        isSmallBlind = isSmallBlind_;</span>
+<span class="nc" id="L93">    }</span>
+
+    public void setBigBlind(boolean isBigBlind_) {
+<span class="nc" id="L96">        isBigBlind = isBigBlind_;</span>
+<span class="nc" id="L97">    }</span>
+
+    public boolean isSmallBlind() {
+<span class="nc" id="L100">        return isSmallBlind;</span>
+    }
+
+    public boolean isBigBlind() {
+<span class="nc" id="L104">        return isBigBlind;</span>
+    }
+
+    public void raiseBet(int amount) {
+<span class="nc" id="L108">        money -= amount - bet;</span>
+
+<span class="nc" id="L110">        game.addMoneyToPool(amount - bet);</span>
+<span class="nc" id="L111">        game.setCurrentBet(amount);</span>
+
+<span class="nc" id="L113">        bet = amount;</span>
+<span class="nc" id="L114">    }</span>
+
+    public void setPlaying(boolean isPlaying_) {
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (isPlaying_ == isPlaying) {</span>
+<span class="nc" id="L118">            return;</span>
+        }
+
+<span class="nc" id="L121">        isPlaying = isPlaying_;</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (isPlaying) {</span>
+<span class="nc" id="L124">            game.increaseStillPlayingPlayers();</span>
+        } else {
+<span class="nc" id="L126">            game.decreaseStillPlayingPlayers();</span>
+        }
+<span class="nc" id="L128">    }</span>
+
+    public boolean isPlaying() {
+<span class="nc" id="L131">        return isPlaying;</span>
+    }
+
+    public void setCardsChanged(boolean wereCardsChanged_) {
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (wereCardsChanged_ == wereCardsChanged) {</span>
+<span class="nc" id="L136">            return;</span>
+        }
+
+<span class="nc" id="L139">        wereCardsChanged = wereCardsChanged_;</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (wereCardsChanged) {</span>
+<span class="nc" id="L142">            game.increasePlayersWhoChangedCards();</span>
+        } else {
+<span class="nc" id="L144">            game.decreasePlayersWhoChangedCards();</span>
+        }
+<span class="nc" id="L146">    }</span>
+
+    public boolean wereCardsChanged() {
+<span class="nc" id="L149">        return wereCardsChanged;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
