@@ -7,19 +7,30 @@ import java.util.*;
 
 public class Game {
     public enum GameState{
-        WAITING_FOR_PLAYERS,
-        WAITING_FOR_READY,
-        FIRST_ROUND_BETS,
-        SECOND_ROUND_BETS,
-        AFTER_SHOWDOWN,
-        NEW_GAME_PREPARATION,
-        FINISHED
+        WAITING_FOR_PLAYERS("Waiting for players"),
+        WAITING_FOR_READY("Waiting for ready"),
+        FIRST_ROUND_BETS("First round bets"),
+        SECOND_ROUND_BETS("Second round bets"),
+        AFTER_SHOWDOWN("After showdown"),
+        NEW_GAME_PREPARATION("New game preparation"),
+        FINISHED("Finished");
+
+        private String name;
+
+        GameState(String name) {
+            this.name = name;
+        }
+
+        String getName() {
+            return name;
+        }
     }
 
     private GameState state = GameState.WAITING_FOR_PLAYERS;
 
     private int currentPlayerIndex = 0;
     private int currentGamePool = 0;
+    private int currentBet = 0;
 
     // the 0th player is small blind, the 1st is big blind; all in order
     private Player[] playersByNumber;
@@ -30,6 +41,10 @@ public class Game {
     private int ante;
     private int playersNumber;
     private int readyPlayers = 0;
+
+    private int readyPlayersForStart = 0;
+
+    private int stillPlayingPlayers = 4;
 
     public Game(int playersNumber_, int ante_) {
         playersNumber = playersNumber_;
@@ -98,7 +113,9 @@ public class Game {
     }
 
     public void nextPlayerMove() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % playersNumber;
+        do {
+            currentPlayerIndex = (currentPlayerIndex + 1) % playersNumber;
+        } while (!playersByNumber[currentPlayerIndex].isPlaying());
     }
 
     public boolean isMakingMove(Player player) {
@@ -123,5 +140,53 @@ public class Game {
 
             currentPlayerIndex = 0;
         }
+    }
+
+    public void addMoneyToPool(int money) {
+        currentGamePool += money;
+    }
+
+    public Player getSmallBlind() {
+        return playersByNumber[0];
+    }
+
+    public Player getBigBlind() {
+        return playersByNumber[1];
+    }
+
+    public void increaseReadyPlayersForStart() {
+        readyPlayersForStart++;
+    }
+
+    public void decreaseReadyPlayersForStart() {
+        readyPlayersForStart--;
+    }
+
+    public int getReadyPlayersForStart() {
+        return readyPlayersForStart;
+    }
+
+    public int getCurrentBet() {
+        return currentBet;
+    }
+
+    public void setCurrentBet(int currentBet) {
+        this.currentBet = currentBet;
+    }
+
+    public void increaseStillPlayingPlayers() {
+        stillPlayingPlayers++;
+    }
+
+    public void decreaseStillPlayingPlayers() {
+        stillPlayingPlayers--;
+    }
+
+    public int getStillPlayingPlayers() {
+        return stillPlayingPlayers;
+    }
+
+    public boolean isGameFinished() {
+        return stillPlayingPlayers == 1;
     }
 }

@@ -131,7 +131,7 @@ public class Server {
                     writeMessageToClient(key, "The game has already started");
                 } else if (gameState == Game.GameState.WAITING_FOR_READY) {
                     writeMessageToClient(key, "Your status is ready now");
-                    if (clients.get(key).setReady(true) == playersNumber) {
+                    if (clients.get(key).setStartReady(true) == playersNumber) {
                         game.start();
 
                         writeMessageToAllClients("The game has started\nYou can check your cards and other stats by typing \'show\'");
@@ -141,18 +141,67 @@ public class Server {
                 }
                 break;
             case "call":
+                if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
+                    writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+                    break;
+                }
                 if (!isCurrentPlayerMakingAMove) {
                     writeMessageToClient(key, "It is not your turn, you cannot call now");
                     break;
                 }
                 break;
             case "raise":
+                if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
+                    writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+                    break;
+                }
                 if (!isCurrentPlayerMakingAMove) {
                     writeMessageToClient(key, "It is not your turn, you cannot raise now");
                     break;
                 }
+
+                Player player = clients.get(key);
+
+                if (player.getMoney() <= 0) {
+                    writeMessageToClient(key, "You cannot raise, you have already bet all your money");
+                    break;
+                }
+
+                if (commandParts.length != 2) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("usage: raise <amount>\n");
+
+                    sb.append("You can raise from ");
+                    sb.append(player.getBet() + 1);
+                    sb.append(" to ");
+                    sb.append(player.getMoney());
+
+                    writeMessageToClient(key, sb.toString());
+                    break;
+                }
+
+                try {
+                    int raiseAmount = Integer.parseInt(commandParts[1]);
+                    boolean isPlayingAsBigBlind = (game.getBigBlind() == player) && (game.getBigBlind().getBet() == 0);
+
+                    if (raiseAmount <= game.getCurrentBet() || raiseAmount - player.getBet() > player.getMoney() || (isPlayingAsBigBlind && raiseAmount < game.getSmallBlind().getBet() * 2) && raiseAmount != player.getMoney()) {
+                        writeMessageToClient(key, "You cannot bet this amount");
+                        break;
+                    }
+
+                    player.raiseBet(raiseAmount);
+                    game.nextPlayerMove();
+                    writeMessageToClient(key, "You have raised the bet to " + raiseAmount);
+                } catch (NumberFormatException e) {
+                    writeMessageToClient(key, "usage: raise <amount>");
+                }
+
                 break;
             case "fold":
+                if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
+                    writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+                    break;
+                }
                 if (!isCurrentPlayerMakingAMove) {
                     writeMessageToClient(key, "It is not your turn, you cannot fold now");
                     break;
@@ -165,6 +214,11 @@ public class Server {
                     sb.append("Player: " + clients.get(key).getUsername() + "\n");
                 } else {
                     sb.append("Player: UNKNOWN - SET USERNAME \n");
+                }
+                sb.append("Current game state: " + gameState.getName() + "\n");
+                if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {
+                    sb.append("Current bet: " + game.getCurrentBet() + "\n");
+                    sb.append("Current player to make a move: " + game.getCurrentPlayer().getUsername() + "\n");
                 }
                 if (game.canShowPlayersHand() && clients.get(key).getPlayerHand() != null) {
                     sb.append(clients.get(key).getPlayerHand().toString());

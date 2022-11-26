@@ -16,13 +16,15 @@ public class Player {
 
     private Hand playerHand;
 
-    private boolean isReady;
+    private boolean isReady = false;
+    private boolean isStartReady = false;
 
     private boolean isSmallBlind = false;
     private boolean isBigBlind = false;
 
+    private boolean isPlaying = true;
+
     private Game game;
-    private static int readyPlayers = 0;
 
     public Player(SelectionKey key_, int money_, Game game_) {
         key = key_;
@@ -57,20 +59,20 @@ public class Player {
         return bet;
     }
 
-    public int setReady(boolean isReady_) {
-        if (isReady_ == isReady) {
-            return readyPlayers;
+    public int setStartReady(boolean isReady_) {
+        if (isReady_ == isStartReady) {
+            return game.getReadyPlayersForStart();
         }
 
-        isReady = isReady_;
+        isStartReady = isReady_;
 
-        if (isReady) {
-            readyPlayers++;
+        if (isStartReady) {
+            game.increaseReadyPlayersForStart();
         } else {
-            readyPlayers--;
+            game.decreaseReadyPlayersForStart();
         }
 
-        return readyPlayers;
+        return game.getReadyPlayersForStart();
     }
 
     public void giveHand(Hand hand) {
@@ -91,5 +93,32 @@ public class Player {
 
     public boolean isBigBlind() {
         return isBigBlind;
+    }
+
+    public void raiseBet(int amount) {
+        money -= amount - bet;
+
+        game.addMoneyToPool(amount - bet);
+        game.setCurrentBet(amount);
+
+        bet = amount;
+    }
+
+    public void setPlaying(boolean isPlaying_) {
+        if (isPlaying_ == isPlaying) {
+            return;
+        }
+
+        isPlaying = isPlaying_;
+
+        if (isPlaying) {
+            game.increaseStillPlayingPlayers();
+        } else {
+            game.decreaseStillPlayingPlayers();
+        }
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
     }
 }
