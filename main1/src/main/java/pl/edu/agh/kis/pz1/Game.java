@@ -10,6 +10,7 @@ public class Game {
         WAITING_FOR_PLAYERS("Waiting for players"),
         WAITING_FOR_READY("Waiting for ready"),
         FIRST_ROUND_BETS("First round bets"),
+        CARDS_CHANGING("Cards changing"),
         SECOND_ROUND_BETS("Second round bets"),
         AFTER_SHOWDOWN("After showdown"),
         NEW_GAME_PREPARATION("New game preparation"),
@@ -29,6 +30,8 @@ public class Game {
     private GameState state = GameState.WAITING_FOR_PLAYERS;
 
     private int currentPlayerIndex = 0;
+    private int turn = 0;
+    private int turnsSinceLastBetIncrease = 0;
     private int currentGamePool = 0;
     private int currentBet = 0;
 
@@ -142,6 +145,17 @@ public class Game {
         }
     }
 
+    // todo
+    public void end() {
+
+    }
+
+    public void beginChangingCards() {
+        if (state == GameState.FIRST_ROUND_BETS) {
+            state = GameState.CARDS_CHANGING;
+        }
+    }
+
     public void addMoneyToPool(int money) {
         currentGamePool += money;
     }
@@ -171,7 +185,12 @@ public class Game {
     }
 
     public void setCurrentBet(int currentBet) {
-        this.currentBet = currentBet;
+        if (currentBet > this.currentBet) {
+            this.currentBet = currentBet;
+            turnsSinceLastBetIncrease = 0;
+        } else {
+            turnsSinceLastBetIncrease++;
+        }
     }
 
     public void increaseStillPlayingPlayers() {
@@ -188,5 +207,13 @@ public class Game {
 
     public boolean isGameFinished() {
         return stillPlayingPlayers == 1;
+    }
+
+    public boolean isGameFinishedForPlayer(Player player) {
+        return stillPlayingPlayers == 1 && player.isPlaying();
+    }
+
+    public boolean isBettingEnded() {
+        return turnsSinceLastBetIncrease == stillPlayingPlayers;
     }
 }

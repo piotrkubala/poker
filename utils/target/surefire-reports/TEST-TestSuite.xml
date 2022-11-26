@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="22" failures="0" name="TestSuite" time="0.03" errors="0" skipped="0">
+<testsuite tests="22" failures="0" name="TestSuite" time="0.038" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2022.2.2"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
@@ -63,25 +63,25 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="pl.edu.agh.kis.pz1.util.CardTest" name="shouldCreateCardObject" time="0.012"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.CardTest" name="testCompareTo" time="0"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testChangeCard" time="0.003"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testCompareTo" time="0.001"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testGetCards" time="0.001"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testGetHandValue" time="0"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.CardTest" name="shouldCreateCardObject" time="0.021"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.CardTest" name="testCompareTo" time="0.001"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testChangeCard" time="0.002"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testCompareTo" time="0.002"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testGetCards" time="0"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testGetHandValue" time="0.001"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHand" time="0.002"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasFlush" time="0"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasFourOfAKind" time="0.003"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasFullHouse" time="0"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasFourOfAKind" time="0.001"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasFullHouse" time="0.001"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasPair" time="0"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasRoyalFlush" time="0.001"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasStraight" time="0.001"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasStraightFlush" time="0.001"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasThreeOfAKind" time="0"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasThreeOfAKind" time="0.001"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.HandTest" name="testHasTwoPair" time="0.001"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.DeckTest" name="shouldCreateDeckObject" time="0"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.DeckTest" name="shouldGetCards" time="0.001"/>
-  <testcase classname="pl.edu.agh.kis.pz1.util.DeckTest" name="shouldGetCardsTwice" time="0.001"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.DeckTest" name="shouldGetCards" time="0"/>
+  <testcase classname="pl.edu.agh.kis.pz1.util.DeckTest" name="shouldGetCardsTwice" time="0"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.DeckTest" name="shouldGetDifferentCards" time="0.001"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.DeckTest" name="shouldResetDeck" time="0.001"/>
   <testcase classname="pl.edu.agh.kis.pz1.util.DeckTest" name="shouldShuffleDeck" time="0"/>

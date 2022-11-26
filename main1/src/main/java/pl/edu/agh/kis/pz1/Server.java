@@ -71,11 +71,12 @@ public class Server {
         Game.GameState gameState = game.getState();
 
         boolean isCurrentPlayerMakingAMove = game.isMakingMove(clients.get(key));
+        Player player = clients.get(key);
 
         switch (commandParts[0]) {
             case "help":
                 if (commandParts.length == 1) {
-                    writeMessageToClient(key, "Available commands: help, username, exit, call, raise, fold, show");
+                    writeMessageToClient(key, "Available commands: help, username, exit, call, raise, fold, change, show");
                 } else {
                     switch (commandParts[1]) {
                         case "help":
@@ -96,7 +97,10 @@ public class Server {
                         case "fold":
                             writeMessageToClient(key, "fold - folds the current hand");
                             break;
-                        case "allin":
+                        case "change":
+                            writeMessageToClient(key, "change <card number 1> [<card number 2>] ... [<card number 5>] - changes cards");
+                            break;
+                        case "show":
                             writeMessageToClient(key, "show - shows your current hand and money");
                             break;
                         default:
@@ -152,7 +156,7 @@ public class Server {
                 break;
             case "raise":
                 if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
-                    writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+                    writeMessageToClient(key, "You cannot raise now, the game is not in betting phase");
                     break;
                 }
                 if (!isCurrentPlayerMakingAMove) {
@@ -160,9 +164,21 @@ public class Server {
                     break;
                 }
 
-                Player player = clients.get(key);
+                int minRaise = game.getCurrentBet();
+                int maxRaise = player.getMoney() + player.getBet();
+                if (player.isBigBlind() && player.getBet() == 0) {
+                    minRaise = game.getCurrentBet() * 2;
 
-                if (player.getMoney() <= 0) {
+                    if (minRaise > player.getMoney()) {
+                        minRaise = player.getMoney();
+                    }
+                }
+
+                if (player.isSmallBlind() && player.getBet() == 0) {
+                    minRaise = 1;
+                }
+
+                if (maxRaise < minRaise) {
                     writeMessageToClient(key, "You cannot raise, you have already bet all your money");
                     break;
                 }
@@ -172,9 +188,9 @@ public class Server {
                     sb.append("usage: raise <amount>\n");
 
                     sb.append("You can raise from ");
-                    sb.append(player.getBet() + 1);
+                    sb.append(minRaise);
                     sb.append(" to ");
-                    sb.append(player.getMoney());
+                    sb.append(maxRaise);
 
                     writeMessageToClient(key, sb.toString());
                     break;
@@ -182,9 +198,8 @@ public class Server {
 
                 try {
                     int raiseAmount = Integer.parseInt(commandParts[1]);
-                    boolean isPlayingAsBigBlind = (game.getBigBlind() == player) && (game.getBigBlind().getBet() == 0);
 
-                    if (raiseAmount <= game.getCurrentBet() || raiseAmount - player.getBet() > player.getMoney() || (isPlayingAsBigBlind && raiseAmount < game.getSmallBlind().getBet() * 2) && raiseAmount != player.getMoney()) {
+                    if (raiseAmount < minRaise || raiseAmount > maxRaise) {
                         writeMessageToClient(key, "You cannot bet this amount");
                         break;
                     }
@@ -199,13 +214,18 @@ public class Server {
                 break;
             case "fold":
                 if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
-                    writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+                    writeMessageToClient(key, "You cannot fold now, the game is not in betting phase");
                     break;
                 }
                 if (!isCurrentPlayerMakingAMove) {
                     writeMessageToClient(key, "It is not your turn, you cannot fold now");
                     break;
                 }
+
+
+                player.setPlaying(false);
+                writeMessageToClient(key, "You have folded");
+                game.nextPlayerMove();
                 break;
             case "show":
                 StringBuilder sb = new StringBuilder();
@@ -232,6 +252,25 @@ public class Server {
             default:
                 writeMessageToClient(key, "Unknown command");
                 break;
+        }
+
+        checkForPhaseEnd(key, gameState);
+    }
+
+    private void checkForPhaseEnd(SelectionKey key, Game.GameState gameState) {
+        if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {
+            if (game.isGameFinished()) {
+                game.end();
+                writeMessageToAllClients("The game has ended\nType \'show\' to see the results");
+            }
+
+            if (gameState == Game.GameState.FIRST_ROUND_BETS) {
+                if (game.isBettingEnded()) {
+                    game.beginChangingCards();
+                }
+            } else {
+
+            }
         }
     }
 
