@@ -63,6 +63,240 @@ public class Server {
         }
     }
 
+    private void handleHelpCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (commandParts.length == 1) {
+            writeMessageToClient(key, "Available commands: help, username, exit, call, raise, fold, change, show");
+        } else {
+            switch (commandParts[1]) {
+                case "help":
+                    writeMessageToClient(key, "help - shows available commands");
+                    break;
+                case "username":
+                    writeMessageToClient(key, "username - sets username");
+                    break;
+                case "exit":
+                    writeMessageToClient(key, "exit - exits the game");
+                    break;
+                case "call":
+                    writeMessageToClient(key, "call - calls the current bet");
+                    break;
+                case "raise":
+                    writeMessageToClient(key, "raise <amount> - raises the current bet");
+                    break;
+                case "fold":
+                    writeMessageToClient(key, "fold - folds the current hand");
+                    break;
+                case "change":
+                    writeMessageToClient(key, "change <card number 1> [<card number 2>] ... [<card number 5>] - changes cards");
+                    break;
+                case "show":
+                    writeMessageToClient(key, "show - shows your current hand and money");
+                    break;
+                default:
+                    writeMessageToClient(key, "Unknown command");
+                    break;
+            }
+        }
+    }
+
+    private void handleUsernameCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (gameState != Game.GameState.WAITING_FOR_PLAYERS) {
+            writeMessageToClient(key, "Cannot change username now");
+        } else if (commandParts.length != 2) {
+            writeMessageToClient(key, "usage: username <username>");
+        } else if (clients.get(key).getUsername() != null) {
+            writeMessageToClient(key, "You have already set your username");
+        } else if (chosenNames.contains(commandParts[1])) {
+            writeMessageToClient(key, "This username is already taken");
+        } else {
+            clients.get(key).setName(commandParts[1]);
+            chosenNames.add(commandParts[1]);
+            writeMessageToClient(key, "Username set to " + commandParts[1]);
+
+            if (game.isReady()) {
+                game.allPlayersJoined();
+
+                writeMessageToAllClients("There are enough players now\nType \'start\' to start the game");
+            }
+        }
+    }
+
+    private void handleStartCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (gameState != Game.GameState.WAITING_FOR_PLAYERS && gameState != Game.GameState.WAITING_FOR_READY) {
+            writeMessageToClient(key, "The game has already started");
+        } else if (gameState == Game.GameState.WAITING_FOR_READY) {
+            writeMessageToClient(key, "Your status is ready now");
+            if (clients.get(key).setStartReady(true) == playersNumber) {
+                game.start();
+
+                writeMessageToAllClients("The game has started\nYou can check your cards and other stats by typing \'show\'");
+                writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+            }
+        } else {
+            writeMessageToClient(key, "There are not enough players (need " + (playersNumber - game.getReadyPlayersCount()) + " more players)");
+        }
+    }
+
+    private void handleCallCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
+            writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+            return;
+        }
+        if (!isCurrentPlayerMakingAMove) {
+            writeMessageToClient(key, "It is not your turn, you cannot call now");
+            return;
+        }
+    }
+
+    private void handleRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
+            writeMessageToClient(key, "You cannot raise now, the game is not in betting phase");
+            return;
+        }
+        if (!isCurrentPlayerMakingAMove) {
+            writeMessageToClient(key, "It is not your turn, you cannot raise now");
+            return;
+        }
+
+        int minRaise = game.getCurrentBet();
+        int maxRaise = player.getMoney() + player.getBet();
+        if (player.isBigBlind() && player.getBet() == 0) {
+            minRaise = game.getCurrentBet() * 2;
+
+            if (minRaise > player.getMoney()) {
+                minRaise = player.getMoney();
+            }
+        }
+
+        if (player.isSmallBlind() && player.getBet() == 0) {
+            minRaise = 1;
+        }
+
+        if (maxRaise < minRaise) {
+            writeMessageToClient(key, "You cannot raise, you have already bet all your money");
+            return;
+        }
+
+        if (commandParts.length != 2) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("usage: raise <amount>\n");
+
+            sb.append("You can raise from ");
+            sb.append(minRaise);
+            sb.append(" to ");
+            sb.append(maxRaise);
+
+            writeMessageToClient(key, sb.toString());
+            return;
+        }
+
+        try {
+            int raiseAmount = Integer.parseInt(commandParts[1]);
+
+            if (raiseAmount < minRaise || raiseAmount > maxRaise) {
+                writeMessageToClient(key, "You cannot bet this amount");
+                return;
+            }
+
+            player.raiseBet(raiseAmount);
+            game.nextPlayerMove();
+            writeMessageToClient(key, "You have raised the bet to " + raiseAmount);
+            writeMessageToAllClients(player.getUsername() + " has raised the bet to " + raiseAmount);
+            writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+        } catch (NumberFormatException e) {
+            writeMessageToClient(key, "usage: raise <amount>");
+        }
+    }
+
+    private void handleFoldCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
+            writeMessageToClient(key, "You cannot fold now, the game is not in betting phase");
+            return;
+        }
+        if (!isCurrentPlayerMakingAMove) {
+            writeMessageToClient(key, "It is not your turn, you cannot fold now");
+            return;
+        }
+
+        player.setPlaying(false);
+        writeMessageToClient(key, "You have folded");
+        game.nextPlayerMove();
+        writeMessageToAllClients(player.getUsername() + " has folded");
+        writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+    }
+
+    private void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (gameState != Game.GameState.CARDS_CHANGING) {
+            writeMessageToClient(key, "You cannot change cards now");
+            return;
+        }
+        if (player.wereCardsChanged()) {
+            writeMessageToClient(key, "You have already changed your cards");
+            return;
+        }
+
+        if (commandParts.length < 2 || commandParts.length > 6) {
+            writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
+            return;
+        }
+
+        try {
+            int[] cardsToChange = new int[commandParts.length - 1];
+            for (int i = 1; i < commandParts.length; i++) {
+                cardsToChange[i - 1] = Integer.parseInt(commandParts[i]);
+                if (cardsToChange[i - 1] < 0 || cardsToChange[i - 1] > 4) {
+                    writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
+                    return;
+                }
+            }
+
+            Card[] newCards = game.getCardsFromDeck(cardsToChange.length);
+            Card[] oldPlayerCards = player.getPlayerHand().getCards();
+
+            for (int i = 0; i < cardsToChange.length; i++) {
+                oldPlayerCards[cardsToChange[i]] = newCards[i];
+            }
+
+            player.getPlayerHand().setCards(oldPlayerCards);
+            player.setCardsChanged(true);
+
+            writeMessageToAllClients(player.getUsername() + " has changed his cards");
+
+            if (game.isChangingCardsEnded()) {
+                game.beginSecondRound();
+                writeMessageToAllClients("The second round of betting has started");
+                writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+            } else {
+                writeMessageToAllClients("\nWaiting for other players to change their cards (" + (playersNumber - game.getPlayersWhoChangedCardsCount()) + " more players)");
+            }
+        } catch (NumberFormatException e) {
+            writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
+        }
+    }
+
+    private void handleShowCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        StringBuilder sb = new StringBuilder();
+
+        if (clients.get(key).getUsername() != null) {
+            sb.append("Player: " + clients.get(key).getUsername() + "\n");
+        } else {
+            sb.append("Player: UNKNOWN - SET USERNAME \n");
+        }
+        sb.append("Current game state: " + gameState.getName() + "\n");
+        if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {
+            sb.append("Current bet: " + game.getCurrentBet() + "\n");
+            sb.append("Current player to make a move: " + game.getCurrentPlayer().getUsername() + "\n");
+        }
+        if (game.canShowPlayersHand() && clients.get(key).getPlayerHand() != null) {
+            sb.append(clients.get(key).getPlayerHand().toString());
+        } else {
+            sb.append("You cannot show your hand now\n");
+        }
+
+        sb.append(game.getPlayersMoneyAndBetAsString());
+        writeMessageToClient(key, sb.toString());
+    }
+
     private void handleCommands(String command, SelectionKey key) {
         String[] commandParts = command.split(" ");
 
@@ -77,231 +311,28 @@ public class Server {
 
         switch (commandParts[0]) {
             case "help":
-                if (commandParts.length == 1) {
-                    writeMessageToClient(key, "Available commands: help, username, exit, call, raise, fold, change, show");
-                } else {
-                    switch (commandParts[1]) {
-                        case "help":
-                            writeMessageToClient(key, "help - shows available commands");
-                            break;
-                        case "username":
-                            writeMessageToClient(key, "username - sets username");
-                            break;
-                        case "exit":
-                            writeMessageToClient(key, "exit - exits the game");
-                            break;
-                        case "call":
-                            writeMessageToClient(key, "call - calls the current bet");
-                            break;
-                        case "raise":
-                            writeMessageToClient(key, "raise <amount> - raises the current bet");
-                            break;
-                        case "fold":
-                            writeMessageToClient(key, "fold - folds the current hand");
-                            break;
-                        case "change":
-                            writeMessageToClient(key, "change <card number 1> [<card number 2>] ... [<card number 5>] - changes cards");
-                            break;
-                        case "show":
-                            writeMessageToClient(key, "show - shows your current hand and money");
-                            break;
-                        default:
-                            writeMessageToClient(key, "Unknown command");
-                            break;
-                    }
-                }
+                handleHelpCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "username":
-                if (gameState != Game.GameState.WAITING_FOR_PLAYERS) {
-                    writeMessageToClient(key, "Cannot change username now");
-                } else if (commandParts.length != 2) {
-                    writeMessageToClient(key, "usage: username <username>");
-                } else if (clients.get(key).getUsername() != null) {
-                    writeMessageToClient(key, "You have already set your username");
-                } else if (chosenNames.contains(commandParts[1])) {
-                    writeMessageToClient(key, "This username is already taken");
-                } else {
-                    clients.get(key).setName(commandParts[1]);
-                    chosenNames.add(commandParts[1]);
-                    writeMessageToClient(key, "Username set to " + commandParts[1]);
-
-                    if (game.isReady()) {
-                        game.allPlayersJoined();
-
-                        writeMessageToAllClients("There are enough players now\nType \'start\' to start the game");
-                    }
-                }
+                handleUsernameCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "start":
-                if (gameState != Game.GameState.WAITING_FOR_PLAYERS && gameState != Game.GameState.WAITING_FOR_READY) {
-                    writeMessageToClient(key, "The game has already started");
-                } else if (gameState == Game.GameState.WAITING_FOR_READY) {
-                    writeMessageToClient(key, "Your status is ready now");
-                    if (clients.get(key).setStartReady(true) == playersNumber) {
-                        game.start();
-
-                        writeMessageToAllClients("The game has started\nYou can check your cards and other stats by typing \'show\'");
-                        writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
-                    }
-                } else {
-                    writeMessageToClient(key, "There are not enough players (need " + (playersNumber - game.getReadyPlayersCount()) + " more players)");
-                }
+                handleStartCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "call":
-                if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
-                    writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
-                    break;
-                }
-                if (!isCurrentPlayerMakingAMove) {
-                    writeMessageToClient(key, "It is not your turn, you cannot call now");
-                    break;
-                }
+                handleCallCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "raise":
-                if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
-                    writeMessageToClient(key, "You cannot raise now, the game is not in betting phase");
-                    break;
-                }
-                if (!isCurrentPlayerMakingAMove) {
-                    writeMessageToClient(key, "It is not your turn, you cannot raise now");
-                    break;
-                }
-
-                int minRaise = game.getCurrentBet();
-                int maxRaise = player.getMoney() + player.getBet();
-                if (player.isBigBlind() && player.getBet() == 0) {
-                    minRaise = game.getCurrentBet() * 2;
-
-                    if (minRaise > player.getMoney()) {
-                        minRaise = player.getMoney();
-                    }
-                }
-
-                if (player.isSmallBlind() && player.getBet() == 0) {
-                    minRaise = 1;
-                }
-
-                if (maxRaise < minRaise) {
-                    writeMessageToClient(key, "You cannot raise, you have already bet all your money");
-                    break;
-                }
-
-                if (commandParts.length != 2) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("usage: raise <amount>\n");
-
-                    sb.append("You can raise from ");
-                    sb.append(minRaise);
-                    sb.append(" to ");
-                    sb.append(maxRaise);
-
-                    writeMessageToClient(key, sb.toString());
-                    break;
-                }
-
-                try {
-                    int raiseAmount = Integer.parseInt(commandParts[1]);
-
-                    if (raiseAmount < minRaise || raiseAmount > maxRaise) {
-                        writeMessageToClient(key, "You cannot bet this amount");
-                        break;
-                    }
-
-                    player.raiseBet(raiseAmount);
-                    game.nextPlayerMove();
-                    writeMessageToClient(key, "You have raised the bet to " + raiseAmount);
-                    writeMessageToAllClients(player.getUsername() + " has raised the bet to " + raiseAmount);
-                    writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
-                } catch (NumberFormatException e) {
-                    writeMessageToClient(key, "usage: raise <amount>");
-                }
-
+                handleRaiseCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "fold":
-                if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
-                    writeMessageToClient(key, "You cannot fold now, the game is not in betting phase");
-                    break;
-                }
-                if (!isCurrentPlayerMakingAMove) {
-                    writeMessageToClient(key, "It is not your turn, you cannot fold now");
-                    break;
-                }
-
-                player.setPlaying(false);
-                writeMessageToClient(key, "You have folded");
-                game.nextPlayerMove();
-                writeMessageToAllClients(player.getUsername() + " has folded");
-                writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+                handleFoldCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "change":
-                if (gameState != Game.GameState.CARDS_CHANGING) {
-                    writeMessageToClient(key, "You cannot change cards now");
-                    break;
-                }
-                if (player.wereCardsChanged()) {
-                    writeMessageToClient(key, "You have already changed your cards");
-                    break;
-                }
-
-                if (commandParts.length < 2 || commandParts.length > 6) {
-                    writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
-                    break;
-                }
-
-                try {
-                    int[] cardsToChange = new int[commandParts.length - 1];
-                    for (int i = 1; i < commandParts.length; i++) {
-                        cardsToChange[i - 1] = Integer.parseInt(commandParts[i]);
-                        if (cardsToChange[i - 1] < 0 || cardsToChange[i - 1] > 4) {
-                            writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
-                            break;
-                        }
-                    }
-
-                    Card[] newCards = game.getCardsFromDeck(cardsToChange.length);
-                    Card[] oldPlayerCards = player.getPlayerHand().getCards();
-
-                    for (int i = 0; i < cardsToChange.length; i++) {
-                        oldPlayerCards[cardsToChange[i]] = newCards[i];
-                    }
-
-                    player.getPlayerHand().setCards(oldPlayerCards);
-                    player.setCardsChanged(true);
-
-                    writeMessageToAllClients(player.getUsername() + " has changed his cards");
-
-                    if (game.isChangingCardsEnded()) {
-                        game.beginSecondRound();
-                        writeMessageToAllClients("The second round of betting has started");
-                        writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
-                    } else {
-                        writeMessageToAllClients("\nWaiting for other players to change their cards (" + (playersNumber - game.getPlayersWhoChangedCardsCount()) + " more players)");
-                    }
-                } catch (NumberFormatException e) {
-                    writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
-                }
+                handleChangeCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "show":
-                StringBuilder sb = new StringBuilder();
-
-                if (clients.get(key).getUsername() != null) {
-                    sb.append("Player: " + clients.get(key).getUsername() + "\n");
-                } else {
-                    sb.append("Player: UNKNOWN - SET USERNAME \n");
-                }
-                sb.append("Current game state: " + gameState.getName() + "\n");
-                if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {
-                    sb.append("Current bet: " + game.getCurrentBet() + "\n");
-                    sb.append("Current player to make a move: " + game.getCurrentPlayer().getUsername() + "\n");
-                }
-                if (game.canShowPlayersHand() && clients.get(key).getPlayerHand() != null) {
-                    sb.append(clients.get(key).getPlayerHand().toString());
-                } else {
-                    sb.append("You cannot show your hand now\n");
-                }
-
-                sb.append(game.getPlayersMoneyAndBetAsString());
-                writeMessageToClient(key, sb.toString());
+                handleShowCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             default:
                 writeMessageToClient(key, "Unknown command");
