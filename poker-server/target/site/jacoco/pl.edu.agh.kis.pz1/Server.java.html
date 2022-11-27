@@ -25,18 +25,18 @@ public class Server {
     private final String serverAddress;
     private final int playersNumber;
     private final int portNumber;
-    private final int ante;
+    private final int moneyPerPlayerAtBeginning;
 
     private final Game game;
 
 <span class="nc" id="L32">    private boolean stopServer = false;</span>
 
-<span class="nc" id="L34">    public Server(int playersNumber_, String serverAddress_, int port_, int ante_) {</span>
+<span class="nc" id="L34">    public Server(int playersNumber_, String serverAddress_, int port_, int moneyPerPlayerAtBeginning_) {</span>
 <span class="nc" id="L35">        playersNumber = playersNumber_;</span>
 <span class="nc" id="L36">        portNumber = port_;</span>
 <span class="nc" id="L37">        serverAddress = serverAddress_;</span>
-<span class="nc" id="L38">        ante = ante_;</span>
-<span class="nc" id="L39">        game = new Game(playersNumber, ante);</span>
+<span class="nc" id="L38">        moneyPerPlayerAtBeginning = moneyPerPlayerAtBeginning_;</span>
+<span class="nc" id="L39">        game = new Game(playersNumber, moneyPerPlayerAtBeginning);</span>
 
         try {
 <span class="nc" id="L42">            selector = Selector.open();</span>
@@ -455,7 +455,7 @@ public class Server {
 
 <span class="nc" id="L456">        SelectionKey clientKey = clientSocket.register(selector, SelectionKey.OP_READ);</span>
 
-<span class="nc" id="L458">        clients.put(clientKey, new Player(clientKey, ante, game));</span>
+<span class="nc" id="L458">        clients.put(clientKey, new Player(clientKey, moneyPerPlayerAtBeginning, game));</span>
 <span class="nc" id="L459">    }</span>
 
     private void handleRead(SelectionKey key) throws IOException {
@@ -520,12 +520,13 @@ public class Server {
 <span class="nc" id="L520">            }</span>
 
 <span class="nc" id="L522">            serverSocket.close();</span>
-<span class="nc" id="L523">            selector.close();</span>
-<span class="nc" id="L524">        } catch (IOException e) {</span>
-<span class="nc" id="L525">            logger.severe(&quot;Error: &quot; + e.getMessage());</span>
-<span class="nc" id="L526">            logger.severe(&quot;IO error&quot;);</span>
-<span class="nc" id="L527">            System.exit(1);</span>
-<span class="nc" id="L528">        }</span>
-<span class="nc" id="L529">    }</span>
+<span class="nc" id="L523">            socket.close();</span>
+<span class="nc" id="L524">            selector.close();</span>
+<span class="nc" id="L525">        } catch (IOException e) {</span>
+<span class="nc" id="L526">            logger.severe(&quot;Error: &quot; + e.getMessage());</span>
+<span class="nc" id="L527">            logger.severe(&quot;IO error&quot;);</span>
+<span class="nc" id="L528">            System.exit(1);</span>
+<span class="nc" id="L529">        }</span>
+<span class="nc" id="L530">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

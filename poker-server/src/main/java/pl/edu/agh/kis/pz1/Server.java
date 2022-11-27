@@ -25,18 +25,18 @@ public class Server {
     private final String serverAddress;
     private final int playersNumber;
     private final int portNumber;
-    private final int ante;
+    private final int moneyPerPlayerAtBeginning;
 
     private final Game game;
 
     private boolean stopServer = false;
 
-    public Server(int playersNumber_, String serverAddress_, int port_, int ante_) {
+    public Server(int playersNumber_, String serverAddress_, int port_, int moneyPerPlayerAtBeginning_) {
         playersNumber = playersNumber_;
         portNumber = port_;
         serverAddress = serverAddress_;
-        ante = ante_;
-        game = new Game(playersNumber, ante);
+        moneyPerPlayerAtBeginning = moneyPerPlayerAtBeginning_;
+        game = new Game(playersNumber, moneyPerPlayerAtBeginning);
 
         try {
             selector = Selector.open();
@@ -455,7 +455,7 @@ public class Server {
 
         SelectionKey clientKey = clientSocket.register(selector, SelectionKey.OP_READ);
 
-        clients.put(clientKey, new Player(clientKey, ante, game));
+        clients.put(clientKey, new Player(clientKey, moneyPerPlayerAtBeginning, game));
     }
 
     private void handleRead(SelectionKey key) throws IOException {
@@ -520,6 +520,7 @@ public class Server {
             }
 
             serverSocket.close();
+            socket.close();
             selector.close();
         } catch (IOException e) {
             logger.severe("Error: " + e.getMessage());
