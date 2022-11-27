@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-11-26T23:59:18 CET" name="Surefire suite" finished-at="2022-11-26T23:59:18 CET" duration-ms="311">
+  <suite started-at="2022-11-27T14:07:58 CET" name="Surefire suite" finished-at="2022-11-27T14:07:58 CET" duration-ms="215">
     <groups>
     </groups>
-    <test started-at="2022-11-26T23:59:18 CET" name="Surefire test" finished-at="2022-11-26T23:59:18 CET" duration-ms="311">
+    <test started-at="2022-11-27T14:07:58 CET" name="Surefire test" finished-at="2022-11-27T14:07:58 CET" duration-ms="215">
       <class name="pl.edu.agh.kis.pz1.Main2Test">
-        <test-method signature="shouldCreateMainObject()" started-at="2022-11-26T23:59:18 CET" name="shouldCreateMainObject" finished-at="2022-11-26T23:59:18 CET" duration-ms="77" status="PASS">
+        <test-method signature="shouldCreateMainObject()" started-at="2022-11-27T14:07:58 CET" name="shouldCreateMainObject" finished-at="2022-11-27T14:07:58 CET" duration-ms="57" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldCreateMainObject -->

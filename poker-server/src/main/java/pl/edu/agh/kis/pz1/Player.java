@@ -7,7 +7,7 @@ import java.nio.channels.SelectionKey;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Player {
+public class Player implements Comparable<Player> {
     private SelectionKey key;
 
     private String name;
@@ -28,6 +28,9 @@ public class Player {
     private boolean isPlaying = true;
 
     private boolean wereCardsChanged = false;
+
+
+    private double handValue = -1;
 
     private Game game;
 
@@ -147,5 +150,25 @@ public class Player {
 
     public boolean wereCardsChanged() {
         return wereCardsChanged;
+    }
+
+    // call before comparing hands
+    public void calculateHandValue() {
+        handValue = playerHand.getHandValue();
+    }
+
+    public double getHandValue() {
+        return handValue;
+    }
+
+    // call after calculating hand values of hands
+    @Override
+    public int compareTo(Player player) {
+        if (handValue > player.handValue) {
+            return 1;
+        } else if (handValue < player.handValue) {
+            return -1;
+        }
+        return 0;
     }
 }

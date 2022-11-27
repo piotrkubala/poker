@@ -15,18 +15,18 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class Server {
-    private static Logger logger = Logger.getLogger(Server.class.getName());
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
 
-    private Map<SelectionKey, Player> clients = new HashMap<SelectionKey, Player>();
-    private Set<String> chosenNames = new HashSet<String>();
+    private final Map<SelectionKey, Player> clients = new HashMap<>();
+    private final Set<String> chosenNames = new HashSet<>();
 
     Selector selector;
 
-    private int playersNumber;
-    private int portNumber;
-    private int ante;
+    private final int playersNumber;
+    private final int portNumber;
+    private final int ante;
 
-    private Game game;
+    private final Game game;
 
     private boolean stopServer = false;
 
@@ -129,7 +129,7 @@ public class Server {
             if (clients.get(key).setStartReady(true) == playersNumber) {
                 game.start();
 
-                writeMessageToAllClients("The game has started\nYou can check your cards and other stats by typing \'show\'");
+                writeMessageToAllClients("The game has started\nYou can check your cards and other stats by typing 'show'");
                 writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
             }
         } else {
@@ -146,6 +146,43 @@ public class Server {
             writeMessageToClient(key, "It is not your turn, you cannot call now");
             return;
         }
+
+        if (commandParts.length != 1) {
+            writeMessageToClient(key, "usage: call");
+            return;
+        }
+
+        List<Player> winners = game.showDown();
+
+        if (winners == null) {
+            writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(player.getUsername() + " called\n");
+        sb.append("The game is over\n");
+
+        if (winners.size() == 1) {
+            sb.append("The winner is ");
+            sb.append(winners.get(0).getUsername());
+            sb.append(" with hand:\n");
+            sb.append(winners.get(0).getPlayerHand().toString());
+            sb.append("\n");
+        } else {
+            sb.append("There is a draw between ");
+            for (int i = 0; i < winners.size(); i++) {
+                sb.append(winners.get(i).getUsername());
+                sb.append(" with hand:\n");
+                sb.append(winners.get(i).getPlayerHand().toString());
+            }
+            sb.append("\n");
+        }
+
+        sb.append("You can check game results by typing 'show'\n");
+
+        writeMessageToAllClients(sb.toString());
     }
 
     private void handleRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
@@ -278,17 +315,38 @@ public class Server {
         StringBuilder sb = new StringBuilder();
 
         if (clients.get(key).getUsername() != null) {
-            sb.append("Player: " + clients.get(key).getUsername() + "\n");
+            sb.append("Player: ");
+            sb.append(clients.get(key).getUsername());
+            sb.append("\n");
         } else {
             sb.append("Player: UNKNOWN - SET USERNAME \n");
         }
-        sb.append("Current game state: " + gameState.getName() + "\n");
+        sb.append("Current game state: ");
+        sb.append(gameState.getName());
+        sb.append("\n");
         if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {
-            sb.append("Current bet: " + game.getCurrentBet() + "\n");
-            sb.append("Current player to make a move: " + game.getCurrentPlayer().getUsername() + "\n");
+            sb.append("Current bet: ");
+            sb.append(game.getCurrentBet());
+            sb.append("\n");
+            sb.append("Current player to make a move: ");
+            sb.append(game.getCurrentPlayer().getUsername());
+            sb.append("\n");
         }
         if (game.canShowPlayersHand() && clients.get(key).getPlayerHand() != null) {
-            sb.append(clients.get(key).getPlayerHand().toString());
+            if (gameState == Game.GameState.AFTER_SHOWDOWN) {
+                Player[] players = game.getPlayersByNumber();
+                for (int i = 0; i < playersNumber; i++) {
+                    sb.append("Player ");
+                    sb.append(i + 1);
+                    sb.append(": ");
+                    sb.append(players[i].getUsername());
+                    sb.append(":\n");
+                    sb.append(players[i].getPlayerHand().toString());
+                    sb.append("\n");
+                }
+            } else {
+                sb.append(clients.get(key).getPlayerHand().toString());
+            }
         } else {
             sb.append("You cannot show your hand now\n");
         }
@@ -339,27 +397,17 @@ public class Server {
                 break;
         }
 
-        checkForPhaseEnd(key, gameState);
+        checkForFirstRoundEnd(gameState);
     }
 
-    private void checkForPhaseEnd(SelectionKey key, Game.GameState gameState) {
-        if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {
-            if (game.isGameFinished()) {
-                game.end();
-                writeMessageToAllClients("The game has ended\nType \'show\' to see the results");
-            }
-
-            if (gameState == Game.GameState.FIRST_ROUND_BETS) {
-                if (game.isBettingEnded()) {
-                    game.beginChangingCards();
-                }
-            } else {
-
-            }
+    private void checkForFirstRoundEnd(Game.GameState gameState) {
+        if (gameState == Game.GameState.FIRST_ROUND_BETS && game.isBettingEnded()) {
+            game.beginChangingCards();
+            writeMessageToAllClients("The first round of betting has ended\nYou can now change your cards");
         }
     }
 
-    private void handleAccept(ServerSocketChannel mySocket, SelectionKey key) throws IOException {
+    private void handleAccept(ServerSocketChannel mySocket) throws IOException {
         logger.info("Accepting connection");
 
         SocketChannel clientSocket = mySocket.accept();
@@ -422,7 +470,7 @@ public class Server {
 
                     if (key.isAcceptable()) {
                         // zaakceptuj połączenie
-                        handleAccept(socket, key);
+                        handleAccept(socket);
                     } else if (key.isReadable()) {
                         // odczytaj przesłane dane
                         handleRead(key);

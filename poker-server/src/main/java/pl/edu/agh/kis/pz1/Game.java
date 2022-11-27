@@ -38,7 +38,7 @@ public class Game {
 
     // the 0th player is small blind, the 1st is big blind; all in order
     private Player[] playersByNumber;
-    private Vector<Integer> playersOrder;
+    private ArrayList<Integer> playersOrder;
 
     private Deck gameDeck;
 
@@ -57,7 +57,7 @@ public class Game {
         ante = ante_;
         stillPlayingPlayers = playersNumber;
 
-        playersOrder = new Vector<Integer>(playersNumber);
+        playersOrder = new ArrayList<Integer>(playersNumber);
         playersByNumber = new Player[playersNumber];
 
         for (int i = 0; i < playersNumber; i++) {
@@ -68,7 +68,7 @@ public class Game {
     }
 
     public void nextPlayerIsReady(Player player) {
-        int index = playersOrder.elementAt(readyPlayers);
+        int index = playersOrder.get(readyPlayers);
 
         if (index == 0) {
             player.setSmallBlind(true);
@@ -153,11 +153,6 @@ public class Game {
 
     public Card[] getCardsFromDeck(int number) {
         return gameDeck.getCards(number);
-    }
-
-    // todo
-    public void end() {
-
     }
 
     public void beginChangingCards() {
@@ -246,5 +241,51 @@ public class Game {
     public void beginSecondRound() {
         currentPlayerIndex = 0;
         state = GameState.SECOND_ROUND_BETS;
+    }
+
+    private List<Player> getWinners() {
+        final double eps = 1.0-12;
+        Player[] players = new Player[stillPlayingPlayers];
+
+        for (int i = 0, index = 0; i < playersNumber; i++) {
+            Player player = playersByNumber[i];
+            if (player.isPlaying()) {
+                players[index++] = player;
+
+                player.calculateHandValue();
+            }
+        }
+
+        Arrays.sort(players, Collections.reverseOrder());
+
+        double firstPlayerValue = players[0].getHandValue();
+        List<Player> winners = new ArrayList<Player>();
+        winners.add(players[0]);
+
+        for (int i = 1; i < stillPlayingPlayers; i++) {
+            if (Math.abs(players[i].getHandValue() - firstPlayerValue) < eps) {
+                winners.add(players[i]);
+            } else {
+                break;
+            }
+        }
+
+        return winners;
+    }
+
+    public List<Player> showDown() {
+        if (state != GameState.FIRST_ROUND_BETS && state != GameState.SECOND_ROUND_BETS) {
+            return null;
+        }
+
+        state = GameState.AFTER_SHOWDOWN;
+
+        List<Player> winners = getWinners();
+
+        return winners;
+    }
+
+    public Player[] getPlayersByNumber() {
+        return playersByNumber;
     }
 }
