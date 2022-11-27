@@ -33,160 +33,194 @@ public class Player implements Comparable&lt;Player&gt; {
 
 <span class="nc" id="L34">    private double handValue = -1;</span>
 
+<span class="nc" id="L36">    private boolean nextRoundReady = false;</span>
+
     private Game game;
 
-<span class="nc" id="L38">    public Player(SelectionKey key_, int money_, Game game_) {</span>
-<span class="nc" id="L39">        key = key_;</span>
-<span class="nc" id="L40">        money = money_;</span>
-<span class="nc" id="L41">        game = game_;</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L40">    public Player(SelectionKey key_, int money_, Game game_) {</span>
+<span class="nc" id="L41">        key = key_;</span>
+<span class="nc" id="L42">        money = money_;</span>
+<span class="nc" id="L43">        game = game_;</span>
+<span class="nc" id="L44">    }</span>
+
+    public void resetPlayerForNextRound() {
+<span class="nc" id="L47">        bet = 0;</span>
+<span class="nc" id="L48">        folded = false;</span>
+<span class="nc" id="L49">        isReady = false;</span>
+<span class="nc" id="L50">        isStartReady = false;</span>
+<span class="nc" id="L51">        isSmallBlind = false;</span>
+<span class="nc" id="L52">        isBigBlind = false;</span>
+<span class="nc" id="L53">        isPlaying = true;</span>
+<span class="nc" id="L54">        wereCardsChanged = false;</span>
+<span class="nc" id="L55">        isWinner = false;</span>
+<span class="nc" id="L56">        handValue = -1;</span>
+<span class="nc" id="L57">        nextRoundReady = false;</span>
+<span class="nc" id="L58">    }</span>
+
+    public boolean getNextRoundReady() {
+<span class="nc" id="L61">        return nextRoundReady;</span>
+    }
+
+    public void setNextRoundReady(boolean nextRoundReady_) {
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (nextRoundReady == nextRoundReady_) {</span>
+<span class="nc" id="L66">            return;</span>
+        }
+
+<span class="nc" id="L69">        nextRoundReady = nextRoundReady_;</span>
+
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (nextRoundReady) {</span>
+<span class="nc" id="L72">            game.increasePlayersWhoAreReadyForNextRoundCount();</span>
+        } else {
+<span class="nc" id="L74">            game.decreasePlayersWhoAreReadyForNextRoundCount();</span>
+        }
+<span class="nc" id="L76">    }</span>
 
     public SelectionKey getKey() {
-<span class="nc" id="L45">        return key;</span>
+<span class="nc" id="L79">        return key;</span>
     }
 
     private void setReady() {
-<span class="nc" id="L49">        game.nextPlayerIsReady(this);</span>
-<span class="nc" id="L50">        isReady = true;</span>
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L83">        game.nextPlayerIsReady(this);</span>
+<span class="nc" id="L84">        isReady = true;</span>
+<span class="nc" id="L85">    }</span>
 
     public void setName(String name_) {
-<span class="nc" id="L54">        name = name_;</span>
+<span class="nc" id="L88">        name = name_;</span>
 
-<span class="nc" id="L56">        setReady();</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L90">        setReady();</span>
+<span class="nc" id="L91">    }</span>
 
     public String getUsername() {
-<span class="nc" id="L60">        return name;</span>
+<span class="nc" id="L94">        return name;</span>
     }
 
     public Hand getPlayerHand() {
-<span class="nc" id="L64">        return playerHand;</span>
+<span class="nc" id="L98">        return playerHand;</span>
     }
 
     public int getMoney() {
-<span class="nc" id="L68">        return money;</span>
+<span class="nc" id="L102">        return money;</span>
     }
 
     public int getBet() {
-<span class="nc" id="L72">        return bet;</span>
+<span class="nc" id="L106">        return bet;</span>
     }
 
     public int setStartReady(boolean isReady_) {
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (isReady_ == isStartReady) {</span>
-<span class="nc" id="L77">            return game.getReadyPlayersForStart();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (isReady_ == isStartReady) {</span>
+<span class="nc" id="L111">            return game.getReadyPlayersForStart();</span>
         }
 
-<span class="nc" id="L80">        isStartReady = isReady_;</span>
+<span class="nc" id="L114">        isStartReady = isReady_;</span>
 
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (isStartReady) {</span>
-<span class="nc" id="L83">            game.increaseReadyPlayersForStart();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (isStartReady) {</span>
+<span class="nc" id="L117">            game.increaseReadyPlayersForStart();</span>
         } else {
-<span class="nc" id="L85">            game.decreaseReadyPlayersForStart();</span>
+<span class="nc" id="L119">            game.decreaseReadyPlayersForStart();</span>
         }
 
-<span class="nc" id="L88">        return game.getReadyPlayersForStart();</span>
+<span class="nc" id="L122">        return game.getReadyPlayersForStart();</span>
     }
 
     public void giveHand(Hand hand) {
-<span class="nc" id="L92">        playerHand = hand;</span>
-<span class="nc" id="L93">    }</span>
+<span class="nc" id="L126">        playerHand = hand;</span>
+<span class="nc" id="L127">    }</span>
 
     public void setSmallBlind(boolean isSmallBlind_) {
-<span class="nc" id="L96">        isSmallBlind = isSmallBlind_;</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L130">        isSmallBlind = isSmallBlind_;</span>
+<span class="nc" id="L131">    }</span>
 
     public void setBigBlind(boolean isBigBlind_) {
-<span class="nc" id="L100">        isBigBlind = isBigBlind_;</span>
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L134">        isBigBlind = isBigBlind_;</span>
+<span class="nc" id="L135">    }</span>
 
     public boolean isSmallBlind() {
-<span class="nc" id="L104">        return isSmallBlind;</span>
+<span class="nc" id="L138">        return isSmallBlind;</span>
     }
 
     public boolean isBigBlind() {
-<span class="nc" id="L108">        return isBigBlind;</span>
+<span class="nc" id="L142">        return isBigBlind;</span>
     }
 
     public void raiseBet(int amount) {
-<span class="nc" id="L112">        money -= amount - bet;</span>
+<span class="nc" id="L146">        money -= amount - bet;</span>
 
-<span class="nc" id="L114">        game.addMoneyToPool(amount - bet);</span>
-<span class="nc" id="L115">        game.setCurrentBet(amount);</span>
+<span class="nc" id="L148">        game.addMoneyToPool(amount - bet);</span>
+<span class="nc" id="L149">        game.setCurrentBet(amount);</span>
 
-<span class="nc" id="L117">        bet = amount;</span>
-<span class="nc" id="L118">    }</span>
+<span class="nc" id="L151">        bet = amount;</span>
+<span class="nc" id="L152">    }</span>
 
     public void setPlaying(boolean isPlaying_) {
-<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (isPlaying_ == isPlaying) {</span>
-<span class="nc" id="L122">            return;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (isPlaying_ == isPlaying) {</span>
+<span class="nc" id="L156">            return;</span>
         }
 
-<span class="nc" id="L125">        isPlaying = isPlaying_;</span>
+<span class="nc" id="L159">        isPlaying = isPlaying_;</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (isPlaying) {</span>
-<span class="nc" id="L128">            game.increaseStillPlayingPlayers();</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        if (isPlaying) {</span>
+<span class="nc" id="L162">            game.increaseStillPlayingPlayers();</span>
         } else {
-<span class="nc" id="L130">            game.decreaseStillPlayingPlayers();</span>
+<span class="nc" id="L164">            game.decreaseStillPlayingPlayers();</span>
         }
-<span class="nc" id="L132">    }</span>
+<span class="nc" id="L166">    }</span>
 
     public boolean isPlaying() {
-<span class="nc" id="L135">        return isPlaying;</span>
+<span class="nc" id="L169">        return isPlaying;</span>
     }
 
     public void setCardsChanged(boolean wereCardsChanged_) {
-<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (wereCardsChanged_ == wereCardsChanged) {</span>
-<span class="nc" id="L140">            return;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (wereCardsChanged_ == wereCardsChanged) {</span>
+<span class="nc" id="L174">            return;</span>
         }
 
-<span class="nc" id="L143">        wereCardsChanged = wereCardsChanged_;</span>
+<span class="nc" id="L177">        wereCardsChanged = wereCardsChanged_;</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (wereCardsChanged) {</span>
-<span class="nc" id="L146">            game.increasePlayersWhoChangedCards();</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (wereCardsChanged) {</span>
+<span class="nc" id="L180">            game.increasePlayersWhoChangedCards();</span>
         } else {
-<span class="nc" id="L148">            game.decreasePlayersWhoChangedCards();</span>
+<span class="nc" id="L182">            game.decreasePlayersWhoChangedCards();</span>
         }
-<span class="nc" id="L150">    }</span>
+<span class="nc" id="L184">    }</span>
 
     public boolean wereCardsChanged() {
-<span class="nc" id="L153">        return wereCardsChanged;</span>
+<span class="nc" id="L187">        return wereCardsChanged;</span>
     }
 
     // call before comparing hands
     public void calculateHandValue() {
-<span class="nc" id="L158">        handValue = playerHand.getHandValue();</span>
-<span class="nc" id="L159">    }</span>
+<span class="nc" id="L192">        handValue = playerHand.getHandValue();</span>
+<span class="nc" id="L193">    }</span>
 
     public double getHandValue() {
-<span class="nc" id="L162">        return handValue;</span>
+<span class="nc" id="L196">        return handValue;</span>
     }
 
     // call after calculating hand values of hands
     @Override
     public int compareTo(Player player) {
-<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (handValue &gt; player.handValue) {</span>
-<span class="nc" id="L169">            return 1;</span>
-<span class="nc bnc" id="L170" title="All 2 branches missed.">        } else if (handValue &lt; player.handValue) {</span>
-<span class="nc" id="L171">            return -1;</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        if (handValue &gt; player.handValue) {</span>
+<span class="nc" id="L203">            return 1;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        } else if (handValue &lt; player.handValue) {</span>
+<span class="nc" id="L205">            return -1;</span>
         }
-<span class="nc" id="L173">        return 0;</span>
+<span class="nc" id="L207">        return 0;</span>
     }
 
     public void setWinner(boolean isWinner_) {
-<span class="nc" id="L177">        isWinner = isWinner_;</span>
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L211">        isWinner = isWinner_;</span>
+<span class="nc" id="L212">    }</span>
 
     public boolean isWinner() {
-<span class="nc" id="L181">        return isWinner;</span>
+<span class="nc" id="L215">        return isWinner;</span>
     }
 
     public void setBet(int amount) {
-<span class="nc" id="L185">        bet = amount;</span>
-<span class="nc" id="L186">    }</span>
+<span class="nc" id="L219">        bet = amount;</span>
+<span class="nc" id="L220">    }</span>
 
     public void addMoney(int amount) {
-<span class="nc" id="L189">        money += amount;</span>
-<span class="nc" id="L190">    }</span>
+<span class="nc" id="L223">        money += amount;</span>
+<span class="nc" id="L224">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

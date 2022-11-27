@@ -33,12 +33,46 @@ public class Player implements Comparable<Player> {
 
     private double handValue = -1;
 
+    private boolean nextRoundReady = false;
+
     private Game game;
 
     public Player(SelectionKey key_, int money_, Game game_) {
         key = key_;
         money = money_;
         game = game_;
+    }
+
+    public void resetPlayerForNextRound() {
+        bet = 0;
+        folded = false;
+        isReady = false;
+        isStartReady = false;
+        isSmallBlind = false;
+        isBigBlind = false;
+        isPlaying = true;
+        wereCardsChanged = false;
+        isWinner = false;
+        handValue = -1;
+        nextRoundReady = false;
+    }
+
+    public boolean getNextRoundReady() {
+        return nextRoundReady;
+    }
+
+    public void setNextRoundReady(boolean nextRoundReady_) {
+        if (nextRoundReady == nextRoundReady_) {
+            return;
+        }
+
+        nextRoundReady = nextRoundReady_;
+
+        if (nextRoundReady) {
+            game.increasePlayersWhoAreReadyForNextRoundCount();
+        } else {
+            game.decreasePlayersWhoAreReadyForNextRoundCount();
+        }
     }
 
     public SelectionKey getKey() {

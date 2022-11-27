@@ -22,6 +22,7 @@ public class Server {
 
     Selector selector;
 
+    private final String serverAddress;
     private final int playersNumber;
     private final int portNumber;
     private final int ante;
@@ -30,9 +31,10 @@ public class Server {
 
     private boolean stopServer = false;
 
-    public Server(int playersNumber_, int port_, int ante_) {
+    public Server(int playersNumber_, String serverAddress_, int port_, int ante_) {
         playersNumber = playersNumber_;
         portNumber = port_;
+        serverAddress = serverAddress_;
         ante = ante_;
         game = new Game(playersNumber, ante);
 
@@ -99,7 +101,7 @@ public class Server {
 
     private void handleHelpCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (commandParts.length == 1) {
-            writeMessageToClient(key, "Available commands: help, username, exit, call, raise, fold, change, show");
+            writeMessageToClient(key, "Available commands: help, username, exit, showdown, raise, fold, change, nextround, show");
         } else {
             switch (commandParts[1]) {
                 case "help":
@@ -112,7 +114,7 @@ public class Server {
                     writeMessageToClient(key, "exit - exits the game");
                     break;
                 case "call":
-                    writeMessageToClient(key, "call - calls the current bet");
+                    writeMessageToClient(key, "showdown - end the game and the show results");
                     break;
                 case "raise":
                     writeMessageToClient(key, "raise <amount> - raises the current bet");
@@ -122,6 +124,9 @@ public class Server {
                     break;
                 case "change":
                     writeMessageToClient(key, "change <card number 1> [<card number 2>] ... [<card number 5>] - changes cards");
+                    break;
+                case "nextround":
+                    writeMessageToClient(key, "nextround - starts next round");
                     break;
                 case "show":
                     writeMessageToClient(key, "show - shows your current hand and money");
@@ -171,18 +176,18 @@ public class Server {
         }
     }
 
-    private void handleCallCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private void handleShowdownCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
-            writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+            writeMessageToClient(key, "You cannot showdown now, the game is not in betting phase");
             return;
         }
         if (!isCurrentPlayerMakingAMove) {
-            writeMessageToClient(key, "It is not your turn, you cannot call now");
+            writeMessageToClient(key, "It is not your turn, you cannot showdown now");
             return;
         }
 
         if (commandParts.length != 1) {
-            writeMessageToClient(key, "usage: call");
+            writeMessageToClient(key, "usage: showdown");
             return;
         }
 
@@ -201,16 +206,19 @@ public class Server {
 
         int minRaise = game.getCurrentBet();
         int maxRaise = player.getMoney() + player.getBet();
-        if (player.isBigBlind() && player.getBet() == 0) {
-            minRaise = game.getCurrentBet() * 2;
 
-            if (minRaise > player.getMoney()) {
-                minRaise = player.getMoney();
+        if (gameState == Game.GameState.FIRST_ROUND_BETS) {
+            if (player.isBigBlind() && player.getBet() == 0) {
+                minRaise = game.getCurrentBet() * 2;
+
+                if (minRaise > player.getMoney()) {
+                    minRaise = player.getMoney();
+                }
             }
-        }
 
-        if (player.isSmallBlind() && player.getBet() == 0) {
-            minRaise = 1;
+            if (player.isSmallBlind() && player.getBet() == 0) {
+                minRaise = 1;
+            }
         }
 
         if (maxRaise < minRaise) {
@@ -362,6 +370,26 @@ public class Server {
         writeMessageToClient(key, sb.toString());
     }
 
+    private void handleNextRoundCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (gameState != Game.GameState.AFTER_SHOWDOWN) {
+            writeMessageToClient(key, "You cannot start a new round now");
+            return;
+        }
+        if (player.getNextRoundReady()) {
+            writeMessageToClient(key, "You have already confirmed that you are ready for the next round");
+            return;
+        } else {
+            player.setNextRoundReady(true);
+            writeMessageToClient(key, "You have confirmed that you are ready for the next round");
+        }
+
+        if (game.isNextRoundReady()) {
+            game.startNewRound();
+            writeMessageToAllClients("A new round has started");
+            writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+        }
+    }
+
     private void handleCommands(String command, SelectionKey key) {
         String[] commandParts = command.split(" ");
 
@@ -384,8 +412,8 @@ public class Server {
             case "start":
                 handleStartCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
-            case "call":
-                handleCallCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+            case "showdown":
+                handleShowdownCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "raise":
                 handleRaiseCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
@@ -398,6 +426,9 @@ public class Server {
                 break;
             case "show":
                 handleShowCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+                break;
+            case "nextround":
+                handleNextRoundCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             default:
                 writeMessageToClient(key, "Unknown command");
@@ -460,7 +491,7 @@ public class Server {
         try {
             ServerSocketChannel socket = ServerSocketChannel.open();
             ServerSocket serverSocket = socket.socket();
-            serverSocket.bind(new InetSocketAddress("localhost", portNumber));
+            serverSocket.bind(new InetSocketAddress(serverAddress, portNumber));
             socket.configureBlocking(false);
             int ops = socket.validOps();
             socket.register(selector, ops, null);

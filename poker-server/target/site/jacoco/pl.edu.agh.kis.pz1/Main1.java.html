@@ -12,27 +12,26 @@ import java.util.logging.Logger;
     public static void main(String[] args) {
 <span class="nc bnc" id="L13" title="All 2 branches missed.">        if (args.length &lt; 3) {</span>
 <span class="nc" id="L14">            logger.severe(&quot;Not enough arguments&quot;);</span>
-<span class="nc" id="L15">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;port&gt; &lt;ante&gt;&quot;);</span>
+<span class="nc" id="L15">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;address&gt; &lt;port&gt; &lt;ante&gt;&quot;);</span>
 <span class="nc" id="L16">            System.exit(1);</span>
         }
-
 
         try {
             int playersNumber, portNumber, ante;
 
-<span class="nc" id="L23">            playersNumber = Integer.parseInt(args[0]);</span>
-<span class="nc" id="L24">            portNumber = Integer.parseInt(args[1]);</span>
-<span class="nc" id="L25">            ante = Integer.parseInt(args[2]);</span>
+<span class="nc" id="L22">            playersNumber = Integer.parseInt(args[0]);</span>
+<span class="nc" id="L23">            portNumber = Integer.parseInt(args[2]);</span>
+<span class="nc" id="L24">            ante = Integer.parseInt(args[3]);</span>
 
             while (true) {
-<span class="nc" id="L28">                Server gameServer = new Server(playersNumber, portNumber, ante);</span>
-<span class="nc" id="L29">                gameServer.start();</span>
-<span class="nc" id="L30">            }</span>
-<span class="nc" id="L31">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L32">            logger.severe(&quot;Wrong arguments&quot;);</span>
-<span class="nc" id="L33">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;port&gt;&quot;);</span>
-<span class="nc" id="L34">            System.exit(1);</span>
+<span class="nc" id="L27">                Server gameServer = new Server(playersNumber, args[1], portNumber, ante);</span>
+<span class="nc" id="L28">                gameServer.start();</span>
+<span class="nc" id="L29">            }</span>
+<span class="nc" id="L30">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L31">            logger.severe(&quot;Wrong arguments&quot;);</span>
+<span class="nc" id="L32">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;port&gt;&quot;);</span>
+<span class="nc" id="L33">            System.exit(1);</span>
         }
-<span class="nc" id="L36">    }</span>
+<span class="nc" id="L35">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

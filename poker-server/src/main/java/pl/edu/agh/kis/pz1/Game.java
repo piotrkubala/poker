@@ -13,9 +13,7 @@ public class Game {
         FIRST_ROUND_BETS("First round bets"),
         CARDS_CHANGING("Cards changing"),
         SECOND_ROUND_BETS("Second round bets"),
-        AFTER_SHOWDOWN("After showdown"),
-        NEW_GAME_PREPARATION("New game preparation"),
-        FINISHED("Finished");
+        AFTER_SHOWDOWN("After showdown");
 
         private String name;
 
@@ -38,6 +36,7 @@ public class Game {
 
     // the 0th player is small blind, the 1st is big blind; all in order
     private Player[] playersByNumber;
+    private Player[] playersInJoinOrder;
     private ArrayList<Integer> playersOrder;
 
     private Deck gameDeck;
@@ -52,6 +51,8 @@ public class Game {
 
     private int playersWhoChangedCards = 0;
 
+    private int playersWhoAreReadyForNextRound = 0;
+
     public Game(int playersNumber_, int ante_) {
         playersNumber = playersNumber_;
         ante = ante_;
@@ -59,6 +60,7 @@ public class Game {
 
         playersOrder = new ArrayList<Integer>(playersNumber);
         playersByNumber = new Player[playersNumber];
+        playersInJoinOrder = new Player[playersNumber];
 
         for (int i = 0; i < playersNumber; i++) {
             playersOrder.add(i);
@@ -76,6 +78,7 @@ public class Game {
             player.setBigBlind(true);
         }
         playersByNumber[index] = player;
+        playersInJoinOrder[readyPlayers] = player;
 
         readyPlayers++;
     }
@@ -158,6 +161,7 @@ public class Game {
     public void beginChangingCards() {
         if (state == GameState.FIRST_ROUND_BETS) {
             state = GameState.CARDS_CHANGING;
+            turnsSinceLastBetIncrease = 0;
         }
     }
 
@@ -316,5 +320,47 @@ public class Game {
 
     public Player[] getPlayersByNumber() {
         return playersByNumber;
+    }
+
+    public void startNewRound() {
+        state = GameState.WAITING_FOR_READY;
+        currentGamePool = 0;
+        currentBet = 0;
+        turnsSinceLastBetIncrease = 0;
+        playersWhoChangedCards = 0;
+        stillPlayingPlayers = playersNumber;
+        readyPlayersForStart = 0;
+        currentPlayerIndex = 0;
+        gameDeck = null;
+        playersWhoAreReadyForNextRound = 0;
+
+        Collections.shuffle(playersOrder);
+        for (int i = 0; i < playersNumber; i++) {
+            int index = playersOrder.get(i);
+            playersByNumber[index] = playersInJoinOrder[i];
+        }
+
+        for (Player player : playersByNumber) {
+            player.resetPlayerForNextRound();
+        }
+
+        playersByNumber[0].setSmallBlind(true);
+        playersByNumber[1].setBigBlind(true);
+    }
+
+    public void increasePlayersWhoAreReadyForNextRoundCount() {
+        playersWhoAreReadyForNextRound++;
+    }
+
+    public void decreasePlayersWhoAreReadyForNextRoundCount() {
+        playersWhoAreReadyForNextRound--;
+    }
+
+    public boolean isNextRoundReady() {
+        return playersWhoAreReadyForNextRound == stillPlayingPlayers;
+    }
+
+    public void resetPlayersWhoAreReadyForNextRoundCount() {
+        playersWhoAreReadyForNextRound = 0;
     }
 }

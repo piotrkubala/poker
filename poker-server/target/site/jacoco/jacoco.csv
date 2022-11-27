@@ -1,6 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-poker-server,pl.edu.agh.kis.pz1,Server,1324,0,142,0,308,0,96,0,18,0
-poker-server,pl.edu.agh.kis.pz1,Game,616,0,74,0,133,0,75,0,38,0
-poker-server,pl.edu.agh.kis.pz1,Player,227,0,16,0,77,0,34,0,26,0
-poker-server,pl.edu.agh.kis.pz1,Main1,47,8,2,0,15,2,2,2,1,2
-poker-server,pl.edu.agh.kis.pz1,Game.GameState,103,0,0,0,13,0,3,0,3,0
+poker-server,pl.edu.agh.kis.pz1,Server,1385,0,152,0,327,0,103,0,19,0
+poker-server,pl.edu.agh.kis.pz1,Game,749,0,80,0,163,0,83,0,43,0
+poker-server,pl.edu.agh.kis.pz1,Player,286,0,20,0,98,0,39,0,29,0
+poker-server,pl.edu.agh.kis.pz1,Main1,50,8,2,0,15,2,2,2,1,2
+poker-server,pl.edu.agh.kis.pz1,Game.GameState,81,0,0,0,11,0,3,0,3,0
