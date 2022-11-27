@@ -284,34 +284,38 @@ public class Game {
 <span class="nc" id="L284">        return 0;</span>
     }
 
+    private void setWinnersMoney(List&lt;Player&gt; winners) {
+<span class="nc" id="L288">        int moneyForWinner = currentGamePool / winners.size();</span>
+<span class="nc" id="L289">        int moneyForWinnerRemainder = currentGamePool % winners.size();</span>
+
+<span class="nc" id="L291">        winners.get(getClosestWinnerIndexToBigBlind(winners)).addMoney(moneyForWinnerRemainder);</span>
+
+<span class="nc bnc" id="L293" title="All 2 branches missed.">        for (Player player : winners) {</span>
+<span class="nc" id="L294">            player.addMoney(moneyForWinner);</span>
+<span class="nc" id="L295">            player.setWinner(true);</span>
+<span class="nc" id="L296">        }</span>
+
+<span class="nc bnc" id="L298" title="All 2 branches missed.">        for (Player player : playersByNumber) {</span>
+<span class="nc" id="L299">            player.setBet(0);</span>
+        }
+<span class="nc" id="L301">    }</span>
+
     public List&lt;Player&gt; showDownAndDivideMoneyFromPool() {
-<span class="nc bnc" id="L288" title="All 4 branches missed.">        if (state != GameState.FIRST_ROUND_BETS &amp;&amp; state != GameState.SECOND_ROUND_BETS) {</span>
-<span class="nc" id="L289">            return null;</span>
+<span class="nc bnc" id="L304" title="All 4 branches missed.">        if (state != GameState.FIRST_ROUND_BETS &amp;&amp; state != GameState.SECOND_ROUND_BETS) {</span>
+<span class="nc" id="L305">            return null;</span>
         }
 
-<span class="nc" id="L292">        state = GameState.AFTER_SHOWDOWN;</span>
+<span class="nc" id="L308">        state = GameState.AFTER_SHOWDOWN;</span>
 
-<span class="nc" id="L294">        List&lt;Player&gt; winners = getWinners();</span>
+<span class="nc" id="L310">        List&lt;Player&gt; winners = getWinners();</span>
 
-<span class="nc" id="L296">        int moneyForWinner = currentGamePool / winners.size();</span>
-<span class="nc" id="L297">        int moneyForWinnerRemainder = currentGamePool % winners.size();</span>
+<span class="nc" id="L312">        setWinnersMoney(winners);</span>
 
-<span class="nc" id="L299">        winners.get(getClosestWinnerIndexToBigBlind(winners)).addMoney(moneyForWinnerRemainder);</span>
-
-<span class="nc bnc" id="L301" title="All 2 branches missed.">        for (Player player : winners) {</span>
-<span class="nc" id="L302">            player.addMoney(moneyForWinner);</span>
-<span class="nc" id="L303">            player.setWinner(true);</span>
-<span class="nc" id="L304">        }</span>
-
-<span class="nc bnc" id="L306" title="All 2 branches missed.">        for (Player player : playersByNumber) {</span>
-<span class="nc" id="L307">            player.setBet(0);</span>
-        }
-
-<span class="nc" id="L310">        return winners;</span>
+<span class="nc" id="L314">        return winners;</span>
     }
 
     public Player[] getPlayersByNumber() {
-<span class="nc" id="L314">        return playersByNumber;</span>
+<span class="nc" id="L318">        return playersByNumber;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -284,15 +284,7 @@ public class Game {
         return 0;
     }
 
-    public List<Player> showDownAndDivideMoneyFromPool() {
-        if (state != GameState.FIRST_ROUND_BETS && state != GameState.SECOND_ROUND_BETS) {
-            return null;
-        }
-
-        state = GameState.AFTER_SHOWDOWN;
-
-        List<Player> winners = getWinners();
-
+    private void setWinnersMoney(List<Player> winners) {
         int moneyForWinner = currentGamePool / winners.size();
         int moneyForWinnerRemainder = currentGamePool % winners.size();
 
@@ -306,6 +298,18 @@ public class Game {
         for (Player player : playersByNumber) {
             player.setBet(0);
         }
+    }
+
+    public List<Player> showDownAndDivideMoneyFromPool() {
+        if (state != GameState.FIRST_ROUND_BETS && state != GameState.SECOND_ROUND_BETS) {
+            return null;
+        }
+
+        state = GameState.AFTER_SHOWDOWN;
+
+        List<Player> winners = getWinners();
+
+        setWinnersMoney(winners);
 
         return winners;
     }

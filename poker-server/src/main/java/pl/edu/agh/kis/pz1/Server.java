@@ -63,6 +63,40 @@ public class Server {
         }
     }
 
+    private void endGameRound(Player player, SelectionKey key) {
+        List<Player> winners = game.showDownAndDivideMoneyFromPool();
+
+        if (winners == null) {
+            writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(player.getUsername() + " called\n");
+        sb.append("The game is over\n");
+
+        if (winners.size() == 1) {
+            sb.append("The winner is ");
+            sb.append(winners.get(0).getUsername());
+            sb.append(" with hand:\n");
+            sb.append(winners.get(0).getPlayerHand().toString());
+            sb.append("\n");
+        } else {
+            sb.append("There is a draw between ");
+            for (int i = 0; i < winners.size(); i++) {
+                sb.append(winners.get(i).getUsername());
+                sb.append(" with hand:\n");
+                sb.append(winners.get(i).getPlayerHand().toString());
+            }
+            sb.append("\n");
+        }
+
+        sb.append("You can check game results by typing 'show'\n");
+
+        writeMessageToAllClients(sb.toString());
+    }
+
     private void handleHelpCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (commandParts.length == 1) {
             writeMessageToClient(key, "Available commands: help, username, exit, call, raise, fold, change, show");
@@ -152,37 +186,7 @@ public class Server {
             return;
         }
 
-        List<Player> winners = game.showDownAndDivideMoneyFromPool();
-
-        if (winners == null) {
-            writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(player.getUsername() + " called\n");
-        sb.append("The game is over\n");
-
-        if (winners.size() == 1) {
-            sb.append("The winner is ");
-            sb.append(winners.get(0).getUsername());
-            sb.append(" with hand:\n");
-            sb.append(winners.get(0).getPlayerHand().toString());
-            sb.append("\n");
-        } else {
-            sb.append("There is a draw between ");
-            for (int i = 0; i < winners.size(); i++) {
-                sb.append(winners.get(i).getUsername());
-                sb.append(" with hand:\n");
-                sb.append(winners.get(i).getPlayerHand().toString());
-            }
-            sb.append("\n");
-        }
-
-        sb.append("You can check game results by typing 'show'\n");
-
-        writeMessageToAllClients(sb.toString());
+        endGameRound(player, key);
     }
 
     private void handleRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
@@ -400,13 +404,15 @@ public class Server {
                 break;
         }
 
-        checkForFirstRoundEnd(gameState);
+        checkForFirstRoundEnd(gameState, player, key);
     }
 
-    private void checkForFirstRoundEnd(Game.GameState gameState) {
+    private void checkForFirstRoundEnd(Game.GameState gameState, Player player, SelectionKey key) {
         if (gameState == Game.GameState.FIRST_ROUND_BETS && game.isBettingEnded()) {
             game.beginChangingCards();
             writeMessageToAllClients("The first round of betting has ended\nYou can now change your cards");
+        } else if (gameState == Game.GameState.SECOND_ROUND_BETS && game.isBettingEnded()) {
+            endGameRound(player, key);
         }
     }
 
