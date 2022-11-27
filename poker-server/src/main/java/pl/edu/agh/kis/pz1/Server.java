@@ -152,7 +152,7 @@ public class Server {
             return;
         }
 
-        List<Player> winners = game.showDown();
+        List<Player> winners = game.showDownAndDivideMoneyFromPool();
 
         if (winners == null) {
             writeMessageToClient(key, "You cannot call now, the game is not in betting phase");
@@ -336,6 +336,9 @@ public class Server {
             if (gameState == Game.GameState.AFTER_SHOWDOWN) {
                 Player[] players = game.getPlayersByNumber();
                 for (int i = 0; i < playersNumber; i++) {
+                    if (players[i].isWinner()) {
+                        sb.append("[WINNER] ");
+                    }
                     sb.append("Player ");
                     sb.append(i + 1);
                     sb.append(": ");

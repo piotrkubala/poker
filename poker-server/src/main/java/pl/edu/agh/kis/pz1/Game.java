@@ -273,7 +273,18 @@ public class Game {
         return winners;
     }
 
-    public List<Player> showDown() {
+    private int getClosestWinnerIndexToBigBlind(List<Player> winners) {
+        if (winners.size() == 1) {
+            return 0;
+        }
+
+        if (winners.get(0).isSmallBlind()) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public List<Player> showDownAndDivideMoneyFromPool() {
         if (state != GameState.FIRST_ROUND_BETS && state != GameState.SECOND_ROUND_BETS) {
             return null;
         }
@@ -281,6 +292,20 @@ public class Game {
         state = GameState.AFTER_SHOWDOWN;
 
         List<Player> winners = getWinners();
+
+        int moneyForWinner = currentGamePool / winners.size();
+        int moneyForWinnerRemainder = currentGamePool % winners.size();
+
+        winners.get(getClosestWinnerIndexToBigBlind(winners)).addMoney(moneyForWinnerRemainder);
+
+        for (Player player : winners) {
+            player.addMoney(moneyForWinner);
+            player.setWinner(true);
+        }
+
+        for (Player player : playersByNumber) {
+            player.setBet(0);
+        }
 
         return winners;
     }

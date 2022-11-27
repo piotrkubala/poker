@@ -29,6 +29,7 @@ public class Player implements Comparable<Player> {
 
     private boolean wereCardsChanged = false;
 
+    private boolean isWinner = false;
 
     private double handValue = -1;
 
@@ -170,5 +171,21 @@ public class Player implements Comparable<Player> {
             return -1;
         }
         return 0;
+    }
+
+    public void setWinner(boolean isWinner_) {
+        isWinner = isWinner_;
+    }
+
+    public boolean isWinner() {
+        return isWinner;
+    }
+
+    public void setBet(int amount) {
+        bet = amount;
+    }
+
+    public void addMoney(int amount) {
+        money += amount;
     }
 }
