@@ -62,6 +62,24 @@ public class HandTest {
     }
 
     @Test
+    public void testAllTheSameColour() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.CLUBS, Card.Rank.KING),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.CLUBS, Card.Rank.JACK),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+
+        // when
+        boolean result = hand.allTheSameColour();
+
+        // then
+        assertTrue(result, "All cards should be the same colour");
+    }
+
+    @Test
     public void testHasPair() {
         // given
         Hand handWithout1 = new Hand(new Card[]{

@@ -7,32 +7,32 @@ import pl.edu.agh.kis.pz1.util.Hand;
 import java.util.*;
 
 public class Game {
-<span class="nc" id="L10">    public enum GameState{</span>
-<span class="nc" id="L11">        WAITING_FOR_PLAYERS(&quot;Waiting for players&quot;),</span>
-<span class="nc" id="L12">        WAITING_FOR_READY(&quot;Waiting for ready&quot;),</span>
-<span class="nc" id="L13">        FIRST_ROUND_BETS(&quot;First round bets&quot;),</span>
-<span class="nc" id="L14">        CARDS_CHANGING(&quot;Cards changing&quot;),</span>
-<span class="nc" id="L15">        SECOND_ROUND_BETS(&quot;Second round bets&quot;),</span>
-<span class="nc" id="L16">        AFTER_SHOWDOWN(&quot;After showdown&quot;);</span>
+<span class="fc" id="L10">    public enum GameState{</span>
+<span class="fc" id="L11">        WAITING_FOR_PLAYERS(&quot;Waiting for players&quot;),</span>
+<span class="fc" id="L12">        WAITING_FOR_READY(&quot;Waiting for ready&quot;),</span>
+<span class="fc" id="L13">        FIRST_ROUND_BETS(&quot;First round bets&quot;),</span>
+<span class="fc" id="L14">        CARDS_CHANGING(&quot;Cards changing&quot;),</span>
+<span class="fc" id="L15">        SECOND_ROUND_BETS(&quot;Second round bets&quot;),</span>
+<span class="fc" id="L16">        AFTER_SHOWDOWN(&quot;After showdown&quot;);</span>
 
         private String name;
 
-<span class="nc" id="L20">        GameState(String name) {</span>
-<span class="nc" id="L21">            this.name = name;</span>
-<span class="nc" id="L22">        }</span>
+<span class="fc" id="L20">        GameState(String name) {</span>
+<span class="fc" id="L21">            this.name = name;</span>
+<span class="fc" id="L22">        }</span>
 
         String getName() {
 <span class="nc" id="L25">            return name;</span>
         }
     }
 
-<span class="nc" id="L29">    private GameState state = GameState.WAITING_FOR_PLAYERS;</span>
+<span class="fc" id="L29">    private GameState state = GameState.WAITING_FOR_PLAYERS;</span>
 
-<span class="nc" id="L31">    private int currentPlayerIndex = 0;</span>
-<span class="nc" id="L32">    private int turn = 0;</span>
-<span class="nc" id="L33">    private int turnsSinceLastBetIncrease = 0;</span>
-<span class="nc" id="L34">    private int currentGamePool = 0;</span>
-<span class="nc" id="L35">    private int currentBet = 0;</span>
+<span class="fc" id="L31">    private int currentPlayerIndex = 0;</span>
+<span class="fc" id="L32">    private int turn = 0;</span>
+<span class="fc" id="L33">    private int turnsSinceLastBetIncrease = 0;</span>
+<span class="fc" id="L34">    private int currentGamePool = 0;</span>
+<span class="fc" id="L35">    private int currentBet = 0;</span>
 
     // the 0th player is small blind, the 1st is big blind; all in order
     private Player[] playersByNumber;
@@ -43,31 +43,31 @@ public class Game {
 
     private int ante;
     private int playersNumber;
-<span class="nc" id="L46">    private int readyPlayers = 0;</span>
+<span class="fc" id="L46">    private int readyPlayers = 0;</span>
 
-<span class="nc" id="L48">    private int readyPlayersForStart = 0;</span>
+<span class="fc" id="L48">    private int readyPlayersForStart = 0;</span>
 
     private int stillPlayingPlayers;
 
-<span class="nc" id="L52">    private int playersWhoChangedCards = 0;</span>
+<span class="fc" id="L52">    private int playersWhoChangedCards = 0;</span>
 
-<span class="nc" id="L54">    private int playersWhoAreReadyForNextRound = 0;</span>
+<span class="fc" id="L54">    private int playersWhoAreReadyForNextRound = 0;</span>
 
-<span class="nc" id="L56">    public Game(int playersNumber_, int ante_) {</span>
-<span class="nc" id="L57">        playersNumber = playersNumber_;</span>
-<span class="nc" id="L58">        ante = ante_;</span>
-<span class="nc" id="L59">        stillPlayingPlayers = playersNumber;</span>
+<span class="fc" id="L56">    public Game(int playersNumber_, int ante_) {</span>
+<span class="fc" id="L57">        playersNumber = playersNumber_;</span>
+<span class="fc" id="L58">        ante = ante_;</span>
+<span class="fc" id="L59">        stillPlayingPlayers = playersNumber;</span>
 
-<span class="nc" id="L61">        playersOrder = new ArrayList&lt;Integer&gt;(playersNumber);</span>
-<span class="nc" id="L62">        playersByNumber = new Player[playersNumber];</span>
-<span class="nc" id="L63">        playersInJoinOrder = new Player[playersNumber];</span>
+<span class="fc" id="L61">        playersOrder = new ArrayList&lt;Integer&gt;(playersNumber);</span>
+<span class="fc" id="L62">        playersByNumber = new Player[playersNumber];</span>
+<span class="fc" id="L63">        playersInJoinOrder = new Player[playersNumber];</span>
 
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        for (int i = 0; i &lt; playersNumber; i++) {</span>
-<span class="nc" id="L66">            playersOrder.add(i);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        for (int i = 0; i &lt; playersNumber; i++) {</span>
+<span class="fc" id="L66">            playersOrder.add(i);</span>
         }
 
-<span class="nc" id="L69">        Collections.shuffle(playersOrder);</span>
-<span class="nc" id="L70">    }</span>
+<span class="fc" id="L69">        Collections.shuffle(playersOrder);</span>
+<span class="fc" id="L70">    }</span>
 
     public void nextPlayerIsReady(Player player) {
 <span class="nc" id="L73">        int index = playersOrder.get(readyPlayers);</span>

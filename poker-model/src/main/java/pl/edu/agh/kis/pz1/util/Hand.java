@@ -64,7 +64,7 @@ public class Hand implements Comparable<Hand> {
         return sb.toString();
     }
 
-    private boolean allTheSameColour() {
+    boolean allTheSameColour() {
         for (int i = 0; i < suitCounts.length; i++) {
             if (suitCounts[i] == HAND_SIZE) {
                 return true;

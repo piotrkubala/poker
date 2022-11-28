@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 public class Server {
     private static final Logger logger = Logger.getLogger(Server.class.getName());
+    public static final String NOW_IT_IS_YOUR_TURN = "Now it is your turn";
 
     private final Map<SelectionKey, Player> clients = new HashMap<>();
     private final Set<String> chosenNames = new HashSet<>();
@@ -170,7 +171,7 @@ public class Server {
                 game.start();
 
                 writeMessageToAllClients("The game has started\nYou can check your cards and other stats by typing 'show'");
-                writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+                writeMessageToClient(game.getCurrentPlayer().getKey(), NOW_IT_IS_YOUR_TURN);
             }
         } else {
             writeMessageToClient(key, "There are not enough players (need " + (playersNumber - game.getReadyPlayersCount()) + " more players)");
@@ -193,6 +194,25 @@ public class Server {
         }
 
         endGameRound(player, key);
+    }
+
+    private void executeRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, int minRaise, int maxRaise) {
+        try {
+            int raiseAmount = Integer.parseInt(commandParts[1]);
+
+            if (raiseAmount < minRaise || raiseAmount > maxRaise) {
+                writeMessageToClient(key, "You cannot bet this amount");
+                return;
+            }
+
+            player.raiseBet(raiseAmount);
+            game.nextPlayerMove();
+            writeMessageToClient(key, "You have raised the bet to " + raiseAmount);
+            writeMessageToAllClients(player.getUsername() + " has raised the bet to " + raiseAmount);
+            writeMessageToClient(game.getCurrentPlayer().getKey(), NOW_IT_IS_YOUR_TURN);
+        } catch (NumberFormatException e) {
+            writeMessageToClient(key, "usage: raise <amount>");
+        }
     }
 
     private void handleRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
@@ -240,22 +260,7 @@ public class Server {
             return;
         }
 
-        try {
-            int raiseAmount = Integer.parseInt(commandParts[1]);
-
-            if (raiseAmount < minRaise || raiseAmount > maxRaise) {
-                writeMessageToClient(key, "You cannot bet this amount");
-                return;
-            }
-
-            player.raiseBet(raiseAmount);
-            game.nextPlayerMove();
-            writeMessageToClient(key, "You have raised the bet to " + raiseAmount);
-            writeMessageToAllClients(player.getUsername() + " has raised the bet to " + raiseAmount);
-            writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
-        } catch (NumberFormatException e) {
-            writeMessageToClient(key, "usage: raise <amount>");
-        }
+        executeRaiseCommand(player, commandParts, key, gameState, minRaise, maxRaise);
     }
 
     private void handleFoldCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
@@ -272,21 +277,29 @@ public class Server {
         writeMessageToClient(key, "You have folded");
         game.nextPlayerMove();
         writeMessageToAllClients(player.getUsername() + " has folded");
-        writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+        writeMessageToClient(game.getCurrentPlayer().getKey(), NOW_IT_IS_YOUR_TURN);
     }
 
-    private void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private boolean checkIfShouldExitFromChangeCommandHandler(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.CARDS_CHANGING) {
             writeMessageToClient(key, "You cannot change cards now");
-            return;
+            return true;
         }
         if (player.wereCardsChanged()) {
             writeMessageToClient(key, "You have already changed your cards");
-            return;
+            return true;
         }
 
         if (commandParts.length < 2 || commandParts.length > 6) {
             writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]\nchange - to change 0 cards");
+            return true;
+        }
+
+        return false;
+    }
+
+    private void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+        if (checkIfShouldExitFromChangeCommandHandler(player, commandParts, key, gameState, isCurrentPlayerMakingAMove)) {
             return;
         }
 
@@ -317,7 +330,7 @@ public class Server {
             if (game.isChangingCardsEnded()) {
                 game.beginSecondRound();
                 writeMessageToAllClients("The second round of betting has started");
-                writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+                writeMessageToClient(game.getCurrentPlayer().getKey(), NOW_IT_IS_YOUR_TURN);
             } else {
                 writeMessageToAllClients("\nWaiting for other players to change their cards (" + (playersNumber - game.getPlayersWhoChangedCardsCount()) + " more players)");
             }
@@ -389,7 +402,7 @@ public class Server {
         if (game.isNextRoundReady()) {
             game.startNewRound();
             writeMessageToAllClients("A new round has started");
-            writeMessageToClient(game.getCurrentPlayer().getKey(), "Now it is your turn");
+            writeMessageToClient(game.getCurrentPlayer().getKey(), NOW_IT_IS_YOUR_TURN);
         }
     }
 

@@ -10,33 +10,33 @@ public class Player implements Comparable&lt;Player&gt; {
     private String name;
 
     private int money;
-<span class="nc" id="L13">    private int bet = 0;</span>
+<span class="fc" id="L13">    private int bet = 0;</span>
 
     private Hand playerHand;
 
-<span class="nc" id="L17">    private boolean isReady = false;</span>
-<span class="nc" id="L18">    private boolean isStartReady = false;</span>
+<span class="fc" id="L17">    private boolean isReady = false;</span>
+<span class="fc" id="L18">    private boolean isStartReady = false;</span>
 
-<span class="nc" id="L20">    private boolean isSmallBlind = false;</span>
-<span class="nc" id="L21">    private boolean isBigBlind = false;</span>
+<span class="fc" id="L20">    private boolean isSmallBlind = false;</span>
+<span class="fc" id="L21">    private boolean isBigBlind = false;</span>
 
-<span class="nc" id="L23">    private boolean isPlaying = true;</span>
+<span class="fc" id="L23">    private boolean isPlaying = true;</span>
 
-<span class="nc" id="L25">    private boolean wereCardsChanged = false;</span>
+<span class="fc" id="L25">    private boolean wereCardsChanged = false;</span>
 
-<span class="nc" id="L27">    private boolean isWinner = false;</span>
+<span class="fc" id="L27">    private boolean isWinner = false;</span>
 
-<span class="nc" id="L29">    private double handValue = -1;</span>
+<span class="fc" id="L29">    private double handValue = -1;</span>
 
-<span class="nc" id="L31">    private boolean nextRoundReady = false;</span>
+<span class="fc" id="L31">    private boolean nextRoundReady = false;</span>
 
     private final Game game;
 
-<span class="nc" id="L35">    public Player(SelectionKey key_, int money_, Game game_) {</span>
-<span class="nc" id="L36">        key = key_;</span>
-<span class="nc" id="L37">        money = money_;</span>
-<span class="nc" id="L38">        game = game_;</span>
-<span class="nc" id="L39">    }</span>
+<span class="fc" id="L35">    public Player(SelectionKey key_, int money_, Game game_) {</span>
+<span class="fc" id="L36">        key = key_;</span>
+<span class="fc" id="L37">        money = money_;</span>
+<span class="fc" id="L38">        game = game_;</span>
+<span class="fc" id="L39">    }</span>
 
     public void resetPlayerForNextRound() {
 <span class="nc" id="L42">        bet = 0;</span>
