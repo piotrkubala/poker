@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 <span class="nc" id="L39">            playersMoney = Integer.parseInt(args[3]);</span>
 
 <span class="nc bnc" id="L41" title="All 2 branches missed.">            while (!stopServerInNextRound) {</span>
-<span class="nc" id="L42">                Server gameServer = new Server(playersNumber, args[1], portNumber, playersMoney);</span>
+<span class="nc" id="L42">                Server gameServer = new Server(playersNumber, args[1], portNumber, playersMoney, false);</span>
 <span class="nc" id="L43">                gameServer.start();</span>
 <span class="nc" id="L44">            }</span>
 <span class="nc" id="L45">        } catch (NumberFormatException e) {</span>

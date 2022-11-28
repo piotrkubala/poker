@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"pl.edu.agh.kis.pz1.poker.common","c":"BadProgramArgumentException","l":"BadProgramArgumentException(String)","u":"%3Cinit%3E(java.lang.String)"}];updateSearchResults();

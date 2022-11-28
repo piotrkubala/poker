@@ -32,12 +32,21 @@ public class Server {
 
     private boolean stopServer = false;
 
-    public Server(int playersNumberArg, String serverAddressArg, int portArg, int moneyPerPlayerAtBeginningArg) {
+    private final boolean testMode;
+
+    public Server(int playersNumberArg, String serverAddressArg, int portArg, int moneyPerPlayerAtBeginningArg, boolean testModeArg) {
         playersNumber = playersNumberArg;
         portNumber = portArg;
         serverAddress = serverAddressArg;
         moneyPerPlayerAtBeginning = moneyPerPlayerAtBeginningArg;
         game = new Game(playersNumber);
+
+        testMode = testModeArg;
+
+        if (testMode) {
+            logger.info("Test mode enabled");
+            return;
+        }
 
         try {
             selector = Selector.open();
@@ -47,7 +56,11 @@ public class Server {
         }
     }
 
-    private void writeMessageToClient(SelectionKey key, String message) {
+    void writeMessageToClient(SelectionKey key, String message) {
+        if (testMode) {
+            return;
+        }
+
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         buffer.put(message.getBytes());
         buffer.flip();
@@ -61,13 +74,17 @@ public class Server {
         }
     }
 
-    private void writeMessageToAllClients(String message) {
+    void writeMessageToAllClients(String message) {
+        if (testMode) {
+            return;
+        }
+
         for (SelectionKey key : clients.keySet()) {
             writeMessageToClient(key, message);
         }
     }
 
-    private void endGameRound(Player player, SelectionKey key) {
+    void endGameRound(Player player, SelectionKey key) {
         List<Player> winners = game.showDownAndDivideMoneyFromPool();
 
         if (winners == null) {
@@ -102,46 +119,50 @@ public class Server {
         writeMessageToAllClients(sb.toString());
     }
 
-    private void handleHelpCommand(String[] commandParts, SelectionKey key) {
+    void handleHelpCommand(String[] commandParts, SelectionKey key) {
+        String helpInfo;
+
         if (commandParts.length == 1) {
-            writeMessageToClient(key, "Available commands: help, username, exit, showdown, raise, fold, change, nextround, show");
+            helpInfo = "Available commands: help, username, exit, showdown, raise, fold, change, nextround, show";
         } else {
             switch (commandParts[1]) {
                 case "help":
-                    writeMessageToClient(key, "help - shows available commands");
+                    helpInfo = "help - shows available commands";
                     break;
                 case "username":
-                    writeMessageToClient(key, "username - sets username");
+                    helpInfo = "username - sets username";
                     break;
                 case "exit":
-                    writeMessageToClient(key, "exit - exits the game");
+                    helpInfo = "exit - exits the game";
                     break;
                 case "call":
-                    writeMessageToClient(key, "showdown - end the game and the show results");
+                    helpInfo = "showdown - end the game and the show results";
                     break;
                 case "raise":
-                    writeMessageToClient(key, "raise <amount> - raises the current bet");
+                    helpInfo = "raise <amount> - raises the current bet";
                     break;
                 case "fold":
-                    writeMessageToClient(key, "fold - folds the current hand");
+                    helpInfo = "fold - folds the current hand";
                     break;
                 case "change":
-                    writeMessageToClient(key, "change <card number 1> [<card number 2>] ... [<card number 5>] - changes cards");
+                    helpInfo = "change <card number 1> [<card number 2>] ... [<card number 5>] - changes cards";
                     break;
                 case "nextround":
-                    writeMessageToClient(key, "nextround - starts next round");
+                    helpInfo = "nextround - starts next round";
                     break;
                 case "show":
-                    writeMessageToClient(key, "show - shows your current hand and money");
+                    helpInfo = "show - shows your current hand and money";
                     break;
                 default:
-                    writeMessageToClient(key, "Unknown command");
+                    helpInfo = "Unknown command";
                     break;
-            }
+            };
         }
+
+        writeMessageToClient(key, helpInfo);
     }
 
-    private void handleUsernameCommand(String[] commandParts, SelectionKey key, Game.GameState gameState) {
+    void handleUsernameCommand(String[] commandParts, SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.WAITING_FOR_PLAYERS) {
             writeMessageToClient(key, "Cannot change username now");
         } else if (commandParts.length != 2) {
@@ -163,7 +184,7 @@ public class Server {
         }
     }
 
-    private void handleStartCommand(SelectionKey key, Game.GameState gameState) {
+    void handleStartCommand(SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.WAITING_FOR_PLAYERS && gameState != Game.GameState.WAITING_FOR_READY) {
             writeMessageToClient(key, "The game has already started");
         } else if (gameState == Game.GameState.WAITING_FOR_READY) {
@@ -179,7 +200,7 @@ public class Server {
         }
     }
 
-    private void handleShowdownCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    void handleShowdownCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
             writeMessageToClient(key, "You cannot showdown now, the game is not in betting phase");
             return;
@@ -197,7 +218,7 @@ public class Server {
         endGameRound(player, key);
     }
 
-    private void executeRaiseCommand(Player player, String[] commandParts, SelectionKey key, int minRaise, int maxRaise) {
+    void executeRaiseCommand(Player player, String[] commandParts, SelectionKey key, int minRaise, int maxRaise) {
         try {
             int raiseAmount = Integer.parseInt(commandParts[1]);
 
@@ -216,7 +237,7 @@ public class Server {
         }
     }
 
-    private void handleRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    void handleRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
             writeMessageToClient(key, "You cannot raise now, the game is not in betting phase");
             return;
@@ -264,7 +285,7 @@ public class Server {
         executeRaiseCommand(player, commandParts, key, minRaise, maxRaise);
     }
 
-    private void handleFoldCommand(Player player, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    void handleFoldCommand(Player player, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
             writeMessageToClient(key, "You cannot fold now, the game is not in betting phase");
             return;
@@ -281,7 +302,7 @@ public class Server {
         writeMessageToClient(game.getCurrentPlayer().getKey(), NOW_IT_IS_YOUR_TURN);
     }
 
-    private boolean checkIfShouldExitFromChangeCommandHandler(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState) {
+    boolean checkIfShouldExitFromChangeCommandHandler(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.CARDS_CHANGING) {
             writeMessageToClient(key, "You cannot change cards now");
             return true;
@@ -299,7 +320,7 @@ public class Server {
         return false;
     }
 
-    private void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState) {
+    void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState) {
         if (checkIfShouldExitFromChangeCommandHandler(player, commandParts, key, gameState)) {
             return;
         }
@@ -340,7 +361,7 @@ public class Server {
         }
     }
 
-    private StringBuilder showCommandPlayerHand(SelectionKey key, Game.GameState gameState) {
+    StringBuilder showCommandPlayerHand(SelectionKey key, Game.GameState gameState) {
         StringBuilder sb = new StringBuilder();
 
         if (game.canShowPlayersHand() && clients.get(key).getPlayerHand() != null) {
@@ -368,7 +389,7 @@ public class Server {
         return sb;
     }
 
-    private void handleShowCommand(SelectionKey key, Game.GameState gameState) {
+    void handleShowCommand(SelectionKey key, Game.GameState gameState) {
         StringBuilder sb = new StringBuilder();
 
         if (clients.get(key).getUsername() != null) {
@@ -395,7 +416,7 @@ public class Server {
         writeMessageToClient(key, sb.toString());
     }
 
-    private void handleNextRoundCommand(Player player, SelectionKey key, Game.GameState gameState) {
+    void handleNextRoundCommand(Player player, SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.AFTER_SHOWDOWN) {
             writeMessageToClient(key, "You cannot start a new round now");
             return;
@@ -415,7 +436,7 @@ public class Server {
         }
     }
 
-    private void handleCommands(String command, SelectionKey key) {
+    void handleCommands(String command, SelectionKey key) {
         String[] commandParts = command.split(" ");
 
         if (commandParts.length == 0) {
@@ -463,7 +484,7 @@ public class Server {
         checkForFirstRoundEnd(gameState, player, key);
     }
 
-    private void checkForFirstRoundEnd(Game.GameState gameState, Player player, SelectionKey key) {
+    void checkForFirstRoundEnd(Game.GameState gameState, Player player, SelectionKey key) {
         if (gameState == Game.GameState.FIRST_ROUND_BETS && game.isBettingEnded()) {
             game.beginChangingCards();
             writeMessageToAllClients("The first round of betting has ended\nYou can now change your cards");
@@ -472,7 +493,11 @@ public class Server {
         }
     }
 
-    private void handleAccept(ServerSocketChannel mySocket) throws IOException {
+    void handleAccept(ServerSocketChannel mySocket) throws IOException {
+        if (testMode) {
+            return;
+        }
+
         logger.info("Accepting connection");
 
         SocketChannel clientSocket = mySocket.accept();
@@ -483,7 +508,11 @@ public class Server {
         clients.put(clientKey, new Player(clientKey, moneyPerPlayerAtBeginning, game));
     }
 
-    private void handleRead(SelectionKey key) throws IOException {
+    void handleRead(SelectionKey key) throws IOException {
+        if (testMode) {
+            return;
+        }
+
         logger.info("Reading data");
 
         SocketChannel client = (SocketChannel) key.channel();
@@ -493,10 +522,9 @@ public class Server {
 
         String data = new String(buffer.array()).trim();
 
-        logger.info("Received data length: " + data.length());
-
         if (data.length() > 0) {
-            logger.info("Received message: " + data);
+            logger.info("Received message:");
+            logger.info(data);
             if (data.equals("exit")) {
                 writeMessageToAllClients("exit");
 
@@ -513,6 +541,10 @@ public class Server {
     }
 
     public void start() {
+        if (testMode) {
+            return;
+        }
+
         try {
             ServerSocketChannel socket = ServerSocketChannel.open();
             ServerSocket serverSocket = socket.socket();

@@ -89,7 +89,7 @@ public class Game {
     }
 
     public GameState getState() {
-<span class="nc" id="L92">        return state;</span>
+<span class="fc" id="L92">        return state;</span>
     }
 
     public boolean canShowPlayersHand() {
@@ -123,7 +123,7 @@ public class Game {
     }
 
     public Player getCurrentPlayer() {
-<span class="nc" id="L126">        return playersByNumber[currentPlayerIndex];</span>
+<span class="fc" id="L126">        return playersByNumber[currentPlayerIndex];</span>
     }
 
     public void nextPlayerMove() {
@@ -133,7 +133,7 @@ public class Game {
 <span class="nc" id="L133">    }</span>
 
     public boolean isMakingMove(Player player) {
-<span class="nc bnc" id="L136" title="All 6 branches missed.">        return player == getCurrentPlayer() &amp;&amp; (state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS);</span>
+<span class="pc bpc" id="L136" title="3 of 6 branches missed.">        return player == getCurrentPlayer() &amp;&amp; (state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS);</span>
     }
 
     public void allPlayersJoined() {

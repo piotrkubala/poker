@@ -39,7 +39,7 @@ public class Main1 {
             playersMoney = Integer.parseInt(args[3]);
 
             while (!stopServerInNextRound) {
-                Server gameServer = new Server(playersNumber, args[1], portNumber, playersMoney);
+                Server gameServer = new Server(playersNumber, args[1], portNumber, playersMoney, false);
                 gameServer.start();
             }
         } catch (NumberFormatException e) {
