@@ -1,6 +1,8 @@
 package pl.edu.agh.kis.pz1;
 
 import org.testng.annotations.Test;
+import pl.edu.agh.kis.pz1.util.Card;
+import pl.edu.agh.kis.pz1.util.Hand;
 
 import static org.testng.Assert.*;
 
@@ -177,5 +179,33 @@ public class ServerTest {
         assertTrue(server.testMode, "Test mode should be enabled");
         assertNotNull(server);
         assertEquals(server.testOutput.toString(), "Username set to piotr", "Test output should be equal for test");
+    }
+
+    @Test
+    public void testUsernameSetTest() {
+        // given
+        Server server = new Server(1, "localhost", 9000, 100, true);
+
+        String expected = "Username set to piotrThere are enough players now\nType 'start' to start the gameYour status is ready nowThe game has started\nYou can check your cards and other stats by typing 'show'Now it is your turnPlayer: piotr\nCurrent game state: First round bets\nCurrent bet: 0\nCurrent player to make a move: piotr\n(0) Ace of Clubs\n(1) Ten of Clubs\n(2) Jack of Diamonds\n(3) Queen of Spades\n(4) King of Hearts\nSmall Blind: piotr has 100$ left, current bet: 0$\n";
+        addPlayers(server, 1);
+
+        // when
+        server.handleCommands("username piotr", null);
+        server.handleCommands("start", null);
+
+        server.game.playersInJoinOrder[0].playerHand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.HEARTS, Card.Rank.KING),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.JACK),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+
+        server.handleCommands("show", null);
+
+        // then
+        assertTrue(server.testMode, "Test mode should be enabled");
+        assertNotNull(server);
+        assertEquals(server.testOutput.toString(), expected, "Test output should be equal for test");
     }
 }

@@ -28,15 +28,15 @@ public class Game {
 
     GameState state = GameState.WAITING_FOR_PLAYERS;
 
-    private int currentPlayerIndex = 0;
-    private int turnsSinceLastBetIncrease = 0;
-    private int currentGamePool = 0;
-    private int currentBet = 0;
+    int currentPlayerIndex = 0;
+    int turnsSinceLastBetIncrease = 0;
+    int currentGamePool = 0;
+    int currentBet = 0;
 
     // the 0th player is small blind, the 1st is big blind; all in order
-    private final Player[] playersByNumber;
-    private final Player[] playersInJoinOrder;
-    private final ArrayList<Integer> playersOrder;
+    final Player[] playersByNumber;
+    final Player[] playersInJoinOrder;
+    final ArrayList<Integer> playersOrder;
 
     private Deck gameDeck;
 
