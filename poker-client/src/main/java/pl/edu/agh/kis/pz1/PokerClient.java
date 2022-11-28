@@ -16,7 +16,7 @@ import java.util.logging.LogRecord;
 public class PokerClient {
     private static Logger logger = Logger.getLogger(PokerClient.class.getName());
 
-    class CustomRecordFormatter extends Formatter {
+    static class CustomRecordFormatter extends Formatter {
         @Override
         public String format(final LogRecord r) {
             StringBuilder sb = new StringBuilder();

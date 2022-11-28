@@ -52,8 +52,9 @@ public class Server {
         buffer.put(message.getBytes());
         buffer.flip();
 
-        try (SocketChannel sc = (SocketChannel) key.channel()) {
-            sc.write(buffer);
+        // do not close this channel!!!
+        try {
+            ((SocketChannel) key.channel()).write(buffer);
         } catch (IOException e) {
             logger.severe("Cannot write to client");
             System.exit(-1);

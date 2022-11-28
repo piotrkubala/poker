@@ -2,24 +2,24 @@
 <testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-11-28T19:09:58 CET" name="Surefire suite" finished-at="2022-11-28T19:09:59 CET" duration-ms="162">
+  <suite started-at="2022-11-28T19:48:21 CET" name="Surefire suite" finished-at="2022-11-28T19:48:21 CET" duration-ms="168">
     <groups>
     </groups>
-    <test started-at="2022-11-28T19:09:58 CET" name="Surefire test" finished-at="2022-11-28T19:09:59 CET" duration-ms="162">
+    <test started-at="2022-11-28T19:48:21 CET" name="Surefire test" finished-at="2022-11-28T19:48:21 CET" duration-ms="168">
       <class name="pl.edu.agh.kis.pz1.ServerTest">
-        <test-method signature="testServerCreation()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@5460cf3a]" started-at="2022-11-28T19:09:58 CET" name="testServerCreation" finished-at="2022-11-28T19:09:59 CET" duration-ms="52" status="PASS">
+        <test-method signature="testServerCreation()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@5460cf3a]" started-at="2022-11-28T19:48:21 CET" name="testServerCreation" finished-at="2022-11-28T19:48:21 CET" duration-ms="51" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testServerCreation -->
       </class> <!-- pl.edu.agh.kis.pz1.ServerTest -->
       <class name="pl.edu.agh.kis.pz1.GameTest">
-        <test-method signature="testGameCreation()[pri:0, instance:pl.edu.agh.kis.pz1.GameTest@1b955cac]" started-at="2022-11-28T19:09:59 CET" name="testGameCreation" finished-at="2022-11-28T19:09:59 CET" duration-ms="0" status="PASS">
+        <test-method signature="testGameCreation()[pri:0, instance:pl.edu.agh.kis.pz1.GameTest@1b955cac]" started-at="2022-11-28T19:48:21 CET" name="testGameCreation" finished-at="2022-11-28T19:48:21 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGameCreation -->
       </class> <!-- pl.edu.agh.kis.pz1.GameTest -->
       <class name="pl.edu.agh.kis.pz1.PlayerTest">
-        <test-method signature="testPlayerCreation()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@72437d8d]" started-at="2022-11-28T19:09:59 CET" name="testPlayerCreation" finished-at="2022-11-28T19:09:59 CET" duration-ms="0" status="PASS">
+        <test-method signature="testPlayerCreation()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@72437d8d]" started-at="2022-11-28T19:48:21 CET" name="testPlayerCreation" finished-at="2022-11-28T19:48:21 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPlayerCreation -->

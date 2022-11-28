@@ -16,7 +16,7 @@ import java.util.logging.LogRecord;
 public class PokerClient {
 <span class="fc" id="L17">    private static Logger logger = Logger.getLogger(PokerClient.class.getName());</span>
 
-<span class="fc" id="L19">    class CustomRecordFormatter extends Formatter {</span>
+<span class="fc" id="L19">    static class CustomRecordFormatter extends Formatter {</span>
         @Override
         public String format(final LogRecord r) {
 <span class="nc" id="L22">            StringBuilder sb = new StringBuilder();</span>
