@@ -897,4 +897,184 @@ public class HandTest {
         assertTrue(hand4IsBetterThanHand1, "Hand 4 should be better than hand 1");
         assertTrue(hand2IsEqualHand2, "Hand 2 should be equal to hand 2");
     }
+
+    @Test
+    void testCalculateValueForRoyalFlush() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.CLUBS, Card.Rank.KING),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.CLUBS, Card.Rank.JACK),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+
+        // when
+        double handValue = hand.calculateValueForRoyalFlush();
+
+        // then
+        assertEquals(10.0, handValue, 1.0e-10, "Hand should have royal flush value");
+    }
+
+    @Test
+    void testCalculateValueForStraightFlush() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.NINE),
+                new Card(Card.Suit.CLUBS, Card.Rank.KING),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.CLUBS, Card.Rank.JACK),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+
+        // when
+        double handValue = hand.calculateValueForStraightFlush();
+
+        // then
+        assertEquals(9.86666666666666, handValue, 1.0e-10, "Hand should have straight flush value");
+    }
+
+    @Test
+    void testCalculateValueForFourOfAKind() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.QUEEN),
+                new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+                new Card(Card.Suit.HEARTS, Card.Rank.QUEEN)
+        });
+
+        // when
+        double handValue = hand.calculateValueForFourOfAKind();
+
+        // then
+        assertEquals(8.80888888888888, handValue, 1.0e-10, "Hand should have four of a kind value");
+    }
+
+    @Test
+    void testCalculateValueForFullHouse() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.THREE),
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.THREE),
+                new Card(Card.Suit.SPADES, Card.Rank.THREE),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+
+        // when
+        double handValue = hand.calculateValueForFullHouse();
+
+        // then
+        assertEquals(7.2622222222222222, handValue, 1.0e-10, "Hand should have full house value");
+    }
+
+    @Test
+    void testCalculateValueForFlush() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.CLUBS, Card.Rank.THREE),
+                new Card(Card.Suit.CLUBS, Card.Rank.SEVEN),
+                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN)
+        });
+
+        // when
+        double handValue = hand.calculateValueForFlush();
+
+        // then
+        assertEquals(6.98880263374, handValue, 1.0e-10, "Hand should have flush value");
+    }
+
+    @Test
+    void testCalculateValueForStraight() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.THREE),
+                new Card(Card.Suit.SPADES, Card.Rank.FOUR),
+                new Card(Card.Suit.HEARTS, Card.Rank.FIVE)
+        });
+
+        // when
+        double handValue = hand.calculateValueForStraight();
+
+        // then
+        assertEquals(5.333333333333333, handValue, 1.0e-10, "Hand should have straight value");
+    }
+
+    @Test
+    void testCalculateValueForThreeOfAKind() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.THREE),
+                new Card(Card.Suit.SPADES, Card.Rank.THREE),
+                new Card(Card.Suit.HEARTS, Card.Rank.THREE)
+        });
+
+        // when
+        double handValue = hand.calculateValueForThreeOfAKind();
+
+        // then
+        assertEquals(4.26281481481, handValue, 1.0e-10, "Hand should have three of a kind value");
+    }
+
+    @Test
+    void testCalculateValueForTwoPairs() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.THREE),
+                new Card(Card.Suit.SPADES, Card.Rank.THREE),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+
+        // when
+        double handValue = hand.calculateValueForTwoPairs();
+
+        // then
+        assertEquals(3.9472592592592592, handValue, 1.0e-10, "Hand should have two pairs value");
+    }
+
+    @Test
+    void testCalculateValueForPair() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.THREE),
+                new Card(Card.Suit.SPADES, Card.Rank.FOUR),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE)
+        });
+
+        // when
+        double handValue = hand.calculateValueForPair();
+
+        // then
+        assertEquals(2.9520395061728397, handValue, 1.0e-10, "Hand should have pair value");
+    }
+
+    @Test
+    void testCalculateValueForHighCard() {
+        // given
+        Hand hand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.TWO),
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.SEVEN),
+                new Card(Card.Suit.SPADES, Card.Rank.FOUR),
+                new Card(Card.Suit.HEARTS, Card.Rank.FIVE)
+        });
+
+        // when
+        double handValue = hand.calculateValueForHighCard();
+
+        // then
+        assertEquals(1.966007572016461, handValue, 1.0e-10, "Hand should have high card value");
+    }
 }

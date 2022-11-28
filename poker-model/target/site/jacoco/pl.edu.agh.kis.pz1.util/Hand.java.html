@@ -157,150 +157,191 @@ public class Hand implements Comparable&lt;Hand&gt; {
 <span class="fc bfc" id="L157" title="All 2 branches covered.">        return pairs == 1;</span>
     }
 
+    double calculateValueForRoyalFlush() {
+<span class="fc" id="L161">        return 10.0;</span>
+    }
+
+    double calculateValueForStraightFlush() {
+<span class="fc" id="L165">        return 9.0 + cards[HAND_SIZE - 1].rank.getRank() / 15.0;</span>
+    }
+
+    double calculateValueForFourOfAKind() {
+<span class="fc" id="L169">        double sum = 0.0;</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        for (int i = rankCounts.length - 1; i &gt;= 0; i--) {</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">            if (rankCounts[i] == 4) {</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">                sum += (i == 1 ? 14 : i);</span>
+            }
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            else if (rankCounts[i] == 1) {</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">                sum += (i == 1 ? 14 : i) / 15.0;</span>
+            }
+        }
+
+<span class="fc" id="L179">        return 8.0 + sum / 15.0;</span>
+    }
+
+    double calculateValueForFullHouse() {
+<span class="fc" id="L183">        double sum = 0.0;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        for (int i = 0; i &lt; rankCounts.length; i++) {</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (rankCounts[i] == 3) {</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">                sum += (i == 1 ? 14.0 : i);</span>
+            }
+<span class="fc bfc" id="L188" title="All 2 branches covered.">            else if (rankCounts[i] == 2) {</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">                sum += (i == 1 ? 14.0 : i) / 15.0;</span>
+            }
+        }
+
+<span class="fc" id="L193">        return 7.0 + sum / 15.0;</span>
+    }
+
+    double calculateValueForFlush() {
+<span class="fc" id="L197">        double sum = 0.0, multiplier = 1.0;</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (rankCounts[1] != 0) {</span>
+<span class="fc" id="L199">            sum += 14.0;</span>
+<span class="fc" id="L200">            multiplier /= 15.0;</span>
+        }
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        for (int i = HAND_SIZE - 1; i &gt;= 0; i--) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">            if (cards[i].rank.getRank() == 1) {</span>
+<span class="fc" id="L204">                break;</span>
+            }
+<span class="fc" id="L206">            sum += cards[i].rank.getRank() * multiplier;</span>
+<span class="fc" id="L207">            multiplier /= 15.0;</span>
+        }
+
+<span class="fc" id="L210">        return 6.0 + sum / 15.0;</span>
+    }
+
+    double calculateValueForStraight() {
+<span class="pc bpc" id="L214" title="1 of 4 branches missed.">        if (cards[0].rank == Card.Rank.ACE &amp;&amp; cards[HAND_SIZE - 1].rank == Card.Rank.KING) {</span>
+<span class="nc" id="L215">            return 5.0 + 14.0;</span>
+        }
+<span class="fc" id="L217">        return 5.0 + cards[HAND_SIZE - 1].rank.getRank() / 15.0;</span>
+    }
+
+    double calculateValueForThreeOfAKind() {
+<span class="fc" id="L221">        double sum = 0.0, multiplier = 1.0 / 15.0;</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (rankCounts[1] == 1) {</span>
+<span class="fc" id="L223">            sum += 14.0 * multiplier;</span>
+<span class="fc" id="L224">            multiplier /= 15.0;</span>
+        }
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        for (int i = rankCounts.length - 1; i &gt;= 1; i--) {</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">            if (rankCounts[i] == 3) {</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">                sum += (i == 1 ? 14.0 : i);</span>
+            }
+<span class="fc bfc" id="L230" title="All 4 branches covered.">            else if (rankCounts[i] == 1 &amp;&amp; i != 1) {</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">                sum += (i == 1 ? 14.0 : i) * multiplier;</span>
+<span class="fc" id="L232">                multiplier /= 15.0;</span>
+            }
+        }
+
+<span class="fc" id="L236">        return 4.0 + sum / 15.0;</span>
+    }
+
+    double calculateValueForTwoPairs() {
+<span class="fc" id="L240">        double sum = 0.0, multiplier = 1.0;</span>
+
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        if (rankCounts[1] == 2) {</span>
+<span class="fc" id="L243">            sum += 14.0 * multiplier;</span>
+<span class="fc" id="L244">            multiplier /= 15.0;</span>
+        }
+
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        for (int i = RANKS_NUMBER; i &gt;= 0; i--) {</span>
+<span class="fc bfc" id="L248" title="All 4 branches covered.">            if (rankCounts[i] == 2 &amp;&amp; i != 1) {</span>
+<span class="fc" id="L249">                sum += i * multiplier;</span>
+<span class="fc" id="L250">                multiplier /= 15.0;</span>
+            }
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            else if (rankCounts[i] == 1) {</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">                sum += (i == 1 ? 14.0 : i) / 225.0;</span>
+            }
+        }
+
+<span class="fc" id="L257">        return 3.0 + sum / 15.0;</span>
+    }
+
+    double calculateValueForPair() {
+<span class="fc" id="L261">        double sum = 0.0, multiplier = 1.0;</span>
+
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">        for (int i = RANKS_NUMBER; i &gt;= 0; i--) {</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">            if (rankCounts[i] == 2) {</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">                sum += (i == 1 ? 14.0 : i) * multiplier;</span>
+<span class="fc" id="L266">                multiplier /= 15.0;</span>
+<span class="fc" id="L267">                break;</span>
+            }
+        }
+
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        if (rankCounts[1] == 1) {</span>
+<span class="fc" id="L272">            sum += 14.0 * multiplier;</span>
+<span class="fc" id="L273">            multiplier /= 15.0;</span>
+        }
+
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        for (int i = RANKS_NUMBER; i &gt;= 2; i--) {</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">            if (rankCounts[i] == 1) {</span>
+<span class="fc" id="L278">                sum += i * multiplier;</span>
+<span class="fc" id="L279">                multiplier /= 15.0;</span>
+            }
+        }
+
+<span class="fc" id="L283">        return 2.0 + sum / 15.0;</span>
+    }
+
+    double calculateValueForHighCard() {
+<span class="fc" id="L287">        double sum = 0.0, multiplier = 1.0;</span>
+
+<span class="pc bpc" id="L289" title="1 of 4 branches missed.">        for (int i = 0; i &lt; HAND_SIZE &amp;&amp; cards[i].rank == Card.Rank.ACE; i++) {</span>
+<span class="fc" id="L290">            sum += 14.0 * multiplier;</span>
+<span class="fc" id="L291">            multiplier /= 15.0;</span>
+        }
+
+<span class="fc bfc" id="L294" title="All 4 branches covered.">        for (int i = HAND_SIZE - 1; i &gt;= 0 &amp;&amp; cards[i].rank != Card.Rank.ACE; i--) {</span>
+<span class="fc" id="L295">            sum += cards[i].rank.getRank() * multiplier;</span>
+<span class="fc" id="L296">            multiplier /= 15.0;</span>
+        }
+
+<span class="fc" id="L299">        return 1.0 + sum / 15.0;</span>
+    }
+
     public double getHandValue() {
-<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (hasRoyalFlush()) {</span>
-<span class="fc" id="L162">            return 10.0;</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">        if (hasRoyalFlush()) {</span>
+<span class="fc" id="L304">            return calculateValueForRoyalFlush();</span>
         }
 
-<span class="fc bfc" id="L165" title="All 2 branches covered.">        if (hasStraightFlush()) {</span>
-<span class="fc" id="L166">            return 9.0 + cards[HAND_SIZE - 1].rank.getRank() / 15.0;</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        if (hasStraightFlush()) {</span>
+<span class="fc" id="L308">            return calculateValueForStraightFlush();</span>
         }
 
-<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (hasFourOfAKind()) {</span>
-<span class="fc" id="L170">            double sum = 0.0;</span>
-<span class="fc bfc" id="L171" title="All 2 branches covered.">            for (int i = rankCounts.length - 1; i &gt;= 0; i--) {</span>
-<span class="fc bfc" id="L172" title="All 2 branches covered.">                if (rankCounts[i] == 4) {</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">                    sum += (i == 1 ? 14 : i);</span>
-                }
-<span class="fc bfc" id="L175" title="All 2 branches covered.">                else if (rankCounts[i] == 1) {</span>
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">                    sum += (i == 1 ? 14 : i) / 15.0;</span>
-                }
-            }
-
-<span class="fc" id="L180">            return 8.0 + sum / 15.0;</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">        if (hasFourOfAKind()) {</span>
+<span class="fc" id="L312">            return calculateValueForFourOfAKind();</span>
         }
 
-<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (hasFullHouse()) {</span>
-<span class="fc" id="L184">            double sum = 0.0;</span>
-<span class="fc bfc" id="L185" title="All 2 branches covered.">            for (int i = 0; i &lt; rankCounts.length; i++) {</span>
-<span class="fc bfc" id="L186" title="All 2 branches covered.">                if (rankCounts[i] == 3) {</span>
-<span class="pc bpc" id="L187" title="1 of 2 branches missed.">                    sum += (i == 1 ? 14.0 : i);</span>
-                }
-<span class="fc bfc" id="L189" title="All 2 branches covered.">                else if (rankCounts[i] == 2) {</span>
-<span class="pc bpc" id="L190" title="1 of 2 branches missed.">                    sum += (i == 1 ? 14.0 : i) / 15.0;</span>
-                }
-            }
-
-<span class="fc" id="L194">            return 7.0 + sum / 15.0;</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">        if (hasFullHouse()) {</span>
+<span class="fc" id="L316">            return calculateValueForFullHouse();</span>
         }
 
-<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (hasFlush()) {</span>
-<span class="fc" id="L198">            double sum = 0.0, multiplier = 1.0;</span>
-<span class="pc bpc" id="L199" title="1 of 2 branches missed.">            if (cards[0].rank == Card.Rank.ACE) {</span>
-<span class="nc" id="L200">                sum += 14.0;</span>
-<span class="nc" id="L201">                multiplier /= 15.0;</span>
-            }
-<span class="fc bfc" id="L203" title="All 2 branches covered.">            for (int i = HAND_SIZE - 1; i &gt;= 0; i--) {</span>
-<span class="fc" id="L204">                sum += cards[i].rank.getRank() * multiplier;</span>
-<span class="fc" id="L205">                multiplier /= 15.0;</span>
-            }
-
-<span class="fc" id="L208">            return 6.0 + sum / 15.0;</span>
+<span class="fc bfc" id="L319" title="All 2 branches covered.">        if (hasFlush()) {</span>
+<span class="fc" id="L320">            return calculateValueForFlush();</span>
         }
 
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (hasStraight()) {</span>
-<span class="pc bpc" id="L212" title="3 of 4 branches missed.">            if (cards[0].rank == Card.Rank.ACE &amp;&amp; cards[HAND_SIZE - 1].rank == Card.Rank.KING) {</span>
-<span class="nc" id="L213">                return 5.0 + 14.0;</span>
-            }
-<span class="fc" id="L215">            return 5.0 + cards[HAND_SIZE - 1].rank.getRank() / 15.0;</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">        if (hasStraight()) {</span>
+<span class="fc" id="L324">            return calculateValueForStraight();</span>
         }
 
-<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (hasThreeOfAKind()) {</span>
-<span class="fc" id="L219">            double sum = 0.0, multiplier = 1.0 / 15.0;</span>
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">            if (rankCounts[1] == 1) {</span>
-<span class="nc" id="L221">                sum += 14.0 * multiplier;</span>
-<span class="nc" id="L222">                multiplier /= 15.0;</span>
-            }
-<span class="fc bfc" id="L224" title="All 2 branches covered.">            for (int i = rankCounts.length - 1; i &gt;= 1; i--) {</span>
-<span class="fc bfc" id="L225" title="All 2 branches covered.">                if (rankCounts[i] == 3) {</span>
-<span class="pc bpc" id="L226" title="1 of 2 branches missed.">                    sum += (i == 1 ? 14.0 : i);</span>
-                }
-<span class="pc bpc" id="L228" title="1 of 4 branches missed.">                else if (rankCounts[i] == 1 &amp;&amp; i != 0) {</span>
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">                    sum += (i == 1 ? 14.0 : i) * multiplier;</span>
-<span class="fc" id="L230">                    multiplier /= 15.0;</span>
-                }
-            }
-
-<span class="fc" id="L234">            return 4.0 + sum / 15.0;</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        if (hasThreeOfAKind()) {</span>
+<span class="fc" id="L328">            return calculateValueForThreeOfAKind();</span>
         }
 
-<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (hasTwoPairs()) {</span>
-<span class="fc" id="L238">            double sum = 0.0, multiplier = 1.0;</span>
-
-<span class="fc bfc" id="L240" title="All 2 branches covered.">            if (rankCounts[1] == 2) {</span>
-<span class="fc" id="L241">                sum += 14.0 * multiplier;</span>
-<span class="fc" id="L242">                multiplier /= 15.0;</span>
-            }
-
-<span class="fc bfc" id="L245" title="All 2 branches covered.">            for (int i = RANKS_NUMBER; i &gt;= 0; i--) {</span>
-<span class="fc bfc" id="L246" title="All 4 branches covered.">                if (rankCounts[i] == 2 &amp;&amp; i != 1) {</span>
-<span class="fc" id="L247">                    sum += i * multiplier;</span>
-<span class="fc" id="L248">                    multiplier /= 15.0;</span>
-                }
-<span class="fc bfc" id="L250" title="All 2 branches covered.">                else if (rankCounts[i] == 1) {</span>
-<span class="fc bfc" id="L251" title="All 2 branches covered.">                    sum += (i == 1 ? 14.0 : i) / 225.0;</span>
-                }
-            }
-
-<span class="fc" id="L255">            return 3.0 + sum / 15.0;</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">        if (hasTwoPairs()) {</span>
+<span class="fc" id="L332">            return calculateValueForTwoPairs();</span>
         }
 
-<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (hasPair()) {</span>
-<span class="fc" id="L259">            double sum = 0.0, multiplier = 1.0;</span>
-
-<span class="pc bpc" id="L261" title="1 of 2 branches missed.">            for (int i = RANKS_NUMBER; i &gt;= 0; i--) {</span>
-<span class="fc bfc" id="L262" title="All 2 branches covered.">                if (rankCounts[i] == 2) {</span>
-<span class="fc bfc" id="L263" title="All 2 branches covered.">                    sum += (i == 1 ? 14.0 : i) * multiplier;</span>
-<span class="fc" id="L264">                    multiplier /= 15.0;</span>
-<span class="fc" id="L265">                    break;</span>
-                }
-            }
-
-<span class="fc bfc" id="L269" title="All 2 branches covered.">            if (rankCounts[1] == 1) {</span>
-<span class="fc" id="L270">                sum += 14.0 * multiplier;</span>
-<span class="fc" id="L271">                multiplier /= 15.0;</span>
-            }
-
-<span class="fc bfc" id="L274" title="All 2 branches covered.">            for (int i = RANKS_NUMBER; i &gt;= 2; i--) {</span>
-<span class="fc bfc" id="L275" title="All 2 branches covered.">                if (rankCounts[i] == 1) {</span>
-<span class="fc" id="L276">                    sum += i * multiplier;</span>
-<span class="fc" id="L277">                    multiplier /= 15.0;</span>
-                }
-            }
-
-<span class="fc" id="L281">            return 2.0 + sum / 15.0;</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">        if (hasPair()) {</span>
+<span class="fc" id="L336">            return calculateValueForPair();</span>
         }
 
-        {
-<span class="fc" id="L285">            double sum = 0.0, multiplier = 1.0;</span>
-
-<span class="pc bpc" id="L287" title="1 of 4 branches missed.">            for (int i = 0; i &lt; HAND_SIZE &amp;&amp; cards[i].rank == Card.Rank.ACE; i++) {</span>
-<span class="fc" id="L288">                sum += 14.0 * multiplier;</span>
-<span class="fc" id="L289">                multiplier /= 15.0;</span>
-            }
-
-<span class="fc bfc" id="L292" title="All 4 branches covered.">            for (int i = HAND_SIZE - 1; i &gt;= 0 &amp;&amp; cards[i].rank != Card.Rank.ACE; i--) {</span>
-<span class="fc" id="L293">                sum += cards[i].rank.getRank() * multiplier;</span>
-<span class="fc" id="L294">                multiplier /= 15.0;</span>
-            }
-
-<span class="fc" id="L297">            return 1.0 + sum / 15.0;</span>
-        }
+<span class="fc" id="L339">        return calculateValueForHighCard();</span>
     }
 
     @Override
     public int compareTo(Hand otherHand) {
-<span class="fc" id="L303">        return Double.compare(getHandValue(), otherHand.getHandValue());</span>
+<span class="fc" id="L344">        return Double.compare(getHandValue(), otherHand.getHandValue());</span>
     }
 }
 

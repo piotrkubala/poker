@@ -1,6 +1,6 @@
 package pl.edu.agh.kis.pz1;
 
-import sun.misc.Signal;
+import pl.edu.agh.kis.pz1.poker.common.BadProgramArgumentException;
 
 import java.util.logging.Logger;
 
@@ -9,7 +9,7 @@ import java.util.logging.Logger;
  * @author Piotr Kubala, schemat klas: Paweł Skrzyński
  */
 public class Main1 {
-    private static Logger logger = Logger.getLogger(Main1.class.getName());
+    private static final Logger logger = Logger.getLogger(Main1.class.getName());
 
     private static boolean stopServerInNextRound = false;
 
@@ -19,13 +19,17 @@ public class Main1 {
     }
 
     public static void main(String[] args) {
-        if (args.length < 3) {
-            logger.severe("Not enough arguments");
+        try {
+            if (args.length < 3) {
+                throw new BadProgramArgumentException("Not enough arguments");
+            }
+        } catch (BadProgramArgumentException e) {
+            logger.severe(e.getMessage());
             logger.info("Usage: java -jar server.jar <number of players> <address> <port> <money per player>");
             System.exit(1);
         }
 
-        Signal.handle(new Signal("INT"), signal -> stopSignalHandler());
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> stopSignalHandler()));
 
         try {
             int playersNumber, portNumber, playersMoney;

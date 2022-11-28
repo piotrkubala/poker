@@ -75,7 +75,8 @@ public class Server {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(player.getUsername() + " called\n");
+        sb.append(player.getUsername());
+        sb.append(" called\n");
         sb.append("The game is over\n");
 
         if (winners.size() == 1) {
@@ -86,10 +87,10 @@ public class Server {
             sb.append("\n");
         } else {
             sb.append("There is a draw between ");
-            for (int i = 0; i < winners.size(); i++) {
-                sb.append(winners.get(i).getUsername());
+            for (Player winner : winners) {
+                sb.append(winner.getUsername());
                 sb.append(" with hand:\n");
-                sb.append(winners.get(i).getPlayerHand().toString());
+                sb.append(winner.getPlayerHand().toString());
             }
             sb.append("\n");
         }
@@ -155,7 +156,7 @@ public class Server {
             if (game.isReady()) {
                 game.allPlayersJoined();
 
-                writeMessageToAllClients("There are enough players now\nType \'start\' to start the game");
+                writeMessageToAllClients("There are enough players now\nType 'start' to start the game");
             }
         }
     }
@@ -285,28 +286,30 @@ public class Server {
         }
 
         if (commandParts.length < 2 || commandParts.length > 6) {
-            writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
+            writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]\nchange - to change 0 cards");
             return;
         }
 
         try {
-            int[] cardsToChange = new int[commandParts.length - 1];
-            for (int i = 1; i < commandParts.length; i++) {
-                cardsToChange[i - 1] = Integer.parseInt(commandParts[i]);
-                if (cardsToChange[i - 1] < 0 || cardsToChange[i - 1] > 4) {
-                    writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]");
-                    return;
+            if (!commandParts[1].equals("-")) {
+                int[] cardsToChange = new int[commandParts.length - 1];
+                for (int i = 1; i < commandParts.length; i++) {
+                    cardsToChange[i - 1] = Integer.parseInt(commandParts[i]);
+                    if (cardsToChange[i - 1] < 0 || cardsToChange[i - 1] > 4) {
+                        writeMessageToClient(key, "usage: change <card1> [<card2>] ... [<card5>]\nchange - to change 0 cards");
+                        return;
+                    }
                 }
+
+                Card[] newCards = game.getCardsFromDeck(cardsToChange.length);
+                Card[] oldPlayerCards = player.getPlayerHand().getCards();
+
+                for (int i = 0; i < cardsToChange.length; i++) {
+                    oldPlayerCards[cardsToChange[i]] = newCards[i];
+                }
+
+                player.getPlayerHand().setCards(oldPlayerCards);
             }
-
-            Card[] newCards = game.getCardsFromDeck(cardsToChange.length);
-            Card[] oldPlayerCards = player.getPlayerHand().getCards();
-
-            for (int i = 0; i < cardsToChange.length; i++) {
-                oldPlayerCards[cardsToChange[i]] = newCards[i];
-            }
-
-            player.getPlayerHand().setCards(oldPlayerCards);
             player.setCardsChanged(true);
 
             writeMessageToAllClients(player.getUsername() + " has changed his cards");

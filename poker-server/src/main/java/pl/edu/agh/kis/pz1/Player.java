@@ -1,21 +1,16 @@
 package pl.edu.agh.kis.pz1;
 
-import pl.edu.agh.kis.pz1.util.Card;
 import pl.edu.agh.kis.pz1.util.Hand;
 
 import java.nio.channels.SelectionKey;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Player implements Comparable<Player> {
-    private SelectionKey key;
+    private final SelectionKey key;
 
     private String name;
 
     private int money;
     private int bet = 0;
-
-    private boolean folded = false;
 
     private Hand playerHand;
 
@@ -35,7 +30,7 @@ public class Player implements Comparable<Player> {
 
     private boolean nextRoundReady = false;
 
-    private Game game;
+    private final Game game;
 
     public Player(SelectionKey key_, int money_, Game game_) {
         key = key_;
@@ -45,7 +40,6 @@ public class Player implements Comparable<Player> {
 
     public void resetPlayerForNextRound() {
         bet = 0;
-        folded = false;
         isReady = false;
         isStartReady = false;
         isSmallBlind = false;

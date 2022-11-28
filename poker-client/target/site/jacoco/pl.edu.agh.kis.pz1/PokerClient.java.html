@@ -42,16 +42,16 @@ public class PokerClient {
 <span class="nc" id="L42">        }</span>
     }
 
-<span class="nc" id="L45">    private static Logger logger = Logger.getLogger(PokerClient.class.getName());</span>
-<span class="nc" id="L46">    private static Scanner scanner = new Scanner(System.in);</span>
+<span class="fc" id="L45">    private static Logger logger = Logger.getLogger(PokerClient.class.getName());</span>
+<span class="fc" id="L46">    private static Scanner scanner = new Scanner(System.in);</span>
 
     private final String serverAddress;
     private final int portNumber;
 
-<span class="nc" id="L51">    public PokerClient(String serverAddress_, int portNumber_) {</span>
-<span class="nc" id="L52">        serverAddress = serverAddress_;</span>
-<span class="nc" id="L53">        portNumber = portNumber_;</span>
-<span class="nc" id="L54">    }</span>
+<span class="fc" id="L51">    public PokerClient(String serverAddress_, int portNumber_) {</span>
+<span class="fc" id="L52">        serverAddress = serverAddress_;</span>
+<span class="fc" id="L53">        portNumber = portNumber_;</span>
+<span class="fc" id="L54">    }</span>
 
     public void clientLoop() {
 <span class="nc" id="L57">        logger.info(&quot;Starting poker client&quot;);</span>

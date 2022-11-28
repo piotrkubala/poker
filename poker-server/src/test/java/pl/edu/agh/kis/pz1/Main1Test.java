@@ -5,8 +5,6 @@ import org.junit.Test;
 
 
 public class Main1Test {
-
-
     /**
      * Test for the construction of Main and the 
      * main method being called

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main1.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">poker-server</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">Main1.java</span></div><h1>Main1.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
 
-import sun.misc.Signal;
+import pl.edu.agh.kis.pz1.poker.common.BadProgramArgumentException;
 
 import java.util.logging.Logger;
 
@@ -9,7 +9,7 @@ import java.util.logging.Logger;
  * @author Piotr Kubala, schemat klas: Paweł Skrzyński
  */
 <span class="fc" id="L11">public class Main1 {</span>
-<span class="fc" id="L12">    private static Logger logger = Logger.getLogger(Main1.class.getName());</span>
+<span class="fc" id="L12">    private static final Logger logger = Logger.getLogger(Main1.class.getName());</span>
 
 <span class="fc" id="L14">    private static boolean stopServerInNextRound = false;</span>
 
@@ -19,30 +19,34 @@ import java.util.logging.Logger;
 <span class="nc" id="L19">    }</span>
 
     public static void main(String[] args) {
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (args.length &lt; 3) {</span>
-<span class="nc" id="L23">            logger.severe(&quot;Not enough arguments&quot;);</span>
-<span class="nc" id="L24">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;address&gt; &lt;port&gt; &lt;money per player&gt;&quot;);</span>
-<span class="nc" id="L25">            System.exit(1);</span>
-        }
+        try {
+<span class="nc bnc" id="L23" title="All 2 branches missed.">            if (args.length &lt; 3) {</span>
+<span class="nc" id="L24">                throw new BadProgramArgumentException(&quot;Not enough arguments&quot;);</span>
+            }
+<span class="nc" id="L26">        } catch (BadProgramArgumentException e) {</span>
+<span class="nc" id="L27">            logger.severe(e.getMessage());</span>
+<span class="nc" id="L28">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;address&gt; &lt;port&gt; &lt;money per player&gt;&quot;);</span>
+<span class="nc" id="L29">            System.exit(1);</span>
+<span class="nc" id="L30">        }</span>
 
-<span class="nc" id="L28">        Signal.handle(new Signal(&quot;INT&quot;), signal -&gt; stopSignalHandler());</span>
+<span class="nc" id="L32">        Runtime.getRuntime().addShutdownHook(new Thread(() -&gt; stopSignalHandler()));</span>
 
         try {
             int playersNumber, portNumber, playersMoney;
 
-<span class="nc" id="L33">            playersNumber = Integer.parseInt(args[0]);</span>
-<span class="nc" id="L34">            portNumber = Integer.parseInt(args[2]);</span>
-<span class="nc" id="L35">            playersMoney = Integer.parseInt(args[3]);</span>
+<span class="nc" id="L37">            playersNumber = Integer.parseInt(args[0]);</span>
+<span class="nc" id="L38">            portNumber = Integer.parseInt(args[2]);</span>
+<span class="nc" id="L39">            playersMoney = Integer.parseInt(args[3]);</span>
 
-<span class="nc bnc" id="L37" title="All 2 branches missed.">            while (!stopServerInNextRound) {</span>
-<span class="nc" id="L38">                Server gameServer = new Server(playersNumber, args[1], portNumber, playersMoney);</span>
-<span class="nc" id="L39">                gameServer.start();</span>
-<span class="nc" id="L40">            }</span>
-<span class="nc" id="L41">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L42">            logger.severe(&quot;Wrong arguments&quot;);</span>
-<span class="nc" id="L43">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;port&gt;&quot;);</span>
-<span class="nc" id="L44">            System.exit(1);</span>
-<span class="nc" id="L45">        }</span>
-<span class="nc" id="L46">    }</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">            while (!stopServerInNextRound) {</span>
+<span class="nc" id="L42">                Server gameServer = new Server(playersNumber, args[1], portNumber, playersMoney);</span>
+<span class="nc" id="L43">                gameServer.start();</span>
+<span class="nc" id="L44">            }</span>
+<span class="nc" id="L45">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L46">            logger.severe(&quot;Wrong arguments&quot;);</span>
+<span class="nc" id="L47">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;port&gt;&quot;);</span>
+<span class="nc" id="L48">            System.exit(1);</span>
+<span class="nc" id="L49">        }</span>
+<span class="nc" id="L50">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
