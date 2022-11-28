@@ -38,7 +38,7 @@ public class Game {
     final Player[] playersInJoinOrder;
     final ArrayList<Integer> playersOrder;
 
-    private Deck gameDeck;
+    Deck gameDeck;
 
     private final int playersNumber;
     private int readyPlayers = 0;

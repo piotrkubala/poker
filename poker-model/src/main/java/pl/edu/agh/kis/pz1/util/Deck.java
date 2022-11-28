@@ -2,10 +2,13 @@ package pl.edu.agh.kis.pz1.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Deck {
     public static final int DECK_SIZE = 52;
     private ArrayList<Card> cards = new ArrayList<>();
+
+    private Random random = new Random();
 
     public Deck() {
         resetDeck();
@@ -24,8 +27,12 @@ public class Deck {
         }
     }
 
+    public void setRandom(Random random) {
+        this.random = random;
+    }
+
     public void shuffle() {
-        Collections.shuffle(cards);
+        Collections.shuffle(cards, random);
     }
 
     public void sort() {

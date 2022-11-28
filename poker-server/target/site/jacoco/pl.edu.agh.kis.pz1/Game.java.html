@@ -38,7 +38,7 @@ public class Game {
     final Player[] playersInJoinOrder;
     final ArrayList&lt;Integer&gt; playersOrder;
 
-    private Deck gameDeck;
+    Deck gameDeck;
 
     private final int playersNumber;
 <span class="fc" id="L44">    private int readyPlayers = 0;</span>
@@ -69,9 +69,9 @@ public class Game {
     public void nextPlayerIsReady(Player player) {
 <span class="fc" id="L70">        int index = playersOrder.get(readyPlayers);</span>
 
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (index == 0) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (index == 0) {</span>
 <span class="fc" id="L73">            player.setSmallBlind(true);</span>
-<span class="nc bnc" id="L74" title="All 2 branches missed.">        } else if (index == 1) {</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        } else if (index == 1) {</span>
 <span class="nc" id="L75">            player.setBigBlind(true);</span>
         }
 <span class="fc" id="L77">        playersByNumber[index] = player;</span>
@@ -93,7 +93,7 @@ public class Game {
     }
 
     public boolean canShowPlayersHand() {
-<span class="pc bpc" id="L96" title="6 of 8 branches missed.">        return state == GameState.AFTER_SHOWDOWN || state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS || state == GameState.CARDS_CHANGING;</span>
+<span class="pc bpc" id="L96" title="3 of 8 branches missed.">        return state == GameState.AFTER_SHOWDOWN || state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS || state == GameState.CARDS_CHANGING;</span>
     }
 
     public String getPlayersMoneyAndBetAsString() {
@@ -133,7 +133,7 @@ public class Game {
 <span class="nc" id="L133">    }</span>
 
     public boolean isMakingMove(Player player) {
-<span class="pc bpc" id="L136" title="1 of 6 branches missed.">        return player == getCurrentPlayer() &amp;&amp; (state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS);</span>
+<span class="fc bfc" id="L136" title="All 6 branches covered.">        return player == getCurrentPlayer() &amp;&amp; (state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS);</span>
     }
 
     public void allPlayersJoined() {
@@ -157,7 +157,7 @@ public class Game {
 <span class="fc" id="L157">    }</span>
 
     public Card[] getCardsFromDeck(int number) {
-<span class="nc" id="L160">        return gameDeck.getCards(number);</span>
+<span class="fc" id="L160">        return gameDeck.getCards(number);</span>
     }
 
     public void beginChangingCards() {
@@ -229,15 +229,15 @@ public class Game {
     }
 
     public void increasePlayersWhoChangedCards() {
-<span class="nc" id="L232">        playersWhoChangedCards++;</span>
-<span class="nc" id="L233">    }</span>
+<span class="fc" id="L232">        playersWhoChangedCards++;</span>
+<span class="fc" id="L233">    }</span>
 
     public void decreasePlayersWhoChangedCards() {
 <span class="nc" id="L236">        playersWhoChangedCards--;</span>
 <span class="nc" id="L237">    }</span>
 
     public boolean isChangingCardsEnded() {
-<span class="nc bnc" id="L240" title="All 2 branches missed.">        return playersWhoChangedCards &gt;= stillPlayingPlayers;</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        return playersWhoChangedCards &gt;= stillPlayingPlayers;</span>
     }
 
     public int getPlayersWhoChangedCardsCount() {
@@ -245,31 +245,31 @@ public class Game {
     }
 
     public void beginSecondRound() {
-<span class="nc" id="L248">        currentPlayerIndex = 0;</span>
-<span class="nc" id="L249">        state = GameState.SECOND_ROUND_BETS;</span>
-<span class="nc" id="L250">    }</span>
+<span class="fc" id="L248">        currentPlayerIndex = 0;</span>
+<span class="fc" id="L249">        state = GameState.SECOND_ROUND_BETS;</span>
+<span class="fc" id="L250">    }</span>
 
     private List&lt;Player&gt; getWinners() {
-<span class="nc" id="L253">        final double eps = 1.0-12;</span>
-<span class="nc" id="L254">        Player[] players = new Player[stillPlayingPlayers];</span>
+<span class="fc" id="L253">        final double eps = 1.0-12;</span>
+<span class="fc" id="L254">        Player[] players = new Player[stillPlayingPlayers];</span>
 
-<span class="nc" id="L256">        int index = 0;</span>
-<span class="nc bnc" id="L257" title="All 2 branches missed.">        for (int i = 0; i &lt; playersNumber; i++) {</span>
-<span class="nc" id="L258">            Player player = playersByNumber[i];</span>
-<span class="nc bnc" id="L259" title="All 2 branches missed.">            if (player.isPlaying()) {</span>
-<span class="nc" id="L260">                players[index++] = player;</span>
+<span class="fc" id="L256">        int index = 0;</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">        for (int i = 0; i &lt; playersNumber; i++) {</span>
+<span class="fc" id="L258">            Player player = playersByNumber[i];</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">            if (player.isPlaying()) {</span>
+<span class="fc" id="L260">                players[index++] = player;</span>
 
-<span class="nc" id="L262">                player.calculateHandValue();</span>
+<span class="fc" id="L262">                player.calculateHandValue();</span>
             }
         }
 
-<span class="nc" id="L266">        Arrays.sort(players, Collections.reverseOrder());</span>
+<span class="fc" id="L266">        Arrays.sort(players, Collections.reverseOrder());</span>
 
-<span class="nc" id="L268">        double firstPlayerValue = players[0].getHandValue();</span>
-<span class="nc" id="L269">        List&lt;Player&gt; winners = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L270">        winners.add(players[0]);</span>
+<span class="fc" id="L268">        double firstPlayerValue = players[0].getHandValue();</span>
+<span class="fc" id="L269">        List&lt;Player&gt; winners = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L270">        winners.add(players[0]);</span>
 
-<span class="nc bnc" id="L272" title="All 2 branches missed.">        for (int i = 1; i &lt; stillPlayingPlayers; i++) {</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">        for (int i = 1; i &lt; stillPlayingPlayers; i++) {</span>
 <span class="nc bnc" id="L273" title="All 2 branches missed.">            if (Math.abs(players[i].getHandValue() - firstPlayerValue) &lt; eps) {</span>
 <span class="nc" id="L274">                winners.add(players[i]);</span>
             } else {
@@ -277,12 +277,12 @@ public class Game {
             }
         }
 
-<span class="nc" id="L280">        return winners;</span>
+<span class="fc" id="L280">        return winners;</span>
     }
 
     private int getClosestWinnerIndexToBigBlind(List&lt;Player&gt; winners) {
-<span class="nc bnc" id="L284" title="All 2 branches missed.">        if (winners.size() == 1) {</span>
-<span class="nc" id="L285">            return 0;</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">        if (winners.size() == 1) {</span>
+<span class="fc" id="L285">            return 0;</span>
         }
 
 <span class="nc bnc" id="L288" title="All 2 branches missed.">        if (winners.get(0).isSmallBlind()) {</span>
@@ -292,37 +292,37 @@ public class Game {
     }
 
     private void setWinnersMoney(List&lt;Player&gt; winners) {
-<span class="nc" id="L295">        int moneyForWinner = currentGamePool / winners.size();</span>
-<span class="nc" id="L296">        int moneyForWinnerRemainder = currentGamePool % winners.size();</span>
+<span class="fc" id="L295">        int moneyForWinner = currentGamePool / winners.size();</span>
+<span class="fc" id="L296">        int moneyForWinnerRemainder = currentGamePool % winners.size();</span>
 
-<span class="nc" id="L298">        winners.get(getClosestWinnerIndexToBigBlind(winners)).addMoney(moneyForWinnerRemainder);</span>
+<span class="fc" id="L298">        winners.get(getClosestWinnerIndexToBigBlind(winners)).addMoney(moneyForWinnerRemainder);</span>
 
-<span class="nc bnc" id="L300" title="All 2 branches missed.">        for (Player player : winners) {</span>
-<span class="nc" id="L301">            player.addMoney(moneyForWinner);</span>
-<span class="nc" id="L302">            player.setWinner(true);</span>
-<span class="nc" id="L303">        }</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">        for (Player player : winners) {</span>
+<span class="fc" id="L301">            player.addMoney(moneyForWinner);</span>
+<span class="fc" id="L302">            player.setWinner(true);</span>
+<span class="fc" id="L303">        }</span>
 
-<span class="nc bnc" id="L305" title="All 2 branches missed.">        for (Player player : playersByNumber) {</span>
-<span class="nc" id="L306">            player.setBet(0);</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">        for (Player player : playersByNumber) {</span>
+<span class="fc" id="L306">            player.setBet(0);</span>
         }
-<span class="nc" id="L308">    }</span>
+<span class="fc" id="L308">    }</span>
 
     public List&lt;Player&gt; showDownAndDivideMoneyFromPool() {
-<span class="nc bnc" id="L311" title="All 4 branches missed.">        if (state != GameState.FIRST_ROUND_BETS &amp;&amp; state != GameState.SECOND_ROUND_BETS) {</span>
+<span class="pc bpc" id="L311" title="2 of 4 branches missed.">        if (state != GameState.FIRST_ROUND_BETS &amp;&amp; state != GameState.SECOND_ROUND_BETS) {</span>
 <span class="nc" id="L312">            return new ArrayList&lt;&gt;();</span>
         }
 
-<span class="nc" id="L315">        state = GameState.AFTER_SHOWDOWN;</span>
+<span class="fc" id="L315">        state = GameState.AFTER_SHOWDOWN;</span>
 
-<span class="nc" id="L317">        List&lt;Player&gt; winners = getWinners();</span>
+<span class="fc" id="L317">        List&lt;Player&gt; winners = getWinners();</span>
 
-<span class="nc" id="L319">        setWinnersMoney(winners);</span>
+<span class="fc" id="L319">        setWinnersMoney(winners);</span>
 
-<span class="nc" id="L321">        return winners;</span>
+<span class="fc" id="L321">        return winners;</span>
     }
 
     public Player[] getPlayersByNumber() {
-<span class="nc" id="L325">        return playersByNumber;</span>
+<span class="fc" id="L325">        return playersByNumber;</span>
     }
 
     public void startNewRound() {

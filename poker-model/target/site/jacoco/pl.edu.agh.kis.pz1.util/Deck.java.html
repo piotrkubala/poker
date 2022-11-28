@@ -2,43 +2,50 @@
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Deck {
     public static final int DECK_SIZE = 52;
-<span class="fc" id="L8">    private ArrayList&lt;Card&gt; cards = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L9">    private ArrayList&lt;Card&gt; cards = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L10">    public Deck() {</span>
-<span class="fc" id="L11">        resetDeck();</span>
-<span class="fc" id="L12">    }</span>
+<span class="fc" id="L11">    private Random random = new Random();</span>
+
+<span class="fc" id="L13">    public Deck() {</span>
+<span class="fc" id="L14">        resetDeck();</span>
+<span class="fc" id="L15">    }</span>
 
     public int getDeckSize() {
-<span class="fc" id="L15">        return cards.size();</span>
+<span class="fc" id="L18">        return cards.size();</span>
     }
 
     public void resetDeck() {
-<span class="fc" id="L19">        cards.clear();</span>
-<span class="fc bfc" id="L20" title="All 2 branches covered.">        for (Card.Suit suit : Card.Suit.values()) {</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">            for (Card.Rank rank : Card.Rank.values()) {</span>
-<span class="fc" id="L22">                cards.add(new Card(suit, rank));</span>
+<span class="fc" id="L22">        cards.clear();</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (Card.Suit suit : Card.Suit.values()) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            for (Card.Rank rank : Card.Rank.values()) {</span>
+<span class="fc" id="L25">                cards.add(new Card(suit, rank));</span>
             }
         }
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L28">    }</span>
+
+    public void setRandom(Random random) {
+<span class="nc" id="L31">        this.random = random;</span>
+<span class="nc" id="L32">    }</span>
 
     public void shuffle() {
-<span class="fc" id="L28">        Collections.shuffle(cards);</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L35">        Collections.shuffle(cards, random);</span>
+<span class="fc" id="L36">    }</span>
 
     public void sort() {
-<span class="nc" id="L32">        Collections.sort(cards);</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L39">        Collections.sort(cards);</span>
+<span class="nc" id="L40">    }</span>
 
     public Card[] getCards(int count) {
-<span class="fc" id="L36">        Card[] result = new Card[count];</span>
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (int i = 0; i &lt; count; i++) {</span>
-<span class="fc" id="L38">            result[i] = cards.get(cards.size() - 1);</span>
-<span class="fc" id="L39">            cards.remove(cards.size() - 1);</span>
+<span class="fc" id="L43">        Card[] result = new Card[count];</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (int i = 0; i &lt; count; i++) {</span>
+<span class="fc" id="L45">            result[i] = cards.get(cards.size() - 1);</span>
+<span class="fc" id="L46">            cards.remove(cards.size() - 1);</span>
         }
-<span class="fc" id="L41">        return result;</span>
+<span class="fc" id="L48">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

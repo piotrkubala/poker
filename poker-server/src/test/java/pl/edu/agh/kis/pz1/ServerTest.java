@@ -2,7 +2,10 @@ package pl.edu.agh.kis.pz1;
 
 import org.testng.annotations.Test;
 import pl.edu.agh.kis.pz1.util.Card;
+import pl.edu.agh.kis.pz1.util.Deck;
 import pl.edu.agh.kis.pz1.util.Hand;
+
+import java.util.Random;
 
 import static org.testng.Assert.*;
 
@@ -201,6 +204,75 @@ public class ServerTest {
                 new Card(Card.Suit.CLUBS, Card.Rank.TEN)
         });
 
+        server.handleCommands("show", null);
+
+        // then
+        assertTrue(server.testMode, "Test mode should be enabled");
+        assertNotNull(server);
+        assertEquals(server.testOutput.toString(), expected, "Test output should be equal for test");
+    }
+
+    @Test
+    public void testCardsChangeHandle() {
+        // given
+        Server server = new Server(1, "localhost", 9000, 100, true);
+
+        addPlayers(server, 1);
+
+        String expected = "Username set to piotrThere are enough players now\n" +
+                "Type 'start' to start the gameYour status is ready nowThe game has started\n" +
+                "You can check your cards and other stats by typing 'show'Now it is your turnpiotr has changed his cardsThe second round of betting has startedNow it is your turnPlayer: piotr\n" +
+                "Current game state: Second round bets\n" +
+                "Current bet: 0\n" +
+                "Current player to make a move: piotr\n" +
+                "(0) Ace of Clubs\n" +
+                "(1) Jack of Clubs\n" +
+                "(2) Jack of Diamonds\n" +
+                "(3) Queen of Clubs\n" +
+                "(4) King of Clubs\n" +
+                "Small Blind: piotr has 100$ left, current bet: 0$\n" +
+                "piotr called\n" +
+                "The game is over\n" +
+                "The winner is piotr with hand:\n" +
+                "(0) Ace of Clubs\n" +
+                "(1) Jack of Clubs\n" +
+                "(2) Jack of Diamonds\n" +
+                "(3) Queen of Clubs\n" +
+                "(4) King of Clubs\n" +
+                "\n" +
+                "You can check game results by typing 'show'\n" +
+                "Player: piotr\n" +
+                "Current game state: After showdown\n" +
+                "[WINNER] Player 1: piotr:\n" +
+                "(0) Ace of Clubs\n" +
+                "(1) Jack of Clubs\n" +
+                "(2) Jack of Diamonds\n" +
+                "(3) Queen of Clubs\n" +
+                "(4) King of Clubs\n" +
+                "\n" +
+                "Small Blind: piotr has 100$ left, current bet: 0$\n";
+
+        // when
+        server.handleCommands("username piotr", null);
+
+        server.handleCommands("start", null);
+
+        server.game.playersInJoinOrder[0].playerHand = new Hand(new Card[]{
+                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+                new Card(Card.Suit.HEARTS, Card.Rank.ACE),
+                new Card(Card.Suit.SPADES, Card.Rank.TWO),
+                new Card(Card.Suit.DIAMONDS, Card.Rank.JACK),
+                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+
+        server.game.gameDeck = new Deck();
+        server.game.gameDeck.setRandom(new Random(12345));
+
+        server.game.state = Game.GameState.CARDS_CHANGING;
+
+        server.handleCommands("change 1 2 3", null);
+        server.handleCommands("show", null);
+        server.handleCommands("showdown", null);
         server.handleCommands("show", null);
 
         // then

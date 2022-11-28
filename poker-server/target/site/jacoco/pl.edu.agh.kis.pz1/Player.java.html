@@ -170,30 +170,30 @@ public class Player implements Comparable&lt;Player&gt; {
     }
 
     public void setCardsChanged(boolean wereCardsChanged_) {
-<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (wereCardsChanged_ == wereCardsChanged) {</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (wereCardsChanged_ == wereCardsChanged) {</span>
 <span class="nc" id="L174">            return;</span>
         }
 
-<span class="nc" id="L177">        wereCardsChanged = wereCardsChanged_;</span>
+<span class="fc" id="L177">        wereCardsChanged = wereCardsChanged_;</span>
 
-<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (wereCardsChanged) {</span>
-<span class="nc" id="L180">            game.increasePlayersWhoChangedCards();</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (wereCardsChanged) {</span>
+<span class="fc" id="L180">            game.increasePlayersWhoChangedCards();</span>
         } else {
 <span class="nc" id="L182">            game.decreasePlayersWhoChangedCards();</span>
         }
-<span class="nc" id="L184">    }</span>
+<span class="fc" id="L184">    }</span>
 
     public boolean wereCardsChanged() {
-<span class="nc" id="L187">        return wereCardsChanged;</span>
+<span class="fc" id="L187">        return wereCardsChanged;</span>
     }
 
     // call before comparing hands
     public void calculateHandValue() {
-<span class="nc" id="L192">        handValue = playerHand.getHandValue();</span>
-<span class="nc" id="L193">    }</span>
+<span class="fc" id="L192">        handValue = playerHand.getHandValue();</span>
+<span class="fc" id="L193">    }</span>
 
     public double getHandValue() {
-<span class="nc" id="L196">        return handValue;</span>
+<span class="fc" id="L196">        return handValue;</span>
     }
 
     // call after calculating hand values of hands
@@ -208,19 +208,19 @@ public class Player implements Comparable&lt;Player&gt; {
     }
 
     public void setWinner(boolean isWinner_) {
-<span class="nc" id="L211">        isWinner = isWinner_;</span>
-<span class="nc" id="L212">    }</span>
+<span class="fc" id="L211">        isWinner = isWinner_;</span>
+<span class="fc" id="L212">    }</span>
 
     public boolean isWinner() {
-<span class="nc" id="L215">        return isWinner;</span>
+<span class="fc" id="L215">        return isWinner;</span>
     }
 
     public void setBet(int amount) {
-<span class="nc" id="L219">        bet = amount;</span>
-<span class="nc" id="L220">    }</span>
+<span class="fc" id="L219">        bet = amount;</span>
+<span class="fc" id="L220">    }</span>
 
     public void addMoney(int amount) {
-<span class="nc" id="L223">        money += amount;</span>
-<span class="nc" id="L224">    }</span>
+<span class="fc" id="L223">        money += amount;</span>
+<span class="fc" id="L224">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
