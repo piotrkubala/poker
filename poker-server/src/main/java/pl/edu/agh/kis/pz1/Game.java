@@ -26,7 +26,7 @@ public class Game {
         }
     }
 
-    private GameState state = GameState.WAITING_FOR_PLAYERS;
+    GameState state = GameState.WAITING_FOR_PLAYERS;
 
     private int currentPlayerIndex = 0;
     private int turnsSinceLastBetIncrease = 0;

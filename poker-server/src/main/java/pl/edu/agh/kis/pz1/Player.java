@@ -5,31 +5,33 @@ import pl.edu.agh.kis.pz1.util.Hand;
 import java.nio.channels.SelectionKey;
 
 public class Player implements Comparable<Player> {
-    private final SelectionKey key;
+    final SelectionKey key;
 
-    private String name;
+    String name;
 
-    private int money;
-    private int bet = 0;
+    int money;
+    int bet = 0;
 
-    private Hand playerHand;
+    Hand playerHand;
 
-    private boolean isStartReady = false;
+    boolean isStartReady = false;
 
-    private boolean isSmallBlind = false;
-    private boolean isBigBlind = false;
+    boolean isSmallBlind = false;
+    boolean isBigBlind = false;
 
-    private boolean isPlaying = true;
+    boolean isPlaying = true;
 
-    private boolean wereCardsChanged = false;
+    boolean wereCardsChanged = false;
 
-    private boolean isWinner = false;
+    boolean isWinner = false;
 
-    private double handValue = -1;
+    double handValue = -1;
 
-    private boolean nextRoundReady = false;
+    boolean nextRoundReady = false;
 
-    private final Game game;
+    final Game game;
+
+    boolean testMode = false;
 
     public Player(SelectionKey key_, int money_, Game game_) {
         key = key_;
@@ -60,6 +62,10 @@ public class Player implements Comparable<Player> {
 
         nextRoundReady = nextRoundReady_;
 
+        if (testMode) {
+            return;
+        }
+
         if (nextRoundReady) {
             game.increasePlayersWhoAreReadyForNextRoundCount();
         } else {
@@ -72,6 +78,9 @@ public class Player implements Comparable<Player> {
     }
 
     private void setReady() {
+        if (testMode){
+            return;
+        }
         game.nextPlayerIsReady(this);
     }
 

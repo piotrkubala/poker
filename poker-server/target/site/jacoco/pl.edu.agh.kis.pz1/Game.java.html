@@ -26,7 +26,7 @@ public class Game {
         }
     }
 
-<span class="fc" id="L29">    private GameState state = GameState.WAITING_FOR_PLAYERS;</span>
+<span class="fc" id="L29">    GameState state = GameState.WAITING_FOR_PLAYERS;</span>
 
 <span class="fc" id="L31">    private int currentPlayerIndex = 0;</span>
 <span class="fc" id="L32">    private int turnsSinceLastBetIncrease = 0;</span>
@@ -67,25 +67,25 @@ public class Game {
 <span class="fc" id="L67">    }</span>
 
     public void nextPlayerIsReady(Player player) {
-<span class="nc" id="L70">        int index = playersOrder.get(readyPlayers);</span>
+<span class="fc" id="L70">        int index = playersOrder.get(readyPlayers);</span>
 
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (index == 0) {</span>
-<span class="nc" id="L73">            player.setSmallBlind(true);</span>
-<span class="nc bnc" id="L74" title="All 2 branches missed.">        } else if (index == 1) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (index == 0) {</span>
+<span class="fc" id="L73">            player.setSmallBlind(true);</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        } else if (index == 1) {</span>
 <span class="nc" id="L75">            player.setBigBlind(true);</span>
         }
-<span class="nc" id="L77">        playersByNumber[index] = player;</span>
-<span class="nc" id="L78">        playersInJoinOrder[readyPlayers] = player;</span>
+<span class="fc" id="L77">        playersByNumber[index] = player;</span>
+<span class="fc" id="L78">        playersInJoinOrder[readyPlayers] = player;</span>
 
-<span class="nc" id="L80">        readyPlayers++;</span>
-<span class="nc" id="L81">    }</span>
+<span class="fc" id="L80">        readyPlayers++;</span>
+<span class="fc" id="L81">    }</span>
 
     public int getReadyPlayersCount() {
-<span class="nc" id="L84">        return readyPlayers;</span>
+<span class="fc" id="L84">        return readyPlayers;</span>
     }
 
     public boolean isReady() {
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        return readyPlayers == playersNumber;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        return readyPlayers == playersNumber;</span>
     }
 
     public GameState getState() {
@@ -133,7 +133,7 @@ public class Game {
 <span class="nc" id="L133">    }</span>
 
     public boolean isMakingMove(Player player) {
-<span class="pc bpc" id="L136" title="3 of 6 branches missed.">        return player == getCurrentPlayer() &amp;&amp; (state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS);</span>
+<span class="pc bpc" id="L136" title="2 of 6 branches missed.">        return player == getCurrentPlayer() &amp;&amp; (state == GameState.FIRST_ROUND_BETS || state == GameState.SECOND_ROUND_BETS);</span>
     }
 
     public void allPlayersJoined() {
@@ -225,7 +225,7 @@ public class Game {
     }
 
     public boolean isBettingEnded() {
-<span class="nc bnc" id="L228" title="All 2 branches missed.">        return turnsSinceLastBetIncrease &gt;= stillPlayingPlayers;</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">        return turnsSinceLastBetIncrease &gt;= stillPlayingPlayers;</span>
     }
 
     public void increasePlayersWhoChangedCards() {

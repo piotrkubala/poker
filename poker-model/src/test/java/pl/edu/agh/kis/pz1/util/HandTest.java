@@ -62,6 +62,23 @@ public class HandTest {
     }
 
     @Test
+    public void testToString() {
+        // given
+        Hand hand = new Hand(new Card[]{
+            new Card(Card.Suit.CLUBS, Card.Rank.ACE),
+            new Card(Card.Suit.HEARTS, Card.Rank.KING),
+            new Card(Card.Suit.SPADES, Card.Rank.QUEEN),
+            new Card(Card.Suit.DIAMONDS, Card.Rank.JACK),
+            new Card(Card.Suit.CLUBS, Card.Rank.TEN)
+        });
+        String expected = "(0) Ace of Clubs\n(1) Ten of Clubs\n(2) Jack of Diamonds\n(3) Queen of Spades\n(4) King of Hearts\n";
+        // when
+        String result = hand.toString();
+        // then
+        assertEquals(expected, result, "String should be returned");
+    }
+
+    @Test
     public void testAllTheSameColour() {
         // given
         Hand hand = new Hand(new Card[]{

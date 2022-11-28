@@ -15,24 +15,25 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class Server {
-    private static final Logger logger = Logger.getLogger(Server.class.getName());
+    static final Logger logger = Logger.getLogger(Server.class.getName());
     public static final String NOW_IT_IS_YOUR_TURN = "Now it is your turn";
 
-    private final Map<SelectionKey, Player> clients = new HashMap<>();
-    private final Set<String> chosenNames = new HashSet<>();
+    final Map<SelectionKey, Player> clients = new HashMap<>();
+    final Set<String> chosenNames = new HashSet<>();
 
     Selector selector;
 
-    private final String serverAddress;
-    private final int playersNumber;
-    private final int portNumber;
-    private final int moneyPerPlayerAtBeginning;
+    final String serverAddress;
+    final int playersNumber;
+    final int portNumber;
+    final int moneyPerPlayerAtBeginning;
 
-    private final Game game;
+    final Game game;
 
-    private boolean stopServer = false;
+    boolean stopServer = false;
 
-    private final boolean testMode;
+    final boolean testMode;
+    StringBuilder testOutput = new StringBuilder();
 
     public Server(int playersNumberArg, String serverAddressArg, int portArg, int moneyPerPlayerAtBeginningArg, boolean testModeArg) {
         playersNumber = playersNumberArg;
@@ -58,6 +59,7 @@ public class Server {
 
     void writeMessageToClient(SelectionKey key, String message) {
         if (testMode) {
+            testOutput.append(message);
             return;
         }
 
@@ -76,6 +78,7 @@ public class Server {
 
     void writeMessageToAllClients(String message) {
         if (testMode) {
+            testOutput.append(message);
             return;
         }
 
@@ -495,6 +498,8 @@ public class Server {
 
     void handleAccept(ServerSocketChannel mySocket) throws IOException {
         if (testMode) {
+            clients.put(null, new Player(null, moneyPerPlayerAtBeginning, game));
+
             return;
         }
 

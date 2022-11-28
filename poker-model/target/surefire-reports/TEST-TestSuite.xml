@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="TestSuite" time="1.657" tests="32" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="TestSuite" time="1.357" tests="33" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sonar.login" value="sqp_e1e9d2a2013537e2714efb6b209c554df251ddd5"/>
@@ -14,7 +14,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="PL"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/piotr/Projekty_java/poker/poker-model/target/surefire/surefirebooter12780983384369277280.jar /home/piotr/Projekty_java/poker/poker-model/target/surefire 2022-11-28T20-46-14_279-jvmRun1 surefire18160488884144263764tmp surefire_05997785868021188722tmp"/>
+    <property name="sun.java.command" value="/home/piotr/Projekty_java/poker/poker-model/target/surefire/surefirebooter12917943037934491317.jar /home/piotr/Projekty_java/poker/poker-model/target/surefire 2022-11-28T22-32-10_220-jvmRun1 surefire6780268487244870922tmp surefire_013374359345810310240tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/piotr/Projekty_java/poker/poker-model/target/test-classes:/home/piotr/Projekty_java/poker/poker-model/target/classes:/home/piotr/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/piotr/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/piotr/.m2/repository/org/testng/testng/7.6.1/testng-7.6.1.jar:/home/piotr/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/piotr/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar:/home/piotr/.m2/repository/org/webjars/jquery/3.6.0/jquery-3.6.0.jar:/home/piotr/.m2/repository/org/slf4j/slf4j-api/2.0.4/slf4j-api-2.0.4.jar:/home/piotr/.m2/repository/org/slf4j/slf4j-simple/2.0.4/slf4j-simple-2.0.4.jar:/home/piotr/.m2/repository/org/jacoco/jacoco-maven-plugin/0.8.6/jacoco-maven-plugin-0.8.6.jar:/home/piotr/.m2/repository/org/apache/maven/maven-plugin-api/3.0/maven-plugin-api-3.0.jar:/home/piotr/.m2/repository/org/apache/maven/maven-model/3.0/maven-model-3.0.jar:/home/piotr/.m2/repository/org/apache/maven/maven-artifact/3.0/maven-artifact-3.0.jar:/home/piotr/.m2/repository/org/sonatype/sisu/sisu-inject-plexus/1.4.2/sisu-inject-plexus-1.4.2.jar:/home/piotr/.m2/repository/org/sonatype/sisu/sisu-inject-bean/1.4.2/sisu-inject-bean-1.4.2.jar:/home/piotr/.m2/repository/org/sonatype/sisu/sisu-guice/2.1.7/sisu-guice-2.1.7-noaop.jar:/home/piotr/.m2/repository/org/apache/maven/maven-core/3.0/maven-core-3.0.jar:/home/piotr/.m2/repository/org/apache/maven/maven-settings/3.0/maven-settings-3.0.jar:/home/piotr/.m2/repository/org/apache/maven/maven-settings-builder/3.0/maven-settings-builder-3.0.jar:/home/piotr/.m2/repository/org/apache/maven/maven-repository-metadata/3.0/maven-repository-metadata-3.0.jar:/home/piotr/.m2/repository/org/apache/maven/maven-model-builder/3.0/maven-model-builder-3.0.jar:/home/piotr/.m2/repository/org/apache/maven/maven-aether-provider/3.0/maven-aether-provider-3.0.jar:/home/piotr/.m2/repository/org/sonatype/aether/aether-impl/1.7/aether-impl-1.7.jar:/home/piotr/.m2/repository/org/sonatype/aether/aether-spi/1.7/aether-spi-1.7.jar:/home/piotr/.m2/repository/org/sonatype/aether/aether-api/1.7/aether-api-1.7.jar:/home/piotr/.m2/repository/org/sonatype/aether/aether-util/1.7/aether-util-1.7.jar:/home/piotr/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.14/plexus-interpolation-1.14.jar:/home/piotr/.m2/repository/org/codehaus/plexus/plexus-classworlds/2.2.3/plexus-classworlds-2.2.3.jar:/home/piotr/.m2/repository/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5.jar:/home/piotr/.m2/repository/org/sonatype/plexus/plexus-sec-dispatcher/1.3/plexus-sec-dispatcher-1.3.jar:/home/piotr/.m2/repository/org/sonatype/plexus/plexus-cipher/1.4/plexus-cipher-1.4.jar:/home/piotr/.m2/repository/org/codehaus/plexus/plexus-utils/3.0.22/plexus-utils-3.0.22.jar:/home/piotr/.m2/repository/org/apache/maven/shared/file-management/1.2.1/file-management-1.2.1.jar:/home/piotr/.m2/repository/org/apache/maven/shared/maven-shared-io/1.1/maven-shared-io-1.1.jar:/home/piotr/.m2/repository/org/apache/maven/maven-artifact-manager/2.0.2/maven-artifact-manager-2.0.2.jar:/home/piotr/.m2/repository/org/apache/maven/wagon/wagon-provider-api/1.0-alpha-6/wagon-provider-api-1.0-alpha-6.jar:/home/piotr/.m2/repository/org/codehaus/plexus/plexus-container-default/1.0-alpha-9/plexus-container-default-1.0-alpha-9.jar:/home/piotr/.m2/repository/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar:/home/piotr/.m2/repository/org/apache/maven/reporting/maven-reporting-api/3.0/maven-reporting-api-3.0.jar:/home/piotr/.m2/repository/org/apache/maven/doxia/doxia-sink-api/1.0/doxia-sink-api-1.0.jar:/home/piotr/.m2/repository/org/apache/maven/reporting/maven-reporting-impl/2.1/maven-reporting-impl-2.1.jar:/home/piotr/.m2/repository/org/apache/maven/maven-project/2.0.10/maven-project-2.0.10.jar:/home/piotr/.m2/repository/org/apache/maven/maven-profile/2.0.10/maven-profile-2.0.10.jar:/home/piotr/.m2/repository/org/apache/maven/maven-plugin-registry/2.0.10/maven-plugin-registry-2.0.10.jar:/home/piotr/.m2/repository/org/apache/maven/doxia/doxia-core/1.1.2/doxia-core-1.1.2.jar:/home/piotr/.m2/repository/org/apache/maven/doxia/doxia-logging-api/1.1.2/doxia-logging-api-1.1.2.jar:/home/piotr/.m2/repository/xerces/xercesImpl/2.8.1/xercesImpl-2.8.1.jar:/home/piotr/.m2/repository/commons-lang/commons-lang/2.4/commons-lang-2.4.jar:/home/piotr/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/home/piotr/.m2/repository/commons-codec/commons-codec/1.2/commons-codec-1.2.jar:/home/piotr/.m2/repository/org/apache/maven/doxia/doxia-site-renderer/1.1.2/doxia-site-renderer-1.1.2.jar:/home/piotr/.m2/repository/org/apache/maven/doxia/doxia-decoration-model/1.1.2/doxia-decoration-model-1.1.2.jar:/home/piotr/.m2/repository/org/apache/maven/doxia/doxia-module-xhtml/1.1.2/doxia-module-xhtml-1.1.2.jar:/home/piotr/.m2/repository/org/apache/maven/doxia/doxia-module-fml/1.1.2/doxia-module-fml-1.1.2.jar:/home/piotr/.m2/repository/org/codehaus/plexus/plexus-i18n/1.0-beta-7/plexus-i18n-1.0-beta-7.jar:/home/piotr/.m2/repository/org/codehaus/plexus/plexus-velocity/1.1.7/plexus-velocity-1.1.7.jar:/home/piotr/.m2/repository/org/apache/velocity/velocity/1.5/velocity-1.5.jar:/home/piotr/.m2/repository/commons-collections/commons-collections/3.2/commons-collections-3.2.jar:/home/piotr/.m2/repository/commons-validator/commons-validator/1.2.0/commons-validator-1.2.0.jar:/home/piotr/.m2/repository/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar:/home/piotr/.m2/repository/commons-digester/commons-digester/1.6/commons-digester-1.6.jar:/home/piotr/.m2/repository/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar:/home/piotr/.m2/repository/oro/oro/2.0.8/oro-2.0.8.jar:/home/piotr/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar:/home/piotr/.m2/repository/org/jacoco/org.jacoco.agent/0.8.6/org.jacoco.agent-0.8.6-runtime.jar:/home/piotr/.m2/repository/org/jacoco/org.jacoco.core/0.8.6/org.jacoco.core-0.8.6.jar:/home/piotr/.m2/repository/org/ow2/asm/asm/8.0.1/asm-8.0.1.jar:/home/piotr/.m2/repository/org/ow2/asm/asm-commons/8.0.1/asm-commons-8.0.1.jar:/home/piotr/.m2/repository/org/ow2/asm/asm-analysis/8.0.1/asm-analysis-8.0.1.jar:/home/piotr/.m2/repository/org/ow2/asm/asm-tree/8.0.1/asm-tree-8.0.1.jar:/home/piotr/.m2/repository/org/jacoco/org.jacoco.report/0.8.6/org.jacoco.report-0.8.6.jar:/home/piotr/.m2/repository/org/junit/jupiter/junit-jupiter/5.9.0/junit-jupiter-5.9.0.jar:/home/piotr/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.0/junit-jupiter-params-5.9.0.jar:/home/piotr/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/piotr/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.0/junit-jupiter-api-5.9.0.jar:/home/piotr/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/piotr/.m2/repository/org/junit/platform/junit-platform-commons/1.9.0/junit-platform-commons-1.9.0.jar:/home/piotr/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.0/junit-jupiter-engine-5.9.0.jar:/home/piotr/.m2/repository/org/junit/platform/junit-platform-engine/1.9.0/junit-platform-engine-1.9.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -29,7 +29,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/piotr/Projekty_java/poker/poker-model/target/surefire/surefirebooter12780983384369277280.jar"/>
+    <property name="surefire.real.class.path" value="/home/piotr/Projekty_java/poker/poker-model/target/surefire/surefirebooter12917943037934491317.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.5+8-Ubuntu-2ubuntu122.04"/>
     <property name="user.name" value="piotr"/>
@@ -54,36 +54,37 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="shouldCreateCardObject" classname="pl.edu.agh.kis.pz1.util.CardTest" time="0.042"/>
-  <testcase name="testCompareTo" classname="pl.edu.agh.kis.pz1.util.CardTest" time="0"/>
+  <testcase name="shouldCreateCardObject" classname="pl.edu.agh.kis.pz1.util.CardTest" time="0.044"/>
+  <testcase name="testCompareTo" classname="pl.edu.agh.kis.pz1.util.CardTest" time="0.003"/>
   <testcase name="testAllTheSameColour" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.008"/>
-  <testcase name="testCalculateValueForFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
-  <testcase name="testCalculateValueForFourOfAKind" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
-  <testcase name="testCalculateValueForFullHouse" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
+  <testcase name="testCalculateValueForFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testCalculateValueForFourOfAKind" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.004"/>
+  <testcase name="testCalculateValueForFullHouse" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
   <testcase name="testCalculateValueForHighCard" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
-  <testcase name="testCalculateValueForPair" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
-  <testcase name="testCalculateValueForStraight" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
-  <testcase name="testCalculateValueForStraightFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
+  <testcase name="testCalculateValueForPair" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testCalculateValueForStraight" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
+  <testcase name="testCalculateValueForStraightFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
   <testcase name="testCalculateValueForThreeOfAKind" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
   <testcase name="testCalculateValueForTwoPairs" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
-  <testcase name="testChangeCard" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
-  <testcase name="testCompareTo" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testChangeCard" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
+  <testcase name="testCompareTo" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.002"/>
   <testcase name="testGetCards" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
-  <testcase name="testGetHandValue" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testGetHandValue" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
   <testcase name="testHand" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.002"/>
-  <testcase name="testHasFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testHasFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
   <testcase name="testHasFourOfAKind" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
-  <testcase name="testHasFullHouse" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.003"/>
-  <testcase name="testHasPair" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.005"/>
-  <testcase name="testHasRoyalFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testHasFullHouse" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
+  <testcase name="testHasPair" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testHasRoyalFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
   <testcase name="testHasStraight" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
-  <testcase name="testHasStraightFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testHasStraightFlush" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
   <testcase name="testHasThreeOfAKind" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
-  <testcase name="testHasTwoPair" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.007"/>
-  <testcase name="shouldCreateDeckObject" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.001"/>
-  <testcase name="shouldGetCards" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.002"/>
-  <testcase name="shouldGetCardsTwice" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.002"/>
-  <testcase name="shouldGetDifferentCards" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.008"/>
-  <testcase name="shouldResetDeck" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.003"/>
+  <testcase name="testHasTwoPair" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0"/>
+  <testcase name="testToString" classname="pl.edu.agh.kis.pz1.util.HandTest" time="0.001"/>
+  <testcase name="shouldCreateDeckObject" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.005"/>
+  <testcase name="shouldGetCards" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0"/>
+  <testcase name="shouldGetCardsTwice" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.001"/>
+  <testcase name="shouldGetDifferentCards" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.003"/>
+  <testcase name="shouldResetDeck" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.001"/>
   <testcase name="shouldShuffleDeck" classname="pl.edu.agh.kis.pz1.util.DeckTest" time="0.001"/>
 </testsuite>
