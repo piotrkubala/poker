@@ -32,12 +32,12 @@ public class Server {
 
     private boolean stopServer = false;
 
-    public Server(int playersNumber_, String serverAddress_, int port_, int moneyPerPlayerAtBeginning_) {
-        playersNumber = playersNumber_;
-        portNumber = port_;
-        serverAddress = serverAddress_;
-        moneyPerPlayerAtBeginning = moneyPerPlayerAtBeginning_;
-        game = new Game(playersNumber, moneyPerPlayerAtBeginning);
+    public Server(int playersNumberArg, String serverAddressArg, int portArg, int moneyPerPlayerAtBeginningArg) {
+        playersNumber = playersNumberArg;
+        portNumber = portArg;
+        serverAddress = serverAddressArg;
+        moneyPerPlayerAtBeginning = moneyPerPlayerAtBeginningArg;
+        game = new Game(playersNumber);
 
         try {
             selector = Selector.open();
@@ -52,8 +52,8 @@ public class Server {
         buffer.put(message.getBytes());
         buffer.flip();
 
-        try {
-            ((SocketChannel) key.channel()).write(buffer);
+        try (SocketChannel sc = (SocketChannel) key.channel()) {
+            sc.write(buffer);
         } catch (IOException e) {
             logger.severe("Cannot write to client");
             System.exit(-1);
@@ -101,7 +101,7 @@ public class Server {
         writeMessageToAllClients(sb.toString());
     }
 
-    private void handleHelpCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private void handleHelpCommand(String[] commandParts, SelectionKey key) {
         if (commandParts.length == 1) {
             writeMessageToClient(key, "Available commands: help, username, exit, showdown, raise, fold, change, nextround, show");
         } else {
@@ -140,7 +140,7 @@ public class Server {
         }
     }
 
-    private void handleUsernameCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private void handleUsernameCommand(String[] commandParts, SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.WAITING_FOR_PLAYERS) {
             writeMessageToClient(key, "Cannot change username now");
         } else if (commandParts.length != 2) {
@@ -162,7 +162,7 @@ public class Server {
         }
     }
 
-    private void handleStartCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private void handleStartCommand(SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.WAITING_FOR_PLAYERS && gameState != Game.GameState.WAITING_FOR_READY) {
             writeMessageToClient(key, "The game has already started");
         } else if (gameState == Game.GameState.WAITING_FOR_READY) {
@@ -196,7 +196,7 @@ public class Server {
         endGameRound(player, key);
     }
 
-    private void executeRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, int minRaise, int maxRaise) {
+    private void executeRaiseCommand(Player player, String[] commandParts, SelectionKey key, int minRaise, int maxRaise) {
         try {
             int raiseAmount = Integer.parseInt(commandParts[1]);
 
@@ -260,10 +260,10 @@ public class Server {
             return;
         }
 
-        executeRaiseCommand(player, commandParts, key, gameState, minRaise, maxRaise);
+        executeRaiseCommand(player, commandParts, key, minRaise, maxRaise);
     }
 
-    private void handleFoldCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private void handleFoldCommand(Player player, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
             writeMessageToClient(key, "You cannot fold now, the game is not in betting phase");
             return;
@@ -280,7 +280,7 @@ public class Server {
         writeMessageToClient(game.getCurrentPlayer().getKey(), NOW_IT_IS_YOUR_TURN);
     }
 
-    private boolean checkIfShouldExitFromChangeCommandHandler(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private boolean checkIfShouldExitFromChangeCommandHandler(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.CARDS_CHANGING) {
             writeMessageToClient(key, "You cannot change cards now");
             return true;
@@ -298,8 +298,8 @@ public class Server {
         return false;
     }
 
-    private void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
-        if (checkIfShouldExitFromChangeCommandHandler(player, commandParts, key, gameState, isCurrentPlayerMakingAMove)) {
+    private void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState) {
+        if (checkIfShouldExitFromChangeCommandHandler(player, commandParts, key, gameState)) {
             return;
         }
 
@@ -339,27 +339,9 @@ public class Server {
         }
     }
 
-    private void handleShowCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private StringBuilder showCommandPlayerHand(SelectionKey key, Game.GameState gameState) {
         StringBuilder sb = new StringBuilder();
 
-        if (clients.get(key).getUsername() != null) {
-            sb.append("Player: ");
-            sb.append(clients.get(key).getUsername());
-            sb.append("\n");
-        } else {
-            sb.append("Player: UNKNOWN - SET USERNAME \n");
-        }
-        sb.append("Current game state: ");
-        sb.append(gameState.getName());
-        sb.append("\n");
-        if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {
-            sb.append("Current bet: ");
-            sb.append(game.getCurrentBet());
-            sb.append("\n");
-            sb.append("Current player to make a move: ");
-            sb.append(game.getCurrentPlayer().getUsername());
-            sb.append("\n");
-        }
         if (game.canShowPlayersHand() && clients.get(key).getPlayerHand() != null) {
             if (gameState == Game.GameState.AFTER_SHOWDOWN) {
                 Player[] players = game.getPlayersByNumber();
@@ -382,11 +364,37 @@ public class Server {
             sb.append("You cannot show your hand now\n");
         }
 
+        return sb;
+    }
+
+    private void handleShowCommand(SelectionKey key, Game.GameState gameState) {
+        StringBuilder sb = new StringBuilder();
+
+        if (clients.get(key).getUsername() != null) {
+            sb.append("Player: ");
+            sb.append(clients.get(key).getUsername());
+            sb.append("\n");
+        } else {
+            sb.append("Player: UNKNOWN - SET USERNAME \n");
+        }
+        sb.append("Current game state: ");
+        sb.append(gameState.getName());
+        sb.append("\n");
+        if (gameState == Game.GameState.FIRST_ROUND_BETS || gameState == Game.GameState.SECOND_ROUND_BETS) {
+            sb.append("Current bet: ");
+            sb.append(game.getCurrentBet());
+            sb.append("\n");
+            sb.append("Current player to make a move: ");
+            sb.append(game.getCurrentPlayer().getUsername());
+            sb.append("\n");
+        }
+        sb.append(showCommandPlayerHand(key, gameState));
+
         sb.append(game.getPlayersMoneyAndBetAsString());
         writeMessageToClient(key, sb.toString());
     }
 
-    private void handleNextRoundCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
+    private void handleNextRoundCommand(Player player, SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.AFTER_SHOWDOWN) {
             writeMessageToClient(key, "You cannot start a new round now");
             return;
@@ -420,13 +428,13 @@ public class Server {
 
         switch (commandParts[0]) {
             case "help":
-                handleHelpCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+                handleHelpCommand(commandParts, key);
                 break;
             case "username":
-                handleUsernameCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+                handleUsernameCommand(commandParts, key, gameState);
                 break;
             case "start":
-                handleStartCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+                handleStartCommand(key, gameState);
                 break;
             case "showdown":
                 handleShowdownCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
@@ -435,16 +443,16 @@ public class Server {
                 handleRaiseCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "fold":
-                handleFoldCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+                handleFoldCommand(player, key, gameState, isCurrentPlayerMakingAMove);
                 break;
             case "change":
-                handleChangeCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+                handleChangeCommand(player, commandParts, key, gameState);
                 break;
             case "show":
-                handleShowCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+                handleShowCommand(key, gameState);
                 break;
             case "nextround":
-                handleNextRoundCommand(player, commandParts, key, gameState, isCurrentPlayerMakingAMove);
+                handleNextRoundCommand(player, key, gameState);
                 break;
             default:
                 writeMessageToClient(key, "Unknown command");

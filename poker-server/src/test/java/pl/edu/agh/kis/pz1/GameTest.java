@@ -8,7 +8,7 @@ public class GameTest {
     @Test
     public void testGameCreation() {
         // given
-        Game game = new Game(0, 0);
+        Game game = new Game(0);
 
         // when
         // then

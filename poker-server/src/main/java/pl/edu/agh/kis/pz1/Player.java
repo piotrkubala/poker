@@ -14,7 +14,6 @@ public class Player implements Comparable<Player> {
 
     private Hand playerHand;
 
-    private boolean isReady = false;
     private boolean isStartReady = false;
 
     private boolean isSmallBlind = false;
@@ -40,7 +39,6 @@ public class Player implements Comparable<Player> {
 
     public void resetPlayerForNextRound() {
         bet = 0;
-        isReady = false;
         isStartReady = false;
         isSmallBlind = false;
         isBigBlind = false;
@@ -75,7 +73,6 @@ public class Player implements Comparable<Player> {
 
     private void setReady() {
         game.nextPlayerIsReady(this);
-        isReady = true;
     }
 
     public void setName(String name_) {

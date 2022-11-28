@@ -52,19 +52,19 @@ public class DeckTest {
 
         for (Card c1 : cards1) {
             for (Card c2 : cards2) {
-                assertTrue(c1.compareTo(c2) != 0, "Cards should be different in each array");
+                assertNotEquals(0, c1.compareTo(c2), "Cards should be different in each array");
             }
         }
 
         for (Card c1 : cards1) {
             for (Card c2 : restOfCards) {
-                assertTrue(c1.compareTo(c2) != 0, "Cards should be different in each array");
+                assertNotEquals(0, c1.compareTo(c2), "Cards should be different in each array");
             }
         }
 
         for (Card c1 : cards2) {
             for (Card c2 : restOfCards) {
-                assertTrue(c1.compareTo(c2) != 0, "Cards should be different in each array");
+                assertNotEquals(0, c1.compareTo(c2), "Cards should be different in each array");
             }
         }
         //then

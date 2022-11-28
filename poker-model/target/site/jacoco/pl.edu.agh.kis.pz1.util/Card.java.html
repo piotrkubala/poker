@@ -16,11 +16,11 @@ public class Card implements Comparable&lt;Card&gt; {
 <span class="fc" id="L16">        QUEEN(12, &quot;Queen&quot;),</span>
 <span class="fc" id="L17">        KING(13, &quot;King&quot;);</span>
 
-        private int value;
-        private String name;
-<span class="fc" id="L21">        private Rank(int value_, String name_) {</span>
-<span class="fc" id="L22">            this.value = value_;</span>
-<span class="fc" id="L23">            this.name = name_;</span>
+        private final int value;
+        private final String name;
+<span class="fc" id="L21">        Rank(int valueArg, String nameArg) {</span>
+<span class="fc" id="L22">            this.value = valueArg;</span>
+<span class="fc" id="L23">            this.name = nameArg;</span>
 <span class="fc" id="L24">        }</span>
 
         public int getRank() {
@@ -37,11 +37,11 @@ public class Card implements Comparable&lt;Card&gt; {
 <span class="fc" id="L37">        SPADES(1, &quot;Spades&quot;),</span>
 <span class="fc" id="L38">        CLUBS(0, &quot;Clubs&quot;);</span>
 
-        private int value;
-        private String name;
-<span class="fc" id="L42">        private Suit(int value_, String name_) {</span>
-<span class="fc" id="L43">            this.value = value_;</span>
-<span class="fc" id="L44">            this.name = name_;</span>
+        private final int value;
+        private final String name;
+<span class="fc" id="L42">        Suit(int valueArg, String nameArg) {</span>
+<span class="fc" id="L43">            this.value = valueArg;</span>
+<span class="fc" id="L44">            this.name = nameArg;</span>
 <span class="fc" id="L45">        }</span>
 
         public int getSuit() {

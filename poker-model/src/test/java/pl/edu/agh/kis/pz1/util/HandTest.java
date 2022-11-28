@@ -58,7 +58,7 @@ public class HandTest {
         hand.changeCard(0, new Card(Card.Suit.DIAMONDS, Card.Rank.TWO));
 
         // then
-        assertTrue(expected[0].compareTo(hand.getCards()[0]) == 0, "Cards should be changed");
+        assertEquals(0, expected[0].compareTo(hand.getCards()[0]), "Cards should be changed");
     }
 
     @Test
@@ -914,24 +914,6 @@ public class HandTest {
         assertFalse(hand1IsBetterThanHand4, "Hand 1 should not be better than hand 4");
         assertTrue(hand4IsBetterThanHand1, "Hand 4 should be better than hand 1");
         assertTrue(hand2IsEqualHand2, "Hand 2 should be equal to hand 2");
-    }
-
-    @Test
-    void testCalculateValueForRoyalFlush() {
-        // given
-        Hand hand = new Hand(new Card[]{
-                new Card(Card.Suit.CLUBS, Card.Rank.ACE),
-                new Card(Card.Suit.CLUBS, Card.Rank.KING),
-                new Card(Card.Suit.CLUBS, Card.Rank.QUEEN),
-                new Card(Card.Suit.CLUBS, Card.Rank.JACK),
-                new Card(Card.Suit.CLUBS, Card.Rank.TEN)
-        });
-
-        // when
-        double handValue = hand.calculateValueForRoyalFlush();
-
-        // then
-        assertEquals(10.0, handValue, 1.0e-10, "Hand should have royal flush value");
     }
 
     @Test

@@ -16,11 +16,11 @@ public class Card implements Comparable<Card> {
         QUEEN(12, "Queen"),
         KING(13, "King");
 
-        private int value;
-        private String name;
-        private Rank(int value_, String name_) {
-            this.value = value_;
-            this.name = name_;
+        private final int value;
+        private final String name;
+        Rank(int valueArg, String nameArg) {
+            this.value = valueArg;
+            this.name = nameArg;
         }
 
         public int getRank() {
@@ -37,11 +37,11 @@ public class Card implements Comparable<Card> {
         SPADES(1, "Spades"),
         CLUBS(0, "Clubs");
 
-        private int value;
-        private String name;
-        private Suit(int value_, String name_) {
-            this.value = value_;
-            this.name = name_;
+        private final int value;
+        private final String name;
+        Suit(int valueArg, String nameArg) {
+            this.value = valueArg;
+            this.name = nameArg;
         }
 
         public int getSuit() {

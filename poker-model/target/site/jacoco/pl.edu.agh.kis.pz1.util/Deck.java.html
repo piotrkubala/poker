@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Deck.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">poker-model</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1.util</a> &gt; <span class="el_source">Deck.java</span></div><h1>Deck.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1.util;
 
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck {
     public static final int DECK_SIZE = 52;
-<span class="fc" id="L8">    private Vector&lt;Card&gt; cards = new Vector&lt;Card&gt;();</span>
+<span class="fc" id="L8">    private ArrayList&lt;Card&gt; cards = new ArrayList&lt;&gt;();</span>
 
 <span class="fc" id="L10">    public Deck() {</span>
 <span class="fc" id="L11">        resetDeck();</span>
@@ -35,7 +35,7 @@ public class Deck {
     public Card[] getCards(int count) {
 <span class="fc" id="L36">        Card[] result = new Card[count];</span>
 <span class="fc bfc" id="L37" title="All 2 branches covered.">        for (int i = 0; i &lt; count; i++) {</span>
-<span class="fc" id="L38">            result[i] = cards.lastElement();</span>
+<span class="fc" id="L38">            result[i] = cards.get(cards.size() - 1);</span>
 <span class="fc" id="L39">            cards.remove(cards.size() - 1);</span>
         }
 <span class="fc" id="L41">        return result;</span>

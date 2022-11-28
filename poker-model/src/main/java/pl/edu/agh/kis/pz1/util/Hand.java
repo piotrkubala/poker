@@ -157,10 +157,6 @@ public class Hand implements Comparable<Hand> {
         return pairs == 1;
     }
 
-    double calculateValueForRoyalFlush() {
-        return 10.0;
-    }
-
     double calculateValueForStraightFlush() {
         return 9.0 + cards[HAND_SIZE - 1].rank.getRank() / 15.0;
     }
@@ -194,7 +190,8 @@ public class Hand implements Comparable<Hand> {
     }
 
     double calculateValueForFlush() {
-        double sum = 0.0, multiplier = 1.0;
+        double sum = 0.0;
+        double multiplier = 1.0;
         if (rankCounts[1] != 0) {
             sum += 14.0;
             multiplier /= 15.0;
@@ -218,7 +215,8 @@ public class Hand implements Comparable<Hand> {
     }
 
     double calculateValueForThreeOfAKind() {
-        double sum = 0.0, multiplier = 1.0 / 15.0;
+        double sum = 0.0;
+        double multiplier = 1.0 / 15.0;
         if (rankCounts[1] == 1) {
             sum += 14.0 * multiplier;
             multiplier /= 15.0;
@@ -237,7 +235,8 @@ public class Hand implements Comparable<Hand> {
     }
 
     double calculateValueForTwoPairs() {
-        double sum = 0.0, multiplier = 1.0;
+        double sum = 0.0;
+        double multiplier = 1.0;
 
         if (rankCounts[1] == 2) {
             sum += 14.0 * multiplier;
@@ -258,7 +257,8 @@ public class Hand implements Comparable<Hand> {
     }
 
     double calculateValueForPair() {
-        double sum = 0.0, multiplier = 1.0;
+        double sum = 0.0;
+        double multiplier = 1.0;
 
         for (int i = RANKS_NUMBER; i >= 0; i--) {
             if (rankCounts[i] == 2) {
@@ -284,7 +284,8 @@ public class Hand implements Comparable<Hand> {
     }
 
     double calculateValueForHighCard() {
-        double sum = 0.0, multiplier = 1.0;
+        double sum = 0.0;
+        double multiplier = 1.0;
 
         for (int i = 0; i < HAND_SIZE && cards[i].rank == Card.Rank.ACE; i++) {
             sum += 14.0 * multiplier;
@@ -301,7 +302,7 @@ public class Hand implements Comparable<Hand> {
 
     public double getHandValue() {
         if (hasRoyalFlush()) {
-            return calculateValueForRoyalFlush();
+            return 10.0;
         }
 
         if (hasStraightFlush()) {

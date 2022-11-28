@@ -15,7 +15,7 @@ public class Game {
         SECOND_ROUND_BETS("Second round bets"),
         AFTER_SHOWDOWN("After showdown");
 
-        private String name;
+        private final String name;
 
         GameState(String name) {
             this.name = name;
@@ -29,20 +29,18 @@ public class Game {
     private GameState state = GameState.WAITING_FOR_PLAYERS;
 
     private int currentPlayerIndex = 0;
-    private int turn = 0;
     private int turnsSinceLastBetIncrease = 0;
     private int currentGamePool = 0;
     private int currentBet = 0;
 
     // the 0th player is small blind, the 1st is big blind; all in order
-    private Player[] playersByNumber;
-    private Player[] playersInJoinOrder;
-    private ArrayList<Integer> playersOrder;
+    private final Player[] playersByNumber;
+    private final Player[] playersInJoinOrder;
+    private final ArrayList<Integer> playersOrder;
 
     private Deck gameDeck;
 
-    private int ante;
-    private int playersNumber;
+    private final int playersNumber;
     private int readyPlayers = 0;
 
     private int readyPlayersForStart = 0;
@@ -53,12 +51,11 @@ public class Game {
 
     private int playersWhoAreReadyForNextRound = 0;
 
-    public Game(int playersNumber_, int ante_) {
-        playersNumber = playersNumber_;
-        ante = ante_;
+    public Game(int playersNumberArg) {
+        playersNumber = playersNumberArg;
         stillPlayingPlayers = playersNumber;
 
-        playersOrder = new ArrayList<Integer>(playersNumber);
+        playersOrder = new ArrayList<>(playersNumber);
         playersByNumber = new Player[playersNumber];
         playersInJoinOrder = new Player[playersNumber];
 
@@ -114,7 +111,12 @@ public class Game {
                     sb.append("             ");
                 }
 
-                sb.append(player.getUsername() + " has " + player.getMoney() + "$ left, current bet: " + player.getBet() + "$\n");
+                sb.append(player.getUsername());
+                sb.append(" has " );
+                sb.append(player.getMoney());
+                sb.append("$ left, current bet: ");
+                sb.append(player.getBet());
+                sb.append("$\n");
             }
         }
         return sb.toString();
@@ -251,7 +253,8 @@ public class Game {
         final double eps = 1.0-12;
         Player[] players = new Player[stillPlayingPlayers];
 
-        for (int i = 0, index = 0; i < playersNumber; i++) {
+        int index = 0;
+        for (int i = 0; i < playersNumber; i++) {
             Player player = playersByNumber[i];
             if (player.isPlaying()) {
                 players[index++] = player;
@@ -263,7 +266,7 @@ public class Game {
         Arrays.sort(players, Collections.reverseOrder());
 
         double firstPlayerValue = players[0].getHandValue();
-        List<Player> winners = new ArrayList<Player>();
+        List<Player> winners = new ArrayList<>();
         winners.add(players[0]);
 
         for (int i = 1; i < stillPlayingPlayers; i++) {
@@ -306,7 +309,7 @@ public class Game {
 
     public List<Player> showDownAndDivideMoneyFromPool() {
         if (state != GameState.FIRST_ROUND_BETS && state != GameState.SECOND_ROUND_BETS) {
-            return null;
+            return new ArrayList<>();
         }
 
         state = GameState.AFTER_SHOWDOWN;

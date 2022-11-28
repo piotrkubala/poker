@@ -5,19 +5,46 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Scanner;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
+
 public class PokerClient {
+    private static Logger logger = Logger.getLogger(PokerClient.class.getName());
+
+    class CustomRecordFormatter extends Formatter {
+        @Override
+        public String format(final LogRecord r) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(formatMessage(r)).append(System.getProperty("line.separator"));
+            if (null != r.getThrown()) {
+                sb.append("Throwable occurred: ");
+                Throwable t = r.getThrown();
+                try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
+                    t.printStackTrace(pw);
+                    sb.append(sw.toString());
+                } catch (Exception ex) {
+                    // ignore all exceptions here
+                }
+            }
+            return sb.toString();
+        }
+    }
+
     static class CheckServerAnswers extends Thread {
         private SocketChannel socketChannel;
-        private ByteBuffer buffer;
 
-        public CheckServerAnswers(SocketChannel socketChannel_) {
-            socketChannel = socketChannel_;
+        public CheckServerAnswers(SocketChannel socketChannelArg) {
+            socketChannel = socketChannelArg;
         }
 
         @Override
         public void run() {
+            ByteBuffer buffer;
             try {
                 socketChannel.configureBlocking(true);
 
@@ -26,7 +53,7 @@ public class PokerClient {
 
                     if (socketChannel.read(buffer) > 0) {
                         String message = (new String(buffer.array())).trim();
-                        System.out.println(message);
+                        logger.info(message);
                         buffer.clear();
 
                         if (message.equals("exit")) {
@@ -42,15 +69,19 @@ public class PokerClient {
         }
     }
 
-    private static Logger logger = Logger.getLogger(PokerClient.class.getName());
     private static Scanner scanner = new Scanner(System.in);
 
     private final String serverAddress;
     private final int portNumber;
 
-    public PokerClient(String serverAddress_, int portNumber_) {
-        serverAddress = serverAddress_;
-        portNumber = portNumber_;
+    public PokerClient(String serverAddressParam, int portNumberParam) {
+        serverAddress = serverAddressParam;
+        portNumber = portNumberParam;
+
+        logger.setUseParentHandlers(false);
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new CustomRecordFormatter());
+        logger.addHandler(consoleHandler);
     }
 
     public void clientLoop() {
@@ -58,8 +89,6 @@ public class PokerClient {
 
         try {
             SocketChannel clientSocket = SocketChannel.open(new InetSocketAddress(serverAddress, portNumber));
-
-            byte[] bytes = new byte[1024];
 
             CheckServerAnswers checkServerAnswers = new CheckServerAnswers(clientSocket);
             checkServerAnswers.start();
@@ -85,7 +114,7 @@ public class PokerClient {
 
             clientSocket.close();
 
-            System.out.println("Client connection closed");
+            logger.info("Client connection closed");
         } catch (IOException e) {
             logger.severe("Cannot connect to server");
             System.exit(1);
