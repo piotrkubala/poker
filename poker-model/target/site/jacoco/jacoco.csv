@@ -2,5 +2,5 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 poker-model,pl.edu.agh.kis.pz1.util,Deck,8,103,0,6,4,18,2,8,2,5
 poker-model,pl.edu.agh.kis.pz1.util,Card.Suit,0,52,0,0,0,11,0,4,0,4
 poker-model,pl.edu.agh.kis.pz1.util,Card.Rank,0,124,0,0,0,20,0,4,0,4
-poker-model,pl.edu.agh.kis.pz1.util,Card,0,44,0,2,0,9,0,4,0,3
-poker-model,pl.edu.agh.kis.pz1.util,Hand,22,904,12,144,3,163,12,94,0,28
+poker-model,pl.edu.agh.kis.pz1.util,Card,35,44,8,2,5,9,6,4,2,3
+poker-model,pl.edu.agh.kis.pz1.util,Hand,56,904,18,144,10,163,17,94,2,28

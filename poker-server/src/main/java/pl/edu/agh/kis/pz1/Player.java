@@ -4,6 +4,10 @@ import pl.edu.agh.kis.pz1.util.Hand;
 
 import java.nio.channels.SelectionKey;
 
+/**
+ * Model of a player in the poker game on the server side.
+ * @author Piotr Kubala
+ */
 public class Player implements Comparable<Player> {
     final SelectionKey key;
 
@@ -33,12 +37,21 @@ public class Player implements Comparable<Player> {
 
     boolean testMode = false;
 
-    public Player(SelectionKey key_, int money_, Game game_) {
-        key = key_;
-        money = money_;
-        game = game_;
+    /**
+     * Creates a new player with the given selecetion key, name and money.
+     * @param keyArg selection key of the player socket
+     * @param moneyArg money of the player
+     * @param gameArg game the player is playing in
+     */
+    public Player(SelectionKey keyArg, int moneyArg, Game gameArg) {
+        key = keyArg;
+        money = moneyArg;
+        game = gameArg;
     }
 
+    /**
+     * resets player for the next round
+     */
     public void resetPlayerForNextRound() {
         bet = 0;
         isStartReady = false;
@@ -51,16 +64,24 @@ public class Player implements Comparable<Player> {
         nextRoundReady = false;
     }
 
+    /**
+     * get player's nextRoundReady
+     * @return player's nextRoundReady
+     */
     public boolean getNextRoundReady() {
         return nextRoundReady;
     }
 
-    public void setNextRoundReady(boolean nextRoundReady_) {
-        if (nextRoundReady == nextRoundReady_) {
+    /**
+     * set player's nextRoundReady
+     * @param nextRoundReadyArg player's nextRoundReady
+     */
+    public void setNextRoundReady(boolean nextRoundReadyArg) {
+        if (nextRoundReady == nextRoundReadyArg) {
             return;
         }
 
-        nextRoundReady = nextRoundReady_;
+        nextRoundReady = nextRoundReadyArg;
 
         if (testMode) {
             return;
@@ -73,10 +94,17 @@ public class Player implements Comparable<Player> {
         }
     }
 
+    /**
+     * get player's selection key
+     * @return player's selection key
+     */
     public SelectionKey getKey() {
         return key;
     }
 
+    /**
+     * set player's ready for start
+     */
     private void setReady() {
         if (testMode){
             return;
@@ -84,12 +112,20 @@ public class Player implements Comparable<Player> {
         game.nextPlayerIsReady(this);
     }
 
-    public void setName(String name_) {
-        name = name_;
+    /**
+     * set player's name
+     * @param nameArg player's name
+     */
+    public void setName(String nameArg) {
+        name = nameArg;
 
         setReady();
     }
 
+    /**
+     * get player's name
+     * @return player's name
+     */
     public String getUsername() {
         return name;
     }
@@ -106,12 +142,17 @@ public class Player implements Comparable<Player> {
         return bet;
     }
 
-    public int setStartReady(boolean isReady_) {
-        if (isReady_ == isStartReady) {
+    /**
+     * set that player is ready for start
+     * @param isReadyArg is player ready for start
+     * @return number of players who are ready for start
+     */
+    public int setStartReady(boolean isReadyArg) {
+        if (isReadyArg == isStartReady) {
             return game.getReadyPlayersForStart();
         }
 
-        isStartReady = isReady_;
+        isStartReady = isReadyArg;
 
         if (isStartReady) {
             game.increaseReadyPlayersForStart();
@@ -126,12 +167,12 @@ public class Player implements Comparable<Player> {
         playerHand = hand;
     }
 
-    public void setSmallBlind(boolean isSmallBlind_) {
-        isSmallBlind = isSmallBlind_;
+    public void setSmallBlind(boolean isSmallBlindArg) {
+        isSmallBlind = isSmallBlindArg;
     }
 
-    public void setBigBlind(boolean isBigBlind_) {
-        isBigBlind = isBigBlind_;
+    public void setBigBlind(boolean isBigBlindArg) {
+        isBigBlind = isBigBlindArg;
     }
 
     public boolean isSmallBlind() {
@@ -142,6 +183,10 @@ public class Player implements Comparable<Player> {
         return isBigBlind;
     }
 
+    /**
+     * raise player's bet to the given value
+     * @param amount amount to raise
+     */
     public void raiseBet(int amount) {
         money -= amount - bet;
 
@@ -151,12 +196,12 @@ public class Player implements Comparable<Player> {
         bet = amount;
     }
 
-    public void setPlaying(boolean isPlaying_) {
-        if (isPlaying_ == isPlaying) {
+    public void setPlaying(boolean isPlayingArg) {
+        if (isPlayingArg == isPlaying) {
             return;
         }
 
-        isPlaying = isPlaying_;
+        isPlaying = isPlayingArg;
 
         if (isPlaying) {
             game.increaseStillPlayingPlayers();
@@ -169,12 +214,12 @@ public class Player implements Comparable<Player> {
         return isPlaying;
     }
 
-    public void setCardsChanged(boolean wereCardsChanged_) {
-        if (wereCardsChanged_ == wereCardsChanged) {
+    public void setCardsChanged(boolean wereCardsChangedArg) {
+        if (wereCardsChangedArg == wereCardsChanged) {
             return;
         }
 
-        wereCardsChanged = wereCardsChanged_;
+        wereCardsChanged = wereCardsChangedArg;
 
         if (wereCardsChanged) {
             game.increasePlayersWhoChangedCards();
@@ -207,8 +252,23 @@ public class Player implements Comparable<Player> {
         return 0;
     }
 
-    public void setWinner(boolean isWinner_) {
-        isWinner = isWinner_;
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || other.getClass() != Player.class) {
+            return false;
+        }
+        Player otherPlayer = (Player) other;
+
+        return key.equals(otherPlayer.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return key.hashCode();
+    }
+
+    public void setWinner(boolean isWinnerArg) {
+        isWinner = isWinnerArg;
     }
 
     public boolean isWinner() {

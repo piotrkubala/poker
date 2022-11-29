@@ -1,5 +1,7 @@
 package pl.edu.agh.kis.pz1;
 
+import pl.edu.agh.kis.pz1.poker.common.BadProgramArgumentException;
+
 import java.util.logging.Logger;
 
 /**
@@ -9,8 +11,16 @@ import java.util.logging.Logger;
 public class Main2 {
     private static Logger logger = Logger.getLogger(Main2.class.getName());
 
+    /**
+     * Main method of the poker client
+     * @param args arguments of the program
+     */
     public static void main(String[] args) {
-        if (args.length < 2) {
+        try {
+            if (args.length < 2) {
+                throw new BadProgramArgumentException("Not enough arguments");
+            }
+        } catch (BadProgramArgumentException e) {
             logger.severe("Not enough arguments");
             logger.info("Usage: java -jar client.jar <server address> <port>");
             System.exit(1);

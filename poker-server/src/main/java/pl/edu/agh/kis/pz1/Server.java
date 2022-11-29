@@ -14,6 +14,10 @@ import java.nio.channels.SocketChannel;
 import java.util.*;
 import java.util.logging.Logger;
 
+/**
+ * Main server class on the server side.
+ * @author Piotr Kubala
+ */
 public class Server {
     static final Logger logger = Logger.getLogger(Server.class.getName());
     public static final String NOW_IT_IS_YOUR_TURN = "Now it is your turn";
@@ -35,6 +39,14 @@ public class Server {
     final boolean testMode;
     StringBuilder testOutput = new StringBuilder();
 
+    /**
+     * Creates a new server with the given parameters.
+     * @param playersNumberArg number of players in the game
+     * @param serverAddressArg server address
+     * @param portArg port number to listen on
+     * @param moneyPerPlayerAtBeginningArg money per player at the beginning of the game
+     * @param testModeArg if true, server will not wait for players to connect
+     */
     public Server(int playersNumberArg, String serverAddressArg, int portArg, int moneyPerPlayerAtBeginningArg, boolean testModeArg) {
         playersNumber = playersNumberArg;
         portNumber = portArg;
@@ -57,6 +69,11 @@ public class Server {
         }
     }
 
+    /**
+     * writes message to the client specified by the key
+     * @param key key of the client socket
+     * @param message message to be sent
+     */
     void writeMessageToClient(SelectionKey key, String message) {
         if (testMode) {
             testOutput.append(message);
@@ -76,6 +93,10 @@ public class Server {
         }
     }
 
+    /**
+     * writes message to all clients
+     * @param message message to be sent
+     */
     void writeMessageToAllClients(String message) {
         if (testMode) {
             testOutput.append(message);
@@ -87,6 +108,11 @@ public class Server {
         }
     }
 
+    /**
+     * ends game round, finds winners
+     * @param player player who ended the round
+     * @param key key of the player socket
+     */
     void endGameRound(Player player, SelectionKey key) {
         List<Player> winners = game.showDownAndDivideMoneyFromPool();
 
@@ -122,6 +148,11 @@ public class Server {
         writeMessageToAllClients(sb.toString());
     }
 
+    /**
+     * handles help command
+     * @param commandParts sent command parts
+     * @param key key of the player socket
+     */
     void handleHelpCommand(String[] commandParts, SelectionKey key) {
         String helpInfo;
 
@@ -159,12 +190,18 @@ public class Server {
                 default:
                     helpInfo = "Unknown command";
                     break;
-            };
+            }
         }
 
         writeMessageToClient(key, helpInfo);
     }
 
+    /**
+     * handles username command
+     * @param commandParts sent command parts
+     * @param key key of the player socket
+     * @param gameState current game state
+     */
     void handleUsernameCommand(String[] commandParts, SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.WAITING_FOR_PLAYERS) {
             writeMessageToClient(key, "Cannot change username now");
@@ -187,6 +224,11 @@ public class Server {
         }
     }
 
+    /**
+     * handles start command
+     * @param key key of the player socket
+     * @param gameState current game state
+     */
     void handleStartCommand(SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.WAITING_FOR_PLAYERS && gameState != Game.GameState.WAITING_FOR_READY) {
             writeMessageToClient(key, "The game has already started");
@@ -203,6 +245,14 @@ public class Server {
         }
     }
 
+    /**
+     * handles showdown command
+     * @param player player who sent the command
+     * @param commandParts sent command parts
+     * @param key key of the player socket
+     * @param gameState current game state
+     * @param isCurrentPlayerMakingAMove is current player making a move
+     */
     void handleShowdownCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
             writeMessageToClient(key, "You cannot showdown now, the game is not in betting phase");
@@ -240,6 +290,14 @@ public class Server {
         }
     }
 
+    /**
+     * handles raise command
+     * @param player player who sent the command
+     * @param commandParts sent command parts
+     * @param key key of the player socket
+     * @param gameState current game state
+     * @param isCurrentPlayerMakingAMove is current player making a move
+     */
     void handleRaiseCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
             writeMessageToClient(key, "You cannot raise now, the game is not in betting phase");
@@ -288,6 +346,13 @@ public class Server {
         executeRaiseCommand(player, commandParts, key, minRaise, maxRaise);
     }
 
+    /**
+     * handles fold command
+     * @param player player who sent the command
+     * @param key key of the player socket
+     * @param gameState current game state
+     * @param isCurrentPlayerMakingAMove is current player making a move
+     */
     void handleFoldCommand(Player player, SelectionKey key, Game.GameState gameState, boolean isCurrentPlayerMakingAMove) {
         if (gameState != Game.GameState.FIRST_ROUND_BETS && gameState != Game.GameState.SECOND_ROUND_BETS) {
             writeMessageToClient(key, "You cannot fold now, the game is not in betting phase");
@@ -323,6 +388,13 @@ public class Server {
         return false;
     }
 
+    /**
+     * handles change command
+     * @param player player who sent the command
+     * @param commandParts sent command parts
+     * @param key key of the player socket
+     * @param gameState current game state
+     */
     void handleChangeCommand(Player player, String[] commandParts, SelectionKey key, Game.GameState gameState) {
         if (checkIfShouldExitFromChangeCommandHandler(player, commandParts, key, gameState)) {
             return;
@@ -364,6 +436,11 @@ public class Server {
         }
     }
 
+    /**
+     * shows player's hand, is used by show command
+     * @param key key of the player socket
+     * @param gameState current game state
+     */
     StringBuilder showCommandPlayerHand(SelectionKey key, Game.GameState gameState) {
         StringBuilder sb = new StringBuilder();
 
@@ -392,6 +469,11 @@ public class Server {
         return sb;
     }
 
+    /**
+     * handles show command
+     * @param key key of the player socket
+     * @param gameState current game state
+     */
     void handleShowCommand(SelectionKey key, Game.GameState gameState) {
         StringBuilder sb = new StringBuilder();
 
@@ -419,6 +501,12 @@ public class Server {
         writeMessageToClient(key, sb.toString());
     }
 
+    /**
+     * handles next round command
+     * @param player player who sent the command
+     * @param key key of the player socket
+     * @param gameState current game state
+     */
     void handleNextRoundCommand(Player player, SelectionKey key, Game.GameState gameState) {
         if (gameState != Game.GameState.AFTER_SHOWDOWN) {
             writeMessageToClient(key, "You cannot start a new round now");
@@ -439,6 +527,11 @@ public class Server {
         }
     }
 
+    /**
+     * mother method for handling commands
+     * @param command command sent by the player
+     * @param key key of the player socket
+     */
     void handleCommands(String command, SelectionKey key) {
         String[] commandParts = command.split(" ");
 
@@ -487,6 +580,12 @@ public class Server {
         checkForFirstRoundEnd(gameState, player, key);
     }
 
+    /**
+     * check for first round end
+     * @param gameState current game state
+     * @param player player who sent the command
+     * @param key key of the player socket
+     */
     void checkForFirstRoundEnd(Game.GameState gameState, Player player, SelectionKey key) {
         if (gameState == Game.GameState.FIRST_ROUND_BETS && game.isBettingEnded()) {
             game.beginChangingCards();
@@ -496,10 +595,19 @@ public class Server {
         }
     }
 
+    /**
+     * check if new player can join the game, if so, add him to the game
+     * @param mySocket socket of the new potential player
+     */
     void handleAccept(ServerSocketChannel mySocket) throws IOException {
         if (testMode) {
             clients.put(null, new Player(null, moneyPerPlayerAtBeginning, game));
 
+            return;
+        }
+
+        if (clients.size() >= playersNumber) {
+            mySocket.accept().close();
             return;
         }
 
@@ -513,6 +621,10 @@ public class Server {
         clients.put(clientKey, new Player(clientKey, moneyPerPlayerAtBeginning, game));
     }
 
+    /**
+     * reads bytes from the socket and converts them to a string, calls handleCommands
+     * @param key key of the player socket
+     */
     void handleRead(SelectionKey key) throws IOException {
         if (testMode) {
             return;
@@ -545,6 +657,9 @@ public class Server {
         }
     }
 
+    /**
+     * main loop of the server
+     */
     public void start() {
         if (testMode) {
             return;

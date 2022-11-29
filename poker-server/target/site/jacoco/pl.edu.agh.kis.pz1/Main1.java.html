@@ -18,35 +18,41 @@ import java.util.logging.Logger;
 <span class="nc" id="L18">        logger.info(&quot;Server will be stopped in next round&quot;);</span>
 <span class="nc" id="L19">    }</span>
 
+    /**
+     * Main method of the poker server
+     * @param args arguments of the program
+     */
     public static void main(String[] args) {
         try {
-<span class="nc bnc" id="L23" title="All 2 branches missed.">            if (args.length &lt; 3) {</span>
-<span class="nc" id="L24">                throw new BadProgramArgumentException(&quot;Not enough arguments&quot;);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">            if (args.length &lt; 3) {</span>
+<span class="nc" id="L28">                throw new BadProgramArgumentException(&quot;Not enough arguments&quot;);</span>
             }
-<span class="nc" id="L26">        } catch (BadProgramArgumentException e) {</span>
-<span class="nc" id="L27">            logger.severe(e.getMessage());</span>
-<span class="nc" id="L28">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;address&gt; &lt;port&gt; &lt;money per player&gt;&quot;);</span>
-<span class="nc" id="L29">            System.exit(1);</span>
-<span class="nc" id="L30">        }</span>
+<span class="nc" id="L30">        } catch (BadProgramArgumentException e) {</span>
+<span class="nc" id="L31">            logger.severe(e.getMessage());</span>
+<span class="nc" id="L32">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;address&gt; &lt;port&gt; &lt;money per player&gt;&quot;);</span>
+<span class="nc" id="L33">            System.exit(1);</span>
+<span class="nc" id="L34">        }</span>
 
-<span class="nc" id="L32">        Runtime.getRuntime().addShutdownHook(new Thread(() -&gt; stopSignalHandler()));</span>
+<span class="nc" id="L36">        Runtime.getRuntime().addShutdownHook(new Thread(Main1::stopSignalHandler));</span>
 
         try {
-            int playersNumber, portNumber, playersMoney;
+            int playersNumber;
+            int portNumber;
+            int playersMoney;
 
-<span class="nc" id="L37">            playersNumber = Integer.parseInt(args[0]);</span>
-<span class="nc" id="L38">            portNumber = Integer.parseInt(args[2]);</span>
-<span class="nc" id="L39">            playersMoney = Integer.parseInt(args[3]);</span>
+<span class="nc" id="L43">            playersNumber = Integer.parseInt(args[0]);</span>
+<span class="nc" id="L44">            portNumber = Integer.parseInt(args[2]);</span>
+<span class="nc" id="L45">            playersMoney = Integer.parseInt(args[3]);</span>
 
-<span class="nc bnc" id="L41" title="All 2 branches missed.">            while (!stopServerInNextRound) {</span>
-<span class="nc" id="L42">                Server gameServer = new Server(playersNumber, args[1], portNumber, playersMoney, false);</span>
-<span class="nc" id="L43">                gameServer.start();</span>
-<span class="nc" id="L44">            }</span>
-<span class="nc" id="L45">        } catch (NumberFormatException e) {</span>
-<span class="nc" id="L46">            logger.severe(&quot;Wrong arguments&quot;);</span>
-<span class="nc" id="L47">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;port&gt;&quot;);</span>
-<span class="nc" id="L48">            System.exit(1);</span>
-<span class="nc" id="L49">        }</span>
-<span class="nc" id="L50">    }</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            while (!stopServerInNextRound) {</span>
+<span class="nc" id="L48">                Server gameServer = new Server(playersNumber, args[1], portNumber, playersMoney, false);</span>
+<span class="nc" id="L49">                gameServer.start();</span>
+<span class="nc" id="L50">            }</span>
+<span class="nc" id="L51">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L52">            logger.severe(&quot;Wrong arguments&quot;);</span>
+<span class="nc" id="L53">            logger.info(&quot;Usage: java -jar server.jar &lt;number of players&gt; &lt;port&gt;&quot;);</span>
+<span class="nc" id="L54">            System.exit(1);</span>
+<span class="nc" id="L55">        }</span>
+<span class="nc" id="L56">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

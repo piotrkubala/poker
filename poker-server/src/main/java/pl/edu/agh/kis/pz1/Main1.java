@@ -18,6 +18,10 @@ public class Main1 {
         logger.info("Server will be stopped in next round");
     }
 
+    /**
+     * Main method of the poker server
+     * @param args arguments of the program
+     */
     public static void main(String[] args) {
         try {
             if (args.length < 3) {
@@ -29,10 +33,12 @@ public class Main1 {
             System.exit(1);
         }
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> stopSignalHandler()));
+        Runtime.getRuntime().addShutdownHook(new Thread(Main1::stopSignalHandler));
 
         try {
-            int playersNumber, portNumber, playersMoney;
+            int playersNumber;
+            int portNumber;
+            int playersMoney;
 
             playersNumber = Integer.parseInt(args[0]);
             portNumber = Integer.parseInt(args[2]);

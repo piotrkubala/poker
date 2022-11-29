@@ -1,77 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Card.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">poker-model</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1.util</a> &gt; <span class="el_source">Card.java</span></div><h1>Card.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1.util;
 
+/**
+ * Models card from standard 52-card deck.
+ * @author Piotr Kubala
+ */
 public class Card implements Comparable&lt;Card&gt; {
-<span class="fc" id="L4">    public enum Rank {</span>
-<span class="fc" id="L5">        ACE(1, &quot;Ace&quot;),</span>
-<span class="fc" id="L6">        TWO(2, &quot;Two&quot;),</span>
-<span class="fc" id="L7">        THREE(3, &quot;Three&quot;),</span>
-<span class="fc" id="L8">        FOUR(4, &quot;Four&quot;),</span>
-<span class="fc" id="L9">        FIVE(5, &quot;Five&quot;),</span>
-<span class="fc" id="L10">        SIX(6, &quot;Six&quot;),</span>
-<span class="fc" id="L11">        SEVEN(7, &quot;Seven&quot;),</span>
-<span class="fc" id="L12">        EIGHT(8, &quot;Eight&quot;),</span>
-<span class="fc" id="L13">        NINE(9, &quot;Nine&quot;),</span>
-<span class="fc" id="L14">        TEN(10, &quot;Ten&quot;),</span>
-<span class="fc" id="L15">        JACK(11, &quot;Jack&quot;),</span>
-<span class="fc" id="L16">        QUEEN(12, &quot;Queen&quot;),</span>
-<span class="fc" id="L17">        KING(13, &quot;King&quot;);</span>
+    /**
+     * Models rank of a card.
+     */
+<span class="fc" id="L11">    public enum Rank {</span>
+<span class="fc" id="L12">        ACE(1, &quot;Ace&quot;),</span>
+<span class="fc" id="L13">        TWO(2, &quot;Two&quot;),</span>
+<span class="fc" id="L14">        THREE(3, &quot;Three&quot;),</span>
+<span class="fc" id="L15">        FOUR(4, &quot;Four&quot;),</span>
+<span class="fc" id="L16">        FIVE(5, &quot;Five&quot;),</span>
+<span class="fc" id="L17">        SIX(6, &quot;Six&quot;),</span>
+<span class="fc" id="L18">        SEVEN(7, &quot;Seven&quot;),</span>
+<span class="fc" id="L19">        EIGHT(8, &quot;Eight&quot;),</span>
+<span class="fc" id="L20">        NINE(9, &quot;Nine&quot;),</span>
+<span class="fc" id="L21">        TEN(10, &quot;Ten&quot;),</span>
+<span class="fc" id="L22">        JACK(11, &quot;Jack&quot;),</span>
+<span class="fc" id="L23">        QUEEN(12, &quot;Queen&quot;),</span>
+<span class="fc" id="L24">        KING(13, &quot;King&quot;);</span>
 
         private final int value;
         private final String name;
-<span class="fc" id="L21">        Rank(int valueArg, String nameArg) {</span>
-<span class="fc" id="L22">            this.value = valueArg;</span>
-<span class="fc" id="L23">            this.name = nameArg;</span>
-<span class="fc" id="L24">        }</span>
+<span class="fc" id="L28">        Rank(int valueArg, String nameArg) {</span>
+<span class="fc" id="L29">            this.value = valueArg;</span>
+<span class="fc" id="L30">            this.name = nameArg;</span>
+<span class="fc" id="L31">        }</span>
 
         public int getRank() {
-<span class="fc" id="L27">            return this.value;</span>
+<span class="fc" id="L34">            return this.value;</span>
         }
         public String getName() {
-<span class="fc" id="L30">            return this.name;</span>
+<span class="fc" id="L37">            return this.name;</span>
         }
     }
 
-<span class="fc" id="L34">    public enum Suit {</span>
-<span class="fc" id="L35">        HEARTS(3, &quot;Hearts&quot;),</span>
-<span class="fc" id="L36">        DIAMONDS(2, &quot;Diamonds&quot;),</span>
-<span class="fc" id="L37">        SPADES(1, &quot;Spades&quot;),</span>
-<span class="fc" id="L38">        CLUBS(0, &quot;Clubs&quot;);</span>
+    /**
+     * Models suit of a card.
+     */
+<span class="fc" id="L44">    public enum Suit {</span>
+<span class="fc" id="L45">        HEARTS(3, &quot;Hearts&quot;),</span>
+<span class="fc" id="L46">        DIAMONDS(2, &quot;Diamonds&quot;),</span>
+<span class="fc" id="L47">        SPADES(1, &quot;Spades&quot;),</span>
+<span class="fc" id="L48">        CLUBS(0, &quot;Clubs&quot;);</span>
 
         private final int value;
         private final String name;
-<span class="fc" id="L42">        Suit(int valueArg, String nameArg) {</span>
-<span class="fc" id="L43">            this.value = valueArg;</span>
-<span class="fc" id="L44">            this.name = nameArg;</span>
-<span class="fc" id="L45">        }</span>
+<span class="fc" id="L52">        Suit(int valueArg, String nameArg) {</span>
+<span class="fc" id="L53">            this.value = valueArg;</span>
+<span class="fc" id="L54">            this.name = nameArg;</span>
+<span class="fc" id="L55">        }</span>
 
         public int getSuit() {
-<span class="fc" id="L48">            return this.value;</span>
+<span class="fc" id="L58">            return this.value;</span>
         }
 
         public String getName() {
-<span class="fc" id="L52">            return this.name;</span>
+<span class="fc" id="L62">            return this.name;</span>
         }
     }
 
     Suit suit;
     Rank rank;
 
-<span class="fc" id="L59">    public Card(Suit cardSuit, Rank cardRank) {</span>
-<span class="fc" id="L60">        this.suit = cardSuit;</span>
-<span class="fc" id="L61">        this.rank = cardRank;</span>
-<span class="fc" id="L62">    }</span>
+    /**
+     * Creates card with given suit and rank.
+     * @param cardSuit suit of the card
+     * @param cardRank rank of the card
+     */
+<span class="fc" id="L74">    public Card(Suit cardSuit, Rank cardRank) {</span>
+<span class="fc" id="L75">        this.suit = cardSuit;</span>
+<span class="fc" id="L76">        this.rank = cardRank;</span>
+<span class="fc" id="L77">    }</span>
 
+    /**
+     * Returns string representation of the card.
+     * @return string representation of the card
+     */
     public String toString() {
-<span class="fc" id="L65">        return rank.getName() + &quot; of &quot; + suit.getName();</span>
+<span class="fc" id="L84">        return rank.getName() + &quot; of &quot; + suit.getName();</span>
+    }
+
+    /**
+     * Compares this card with another card.
+     * @param otherPlayer other card
+     * @return -1 if this card is smaller, 0 if they are equal, 1 if this card is bigger
+     */
+    @Override
+    public int compareTo(Card otherPlayer) {
+<span class="fc" id="L94">        int result = Integer.compare(this.rank.getRank(), otherPlayer.rank.getRank());</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        if(result != 0) {</span>
+<span class="fc" id="L96">            return result;</span>
+        }
+<span class="fc" id="L98">        return Integer.compare(this.suit.getSuit(), otherPlayer.suit.getSuit());</span>
     }
 
     @Override
-    public int compareTo(Card otherPlayer) {
-<span class="fc" id="L70">        int result = Integer.compare(this.rank.getRank(), otherPlayer.rank.getRank());</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">        if(result != 0) {</span>
-<span class="fc" id="L72">            return result;</span>
+    public boolean equals(Object other) {
+<span class="nc bnc" id="L103" title="All 4 branches missed.">        if (other == null || other.getClass() != Card.class) {</span>
+<span class="nc" id="L104">            return false;</span>
         }
-<span class="fc" id="L74">        return Integer.compare(this.suit.getSuit(), otherPlayer.suit.getSuit());</span>
+<span class="nc" id="L106">        Card otherCard = (Card) other;</span>
+
+<span class="nc bnc" id="L108" title="All 4 branches missed.">        return this.suit == otherCard.suit &amp;&amp; this.rank == otherCard.rank;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L113">        return this.suit.getSuit() * 13 + this.rank.getRank();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

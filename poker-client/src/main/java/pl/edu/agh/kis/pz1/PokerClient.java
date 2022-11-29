@@ -13,9 +13,16 @@ import java.io.StringWriter;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
+/**
+ * Client for the poker game class.
+ * @author Piotr Kubala
+ */
 public class PokerClient {
     private static Logger logger = Logger.getLogger(PokerClient.class.getName());
 
+    /**
+     * Formatter for the logger.
+     */
     static class CustomRecordFormatter extends Formatter {
         @Override
         public String format(final LogRecord r) {
@@ -35,6 +42,9 @@ public class PokerClient {
         }
     }
 
+    /**
+     * Thread for reading from the server constantly.
+     */
     static class CheckServerAnswers extends Thread {
         private SocketChannel socketChannel;
 
@@ -74,6 +84,11 @@ public class PokerClient {
     private final String serverAddress;
     private final int portNumber;
 
+    /**
+     * Constructor of the client.
+     * @param serverAddressParam address of the server
+     * @param portNumberParam port number of the server
+     */
     public PokerClient(String serverAddressParam, int portNumberParam) {
         serverAddress = serverAddressParam;
         portNumber = portNumberParam;
@@ -84,6 +99,9 @@ public class PokerClient {
         logger.addHandler(consoleHandler);
     }
 
+    /**
+     * Main loop of the client.
+     */
     public void clientLoop() {
         logger.info("Starting poker client");
 
@@ -102,14 +120,12 @@ public class PokerClient {
                     break;
                 }
 
-                if (command.length() == 0) {
-                    continue;
+                if (command.length() > 0) {
+                    buffer.put(command.getBytes(), 0, command.length());
+                    buffer.flip();
+
+                    clientSocket.write(buffer);
                 }
-
-                buffer.put(command.getBytes(), 0, command.length());
-                buffer.flip();
-
-                clientSocket.write(buffer);
             }
 
             clientSocket.close();

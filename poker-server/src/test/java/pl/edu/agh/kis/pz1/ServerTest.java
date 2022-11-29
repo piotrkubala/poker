@@ -9,7 +9,14 @@ import java.util.Random;
 
 import static org.testng.Assert.*;
 
+/**
+ * Class used for testing {@link Server} class.
+ * @author Piotr Kubala
+ */
 public class ServerTest {
+    /**
+     * Tests if server can be created.
+     */
     @Test
     public void testServerCreation() {
         // given
@@ -20,6 +27,9 @@ public class ServerTest {
         assertNotNull(server);
     }
 
+    /**
+     * Tests if server can be started correctly.
+     */
     @Test
     public void testServerStart() {
         // given
@@ -32,6 +42,9 @@ public class ServerTest {
         assertNotNull(server);
     }
 
+    /**
+     * Tests handleCommand method multiple times.
+     */
     @Test
     public void testServerHandleMultipleCommands() {
         // given
@@ -64,6 +77,9 @@ public class ServerTest {
         assertEquals(server.testOutput.toString(), "You cannot raise now, the game is not in betting phaseUnknown commandYou cannot fold now, the game is not in betting phaseYou cannot showdown now, the game is not in betting phaseUnknown commandhelp - shows available commandsAvailable commands: help, username, exit, showdown, raise, fold, change, nextround, showhelp - shows available commandsraise <amount> - raises the current betYou cannot raise now, the game is not in betting phaseYou cannot raise now, the game is not in betting phaseYou cannot raise now, the game is not in betting phaseYou cannot change cards nowYou cannot change cards nowThere are not enough players (need 2 more players)There are not enough players (need 2 more players)Username set to piotr", "Server should handle multiple commands");
     }
 
+    /**
+     * Tests handleCommand method.
+     */
     @Test
     public void testServerHandleCommands() {
         // given
@@ -78,6 +94,9 @@ public class ServerTest {
         assertEquals(server.testOutput.toString(), "Unknown command", "Test output should be equal for call");
     }
 
+    /**
+     * Tests handleCommand method multiple times.
+     */
     @Test void testServerHandleMultipleCommands2() {
         // given
         Server server = new Server(2, "localhost", 9000, 100, true);
@@ -99,6 +118,9 @@ public class ServerTest {
         assertEquals(server.testOutput.toString(), "help - shows available commandsshowdown - end the game and the show resultsUnknown commandUnknown commandUnknown commandraise <amount> - raises the current betYou cannot raise now, the game is not in betting phaseYou cannot change cards now", "Test output should be equal for help help");
     }
 
+    /**
+     * Tests handleCommand method multiple times while game is in the betting phase.
+     */
     @Test
     public void testHandleMultipleCommandsWhileInBettingPhase() {
         // given
@@ -130,6 +152,9 @@ public class ServerTest {
         assertEquals(server.testOutput.toString(), "Unknown commandhelp - shows available commandsshowdown - end the game and the show resultsUnknown commandraise <amount> - raises the current betIt is not your turn, you cannot raise nowYou cannot change cards nowIt is not your turn, you cannot raise nowIt is not your turn, you cannot raise nowIt is not your turn, you cannot raise nowYou cannot change cards nowYou cannot change cards nowThe game has already startedThe game has already startedCannot change username now", "Test output should be equal for call");
     }
 
+    /**
+     * Tests writeMessageToAllClients method in debug mode.
+     */
     @Test
     public void testWriteMessageToAllClients() {
         // given
@@ -144,6 +169,9 @@ public class ServerTest {
         assertEquals(server.testOutput.toString(), "testowa wiadomosc", "Test output should be equal for test");
     }
 
+    /**
+     * Tests writeMessageToClient method in debug mode.
+     */
     @Test
     public void testWriteMessageToClient() {
         // given
@@ -158,6 +186,9 @@ public class ServerTest {
         assertEquals(server.testOutput.toString(), "testowa wiadomosc 2", "Test output should be equal for test");
     }
 
+    /**
+     * private method for adding players to the game in test mode.
+     */
     private void addPlayers(Server server, int numberOfPlayers) {
         for (int i = 0; i < numberOfPlayers; i++) {
             try {
@@ -168,6 +199,9 @@ public class ServerTest {
         }
     }
 
+    /**
+     * Tests handleUsername method.
+     */
     @Test
     public void testHandleUsernameCommand() {
         // given
@@ -184,6 +218,9 @@ public class ServerTest {
         assertEquals(server.testOutput.toString(), "Username set to piotr", "Test output should be equal for test");
     }
 
+    /**
+     * Tests usernameSet method.
+     */
     @Test
     public void testUsernameSetTest() {
         // given
@@ -212,6 +249,9 @@ public class ServerTest {
         assertEquals(server.testOutput.toString(), expected, "Test output should be equal for test");
     }
 
+    /**
+     * Tests cardsChangeHandle method.
+     */
     @Test
     public void testCardsChangeHandle() {
         // given

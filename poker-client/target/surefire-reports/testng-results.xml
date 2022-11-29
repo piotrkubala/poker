@@ -2,18 +2,18 @@
 <testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-11-28T23:57:41 CET" name="Surefire suite" finished-at="2022-11-28T23:57:41 CET" duration-ms="402">
+  <suite started-at="2022-11-29T17:23:10 CET" name="Surefire suite" finished-at="2022-11-29T17:23:10 CET" duration-ms="171">
     <groups>
     </groups>
-    <test started-at="2022-11-28T23:57:41 CET" name="Surefire test" finished-at="2022-11-28T23:57:41 CET" duration-ms="402">
+    <test started-at="2022-11-29T17:23:10 CET" name="Surefire test" finished-at="2022-11-29T17:23:10 CET" duration-ms="171">
       <class name="pl.edu.agh.kis.pz1.Main2Test">
-        <test-method signature="shouldCreateMainObject()" started-at="2022-11-28T23:57:41 CET" name="shouldCreateMainObject" finished-at="2022-11-28T23:57:41 CET" duration-ms="103" status="PASS">
+        <test-method signature="shouldCreateMainObject()" started-at="2022-11-29T17:23:10 CET" name="shouldCreateMainObject" finished-at="2022-11-29T17:23:10 CET" duration-ms="35" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldCreateMainObject -->
       </class> <!-- pl.edu.agh.kis.pz1.Main2Test -->
       <class name="pl.edu.agh.kis.pz1.PokerClientTest">
-        <test-method signature="shouldCreatePokerClientObject()" started-at="2022-11-28T23:57:41 CET" name="shouldCreatePokerClientObject" finished-at="2022-11-28T23:57:41 CET" duration-ms="15" status="PASS">
+        <test-method signature="shouldCreatePokerClientObject()" started-at="2022-11-29T17:23:10 CET" name="shouldCreatePokerClientObject" finished-at="2022-11-29T17:23:10 CET" duration-ms="7" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- shouldCreatePokerClientObject -->
