@@ -88,7 +88,7 @@ public class Hand implements Comparable<Hand> {
      * changes card at given index
      * @param index index of card to change
      * @param card new card
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if index is out of range
      */
     public void changeCard(int index, Card card) throws IllegalArgumentException {
         if (index < 0 || index >= HAND_SIZE) {

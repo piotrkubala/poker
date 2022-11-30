@@ -15,19 +15,45 @@ public class Game {
      * enum representing possible game states
      */
     public enum GameState{
+        /**
+         * game is waiting for players to join
+         */
         WAITING_FOR_PLAYERS("Waiting for players"),
+        /**
+         * game is waiting for players to start
+         */
         WAITING_FOR_READY("Waiting for ready"),
+        /**
+         * game is waiting for players to bet
+         */
         FIRST_ROUND_BETS("First round bets"),
+        /**
+         * game is waiting for players to change cards
+         */
         CARDS_CHANGING("Cards changing"),
+        /**
+         * game is waiting for players to bet
+         */
         SECOND_ROUND_BETS("Second round bets"),
+        /**
+         * game is waiting for players to show cards
+         */
         AFTER_SHOWDOWN("After showdown");
 
         private final String name;
 
+        /**
+         * Creates a new game state with the given name
+         * @param name name of the game state
+         */
         GameState(String name) {
             this.name = name;
         }
 
+        /**
+         * Returns the name of the game state
+         * @return name of the game state
+         */
         String getName() {
             return name;
         }
@@ -192,6 +218,9 @@ public class Game {
         }
     }
 
+    /**
+     * method used to count number of players ready to start the game ("ready" command)
+     */
     public void start() {
         if (state == GameState.WAITING_FOR_READY) {
             state = GameState.FIRST_ROUND_BETS;
@@ -324,6 +353,7 @@ public class Game {
 
     /**
      * if game is finished for players
+     * @param player player to be checked
      * @return true if game is finished for players, false otherwise
      */
     public boolean isGameFinishedForPlayer(Player player) {

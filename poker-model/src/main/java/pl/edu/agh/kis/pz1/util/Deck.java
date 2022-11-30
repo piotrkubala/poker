@@ -9,6 +9,9 @@ import java.util.Random;
  * @author Piotr Kubala
  */
 public class Deck {
+    /**
+     * Number of cards in a deck.
+     */
     public static final int DECK_SIZE = 52;
     private ArrayList<Card> cards = new ArrayList<>();
 
@@ -31,7 +34,6 @@ public class Deck {
 
     /**
      * Resets the deck to the initial state.
-     * @return this deck
      */
     public void resetDeck() {
         cards.clear();

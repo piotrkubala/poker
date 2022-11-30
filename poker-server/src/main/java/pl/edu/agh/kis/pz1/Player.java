@@ -130,14 +130,24 @@ public class Player implements Comparable<Player> {
         return name;
     }
 
+    /**
+     * get player's hand
+     * @return player's hand
+     */
     public Hand getPlayerHand() {
         return playerHand;
     }
 
+    /**
+     * set player's money
+     */
     public int getMoney() {
         return money;
     }
 
+    /**
+     * set player's bet
+     */
     public int getBet() {
         return bet;
     }
@@ -163,22 +173,42 @@ public class Player implements Comparable<Player> {
         return game.getReadyPlayersForStart();
     }
 
+    /**
+     * set player's hand
+     * @param hand player's hand
+     */
     public void giveHand(Hand hand) {
         playerHand = hand;
     }
 
+    /**
+     * set small blind
+     * @param isSmallBlindArg is player small blind
+     */
     public void setSmallBlind(boolean isSmallBlindArg) {
         isSmallBlind = isSmallBlindArg;
     }
 
+    /**
+     * set big blind
+     * @param isBigBlindArg is player big blind
+     */
     public void setBigBlind(boolean isBigBlindArg) {
         isBigBlind = isBigBlindArg;
     }
 
+    /**
+     * check if player is small blind
+     * @return is player small blind
+     */
     public boolean isSmallBlind() {
         return isSmallBlind;
     }
 
+    /**
+     * check if player is big blind
+     * @return is player big blind
+     */
     public boolean isBigBlind() {
         return isBigBlind;
     }
@@ -196,6 +226,10 @@ public class Player implements Comparable<Player> {
         bet = amount;
     }
 
+    /**
+     * set player is playing
+     * @param isPlayingArg is player playing
+     */
     public void setPlaying(boolean isPlayingArg) {
         if (isPlayingArg == isPlaying) {
             return;
@@ -210,10 +244,18 @@ public class Player implements Comparable<Player> {
         }
     }
 
+    /**
+     * check if player is playing curretly
+     * @return is player playing
+     */
     public boolean isPlaying() {
         return isPlaying;
     }
 
+    /**
+     * set player's cards changed
+     * @param wereCardsChangedArg were player's cards changed
+     */
     public void setCardsChanged(boolean wereCardsChangedArg) {
         if (wereCardsChangedArg == wereCardsChanged) {
             return;
@@ -228,20 +270,34 @@ public class Player implements Comparable<Player> {
         }
     }
 
+    /**
+     * check if player's cards were changed
+     * @return were player's cards changed
+     */
     public boolean wereCardsChanged() {
         return wereCardsChanged;
     }
 
     // call before comparing hands
+    /**
+     * set player's hand value
+     */
     public void calculateHandValue() {
         handValue = playerHand.getHandValue();
     }
 
+    /**
+     * get player's hand value
+     * @return player's hand value
+     */
     public double getHandValue() {
         return handValue;
     }
 
     // call after calculating hand values of hands
+    /**
+     * compare player's hand value to the given player's hand value
+     */
     @Override
     public int compareTo(Player player) {
         if (handValue > player.handValue) {
@@ -252,6 +308,10 @@ public class Player implements Comparable<Player> {
         return 0;
     }
 
+    /**
+     * check if other player is the same as this player
+     * @param other other player
+     */
     @Override
     public boolean equals(Object other) {
         if (other == null || other.getClass() != Player.class) {
@@ -262,23 +322,43 @@ public class Player implements Comparable<Player> {
         return key.equals(otherPlayer.key);
     }
 
+    /**
+     * get player's hash code
+     * @return player's hash code
+     */
     @Override
     public int hashCode() {
         return key.hashCode();
     }
 
+    /**
+     * set player's winner
+     * @param isWinnerArg is player winner
+     */
     public void setWinner(boolean isWinnerArg) {
         isWinner = isWinnerArg;
     }
 
+    /**
+     * check if player is winner
+     * @return is player winner
+     */
     public boolean isWinner() {
         return isWinner;
     }
 
+    /**
+     * set player's money
+     * @param amount player's money
+     */
     public void setBet(int amount) {
         bet = amount;
     }
 
+    /**
+     * set player's money
+     * @param amount player's money
+     */
     public void addMoney(int amount) {
         money += amount;
     }

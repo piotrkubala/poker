@@ -6,7 +6,13 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Hand test class
+ */
 public class HandTest {
+    /**
+     * Test for the construction of Hand and the
+     */
     @Test
     public void testHand() {
         // given
@@ -17,6 +23,9 @@ public class HandTest {
         assertNotNull(hand, "Hand object should be created");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testGetCards() {
         // given
@@ -36,6 +45,9 @@ public class HandTest {
         assertEquals(Card.Rank.ACE, cards[0].rank, "First card should be ACE");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testChangeCard() {
         // given
@@ -61,6 +73,9 @@ public class HandTest {
         assertEquals(0, expected[0].compareTo(hand.getCards()[0]), "Cards should be changed");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testToString() {
         // given
@@ -78,6 +93,9 @@ public class HandTest {
         assertEquals(expected, result, "String should be returned");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testAllTheSameColour() {
         // given
@@ -96,6 +114,9 @@ public class HandTest {
         assertTrue(result, "All cards should be the same colour");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testHasPair() {
         // given
@@ -149,6 +170,9 @@ public class HandTest {
         assertTrue(hasPair5, "Hand should have pair");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testHasTwoPair() {
         // given
@@ -220,6 +244,9 @@ public class HandTest {
         assertTrue(hasPair7, "Hand should have pair");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testHasThreeOfAKind() {
         // given
@@ -292,6 +319,9 @@ public class HandTest {
         assertTrue(hasThree7, "Hand should have three of a kind");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testHasStraight() {
         // given
@@ -373,6 +403,9 @@ public class HandTest {
         assertTrue(hasThree8, "Hand should have straight");
     }
 
+    /**
+     * Hand test
+     */
     @Test
     public void testHasFlush() {
         // given
@@ -472,6 +505,9 @@ public class HandTest {
         assertTrue(hasThree10, "Hand should have flush");
     }
 
+    /**
+     * Test hand
+     */
     @Test
     public void testHasFullHouse() {
         // given
@@ -544,6 +580,9 @@ public class HandTest {
         assertTrue(hasThree7, "Hand should have full house");
     }
 
+    /**
+     * Test hand
+     */
     @Test
     public void testHasFourOfAKind() {
         // given
@@ -634,6 +673,9 @@ public class HandTest {
         assertTrue(hasThree9, "Hand should have full house");
     }
 
+    /**
+     * Test hand
+     */
     @Test
     public void testHasStraightFlush() {
         // given
@@ -740,6 +782,9 @@ public class HandTest {
         assertTrue(hasThree10, "Hand should have straight flush");
     }
 
+    /**
+     * Test hand
+     */
     @Test
     public void testHasRoyalFlush() {
         // given
@@ -756,6 +801,9 @@ public class HandTest {
         assertTrue(hasRoyalFlush, "Hand should have royal flush");
     }
 
+    /**
+     * Test hand
+     */
     @Test
     public void testGetHandValue() {
         // given
@@ -882,6 +930,9 @@ public class HandTest {
         assertEquals(1.85045201646, handValue13, 1.0e-10, "Hand should have high card value");
     }
 
+    /**
+     * Test for {@link Hand#compareTo(Hand)} method.
+     */
     @Test
     void testCompareTo() {
         // given
@@ -933,6 +984,9 @@ public class HandTest {
         assertTrue(hand2IsEqualHand2, "Hand 2 should be equal to hand 2");
     }
 
+    /**
+     * Test for {@link Hand#toString()} method.
+     */
     @Test
     void testCalculateValueForStraightFlush() {
         // given
@@ -951,6 +1005,9 @@ public class HandTest {
         assertEquals(9.86666666666666, handValue, 1.0e-10, "Hand should have straight flush value");
     }
 
+    /**
+     * Test for {@link Hand#toString()} method.
+     */
     @Test
     void testCalculateValueForFourOfAKind() {
         // given
@@ -969,6 +1026,9 @@ public class HandTest {
         assertEquals(8.80888888888888, handValue, 1.0e-10, "Hand should have four of a kind value");
     }
 
+    /**
+     * Test for {@link Hand#toString()} method.
+     */
     @Test
     void testCalculateValueForFullHouse() {
         // given
@@ -987,6 +1047,9 @@ public class HandTest {
         assertEquals(7.2622222222222222, handValue, 1.0e-10, "Hand should have full house value");
     }
 
+    /**
+     * Test for {@link Hand#toString()} method.
+     */
     @Test
     void testCalculateValueForFlush() {
         // given
@@ -1005,6 +1068,9 @@ public class HandTest {
         assertEquals(6.98880263374, handValue, 1.0e-10, "Hand should have flush value");
     }
 
+    /**
+     * Test for {@link Hand#toString()} method.
+     */
     @Test
     void testCalculateValueForStraight() {
         // given
@@ -1023,6 +1089,9 @@ public class HandTest {
         assertEquals(5.333333333333333, handValue, 1.0e-10, "Hand should have straight value");
     }
 
+    /**
+     * Test calculating value for three of a kind.
+     */
     @Test
     void testCalculateValueForThreeOfAKind() {
         // given
@@ -1041,6 +1110,9 @@ public class HandTest {
         assertEquals(4.26281481481, handValue, 1.0e-10, "Hand should have three of a kind value");
     }
 
+    /**
+     * Test calculating value for two pairs.
+     */
     @Test
     void testCalculateValueForTwoPairs() {
         // given
@@ -1059,6 +1131,9 @@ public class HandTest {
         assertEquals(3.9472592592592592, handValue, 1.0e-10, "Hand should have two pairs value");
     }
 
+    /**
+     * Test calculating value for one pair.
+     */
     @Test
     void testCalculateValueForPair() {
         // given
@@ -1077,6 +1152,9 @@ public class HandTest {
         assertEquals(2.9520395061728397, handValue, 1.0e-10, "Hand should have pair value");
     }
 
+    /**
+     * Test calculating value for high card.
+     */
     @Test
     void testCalculateValueForHighCard() {
         // given

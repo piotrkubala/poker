@@ -5,6 +5,10 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertNotNull;
 
 public class PokerClientTest {
+    /**
+     * Test for the construction of Main and the
+     * main method being called
+     */
     @Test
     public void shouldCreatePokerClientObject(){
         // given

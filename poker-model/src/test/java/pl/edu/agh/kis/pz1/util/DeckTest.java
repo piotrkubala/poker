@@ -4,7 +4,13 @@ import org.testng.annotations.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Deck test class
+ */
 public class DeckTest {
+    /**
+     * Test for the construction of Deck and the
+     */
     @Test
     public void shouldCreateDeckObject() {
         // given
@@ -15,6 +21,9 @@ public class DeckTest {
         assertEquals(Deck.DECK_SIZE, deck.getDeckSize(), "Deck should contain 52 cards");
     }
 
+    /**
+     * Deck test
+     */
     @Test
     public void shouldGetCards() {
         // given
@@ -27,6 +36,9 @@ public class DeckTest {
         assertEquals(Deck.DECK_SIZE - 5, deck.getDeckSize(), "Deck should contain 47 cards");
     }
 
+    /**
+     * Deck test
+     */
     @Test
     public void shouldGetCardsTwice() {
         // given
@@ -41,6 +53,9 @@ public class DeckTest {
         assertEquals(Deck.DECK_SIZE - 5 - 15, deck.getDeckSize(), "Deck should contain 52-5-15=32 cards");
     }
 
+    /**
+     * Deck test
+     */
     @Test
     public void shouldGetDifferentCards() {
         // given
@@ -74,6 +89,9 @@ public class DeckTest {
         assertEquals(Deck.DECK_SIZE - 52, deck.getDeckSize(), "Deck should be empty");
     }
 
+    /**
+     * Deck test
+     */
     @Test
     public void shouldResetDeck() {
         // given
@@ -85,6 +103,9 @@ public class DeckTest {
         assertEquals(Deck.DECK_SIZE, deck.getDeckSize(), "Deck should contain 52 cards");
     }
 
+    /**
+     * Deck test
+     */
     @Test
     public void shouldShuffleDeck() {
         // given

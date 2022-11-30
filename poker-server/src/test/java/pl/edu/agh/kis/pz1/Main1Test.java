@@ -3,7 +3,9 @@ package pl.edu.agh.kis.pz1;
 import static junit.framework.TestCase.assertNotNull;
 import org.junit.Test;
 
-
+/**
+ * Game Main1 test class
+ */
 public class Main1Test {
     /**
      * Test for the construction of Main and the 

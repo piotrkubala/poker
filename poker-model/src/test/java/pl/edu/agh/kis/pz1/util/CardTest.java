@@ -6,7 +6,14 @@ import org.testng.annotations.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * Card test class
+ * @author Piotr Kubala
+ */
 public class CardTest {
+    /**
+     * Test for the construction of Card and the
+     */
     @Test
     public void shouldCreateCardObject() {
         // given
@@ -18,6 +25,9 @@ public class CardTest {
         assertEquals(Card.Rank.ACE, card.rank, "Card rank should be ACE");
     }
 
+    /**
+     * Test cards comparison
+     */
     @Test
     public void testCompareTo() {
         // given
