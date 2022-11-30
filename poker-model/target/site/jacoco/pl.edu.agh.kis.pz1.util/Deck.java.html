@@ -9,60 +9,62 @@ import java.util.Random;
  * @author Piotr Kubala
  */
 public class Deck {
+    /**
+     * Number of cards in a deck.
+     */
     public static final int DECK_SIZE = 52;
-<span class="fc" id="L13">    private ArrayList&lt;Card&gt; cards = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L16">    private ArrayList&lt;Card&gt; cards = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L15">    private Random random = new Random();</span>
+<span class="fc" id="L18">    private Random random = new Random();</span>
 
     /**
      * Creates a new deck of cards.
      */
-<span class="fc" id="L20">    public Deck() {</span>
-<span class="fc" id="L21">        resetDeck();</span>
-<span class="fc" id="L22">    }</span>
+<span class="fc" id="L23">    public Deck() {</span>
+<span class="fc" id="L24">        resetDeck();</span>
+<span class="fc" id="L25">    }</span>
 
     /**
      * Resets the deck to the initial state.
      * @return this deck
      */
     public int getDeckSize() {
-<span class="fc" id="L29">        return cards.size();</span>
+<span class="fc" id="L32">        return cards.size();</span>
     }
 
     /**
      * Resets the deck to the initial state.
-     * @return this deck
      */
     public void resetDeck() {
-<span class="fc" id="L37">        cards.clear();</span>
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (Card.Suit suit : Card.Suit.values()) {</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">            for (Card.Rank rank : Card.Rank.values()) {</span>
-<span class="fc" id="L40">                cards.add(new Card(suit, rank));</span>
+<span class="fc" id="L39">        cards.clear();</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for (Card.Suit suit : Card.Suit.values()) {</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">            for (Card.Rank rank : Card.Rank.values()) {</span>
+<span class="fc" id="L42">                cards.add(new Card(suit, rank));</span>
             }
         }
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L45">    }</span>
 
     /**
      * Set custom random number generator, used mostly for testing purposes
      * @param random random number generator
      */
     public void setRandom(Random random) {
-<span class="nc" id="L50">        this.random = random;</span>
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L52">        this.random = random;</span>
+<span class="nc" id="L53">    }</span>
 
     /**
      * Shuffles the deck.
      */
     public void shuffle() {
-<span class="fc" id="L57">        Collections.shuffle(cards, random);</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L59">        Collections.shuffle(cards, random);</span>
+<span class="fc" id="L60">    }</span>
 
     /**
      * Sorts the deck.
      */
     public void sort() {
-<span class="nc" id="L64">        Collections.sort(cards);</span>
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L66">        Collections.sort(cards);</span>
+<span class="nc" id="L67">    }</span>
 
     /**
      * Draws a card from the deck.
@@ -70,12 +72,12 @@ public class Deck {
      * @return drawn cards
      */
     public Card[] getCards(int count) {
-<span class="fc" id="L73">        Card[] result = new Card[count];</span>
-<span class="fc bfc" id="L74" title="All 2 branches covered.">        for (int i = 0; i &lt; count; i++) {</span>
-<span class="fc" id="L75">            result[i] = cards.get(cards.size() - 1);</span>
-<span class="fc" id="L76">            cards.remove(cards.size() - 1);</span>
+<span class="fc" id="L75">        Card[] result = new Card[count];</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for (int i = 0; i &lt; count; i++) {</span>
+<span class="fc" id="L77">            result[i] = cards.get(cards.size() - 1);</span>
+<span class="fc" id="L78">            cards.remove(cards.size() - 1);</span>
         }
-<span class="fc" id="L78">        return result;</span>
+<span class="fc" id="L80">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

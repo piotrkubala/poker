@@ -130,16 +130,28 @@ public class Player implements Comparable&lt;Player&gt; {
 <span class="fc" id="L130">        return name;</span>
     }
 
+    /**
+     * get player's hand
+     * @return player's hand
+     */
     public Hand getPlayerHand() {
-<span class="fc" id="L134">        return playerHand;</span>
+<span class="fc" id="L138">        return playerHand;</span>
     }
 
+    /**
+     * set player's money
+     * @return player's money
+     */
     public int getMoney() {
-<span class="fc" id="L138">        return money;</span>
+<span class="fc" id="L146">        return money;</span>
     }
 
+    /**
+     * set player's bet
+     * @return player's bet
+     */
     public int getBet() {
-<span class="fc" id="L142">        return bet;</span>
+<span class="fc" id="L154">        return bet;</span>
     }
 
     /**
@@ -148,39 +160,59 @@ public class Player implements Comparable&lt;Player&gt; {
      * @return number of players who are ready for start
      */
     public int setStartReady(boolean isReadyArg) {
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (isReadyArg == isStartReady) {</span>
-<span class="nc" id="L152">            return game.getReadyPlayersForStart();</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (isReadyArg == isStartReady) {</span>
+<span class="nc" id="L164">            return game.getReadyPlayersForStart();</span>
         }
 
-<span class="fc" id="L155">        isStartReady = isReadyArg;</span>
+<span class="fc" id="L167">        isStartReady = isReadyArg;</span>
 
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        if (isStartReady) {</span>
-<span class="fc" id="L158">            game.increaseReadyPlayersForStart();</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        if (isStartReady) {</span>
+<span class="fc" id="L170">            game.increaseReadyPlayersForStart();</span>
         } else {
-<span class="nc" id="L160">            game.decreaseReadyPlayersForStart();</span>
+<span class="nc" id="L172">            game.decreaseReadyPlayersForStart();</span>
         }
 
-<span class="fc" id="L163">        return game.getReadyPlayersForStart();</span>
+<span class="fc" id="L175">        return game.getReadyPlayersForStart();</span>
     }
 
+    /**
+     * set player's hand
+     * @param hand player's hand
+     */
     public void giveHand(Hand hand) {
-<span class="fc" id="L167">        playerHand = hand;</span>
-<span class="fc" id="L168">    }</span>
+<span class="fc" id="L183">        playerHand = hand;</span>
+<span class="fc" id="L184">    }</span>
 
+    /**
+     * set small blind
+     * @param isSmallBlindArg is player small blind
+     */
     public void setSmallBlind(boolean isSmallBlindArg) {
-<span class="fc" id="L171">        isSmallBlind = isSmallBlindArg;</span>
-<span class="fc" id="L172">    }</span>
+<span class="fc" id="L191">        isSmallBlind = isSmallBlindArg;</span>
+<span class="fc" id="L192">    }</span>
 
+    /**
+     * set big blind
+     * @param isBigBlindArg is player big blind
+     */
     public void setBigBlind(boolean isBigBlindArg) {
-<span class="fc" id="L175">        isBigBlind = isBigBlindArg;</span>
-<span class="fc" id="L176">    }</span>
+<span class="fc" id="L199">        isBigBlind = isBigBlindArg;</span>
+<span class="fc" id="L200">    }</span>
 
+    /**
+     * check if player is small blind
+     * @return is player small blind
+     */
     public boolean isSmallBlind() {
-<span class="fc" id="L179">        return isSmallBlind;</span>
+<span class="fc" id="L207">        return isSmallBlind;</span>
     }
 
+    /**
+     * check if player is big blind
+     * @return is player big blind
+     */
     public boolean isBigBlind() {
-<span class="nc" id="L183">        return isBigBlind;</span>
+<span class="nc" id="L215">        return isBigBlind;</span>
     }
 
     /**
@@ -188,99 +220,149 @@ public class Player implements Comparable&lt;Player&gt; {
      * @param amount amount to raise
      */
     public void raiseBet(int amount) {
-<span class="nc" id="L191">        money -= amount - bet;</span>
+<span class="nc" id="L223">        money -= amount - bet;</span>
 
-<span class="nc" id="L193">        game.addMoneyToPool(amount - bet);</span>
-<span class="nc" id="L194">        game.setCurrentBet(amount);</span>
+<span class="nc" id="L225">        game.addMoneyToPool(amount - bet);</span>
+<span class="nc" id="L226">        game.setCurrentBet(amount);</span>
 
-<span class="nc" id="L196">        bet = amount;</span>
-<span class="nc" id="L197">    }</span>
+<span class="nc" id="L228">        bet = amount;</span>
+<span class="nc" id="L229">    }</span>
 
+    /**
+     * set player is playing
+     * @param isPlayingArg is player playing
+     */
     public void setPlaying(boolean isPlayingArg) {
-<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (isPlayingArg == isPlaying) {</span>
-<span class="nc" id="L201">            return;</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">        if (isPlayingArg == isPlaying) {</span>
+<span class="nc" id="L237">            return;</span>
         }
 
-<span class="nc" id="L204">        isPlaying = isPlayingArg;</span>
+<span class="nc" id="L240">        isPlaying = isPlayingArg;</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (isPlaying) {</span>
-<span class="nc" id="L207">            game.increaseStillPlayingPlayers();</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        if (isPlaying) {</span>
+<span class="nc" id="L243">            game.increaseStillPlayingPlayers();</span>
         } else {
-<span class="nc" id="L209">            game.decreaseStillPlayingPlayers();</span>
+<span class="nc" id="L245">            game.decreaseStillPlayingPlayers();</span>
         }
-<span class="nc" id="L211">    }</span>
+<span class="nc" id="L247">    }</span>
 
+    /**
+     * check if player is playing curretly
+     * @return is player playing
+     */
     public boolean isPlaying() {
-<span class="fc" id="L214">        return isPlaying;</span>
+<span class="fc" id="L254">        return isPlaying;</span>
     }
 
+    /**
+     * set player's cards changed
+     * @param wereCardsChangedArg were player's cards changed
+     */
     public void setCardsChanged(boolean wereCardsChangedArg) {
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        if (wereCardsChangedArg == wereCardsChanged) {</span>
-<span class="nc" id="L219">            return;</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">        if (wereCardsChangedArg == wereCardsChanged) {</span>
+<span class="nc" id="L263">            return;</span>
         }
 
-<span class="fc" id="L222">        wereCardsChanged = wereCardsChangedArg;</span>
+<span class="fc" id="L266">        wereCardsChanged = wereCardsChangedArg;</span>
 
-<span class="pc bpc" id="L224" title="1 of 2 branches missed.">        if (wereCardsChanged) {</span>
-<span class="fc" id="L225">            game.increasePlayersWhoChangedCards();</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">        if (wereCardsChanged) {</span>
+<span class="fc" id="L269">            game.increasePlayersWhoChangedCards();</span>
         } else {
-<span class="nc" id="L227">            game.decreasePlayersWhoChangedCards();</span>
+<span class="nc" id="L271">            game.decreasePlayersWhoChangedCards();</span>
         }
-<span class="fc" id="L229">    }</span>
+<span class="fc" id="L273">    }</span>
 
+    /**
+     * check if player's cards were changed
+     * @return were player's cards changed
+     */
     public boolean wereCardsChanged() {
-<span class="fc" id="L232">        return wereCardsChanged;</span>
+<span class="fc" id="L280">        return wereCardsChanged;</span>
     }
 
     // call before comparing hands
+    /**
+     * set player's hand value
+     */
     public void calculateHandValue() {
-<span class="fc" id="L237">        handValue = playerHand.getHandValue();</span>
-<span class="fc" id="L238">    }</span>
+<span class="fc" id="L288">        handValue = playerHand.getHandValue();</span>
+<span class="fc" id="L289">    }</span>
 
+    /**
+     * get player's hand value
+     * @return player's hand value
+     */
     public double getHandValue() {
-<span class="fc" id="L241">        return handValue;</span>
+<span class="fc" id="L296">        return handValue;</span>
     }
 
     // call after calculating hand values of hands
+    /**
+     * compare player's hand value to the given player's hand value
+     */
     @Override
     public int compareTo(Player player) {
-<span class="nc bnc" id="L247" title="All 2 branches missed.">        if (handValue &gt; player.handValue) {</span>
-<span class="nc" id="L248">            return 1;</span>
-<span class="nc bnc" id="L249" title="All 2 branches missed.">        } else if (handValue &lt; player.handValue) {</span>
-<span class="nc" id="L250">            return -1;</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">        if (handValue &gt; player.handValue) {</span>
+<span class="nc" id="L306">            return 1;</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">        } else if (handValue &lt; player.handValue) {</span>
+<span class="nc" id="L308">            return -1;</span>
         }
-<span class="nc" id="L252">        return 0;</span>
+<span class="nc" id="L310">        return 0;</span>
     }
 
+    /**
+     * check if other player is the same as this player
+     * @param other other player
+     */
     @Override
     public boolean equals(Object other) {
-<span class="nc bnc" id="L257" title="All 4 branches missed.">        if (other == null || other.getClass() != Player.class) {</span>
-<span class="nc" id="L258">            return false;</span>
+<span class="nc bnc" id="L319" title="All 4 branches missed.">        if (other == null || other.getClass() != Player.class) {</span>
+<span class="nc" id="L320">            return false;</span>
         }
-<span class="nc" id="L260">        Player otherPlayer = (Player) other;</span>
+<span class="nc" id="L322">        Player otherPlayer = (Player) other;</span>
 
-<span class="nc" id="L262">        return key.equals(otherPlayer.key);</span>
+<span class="nc" id="L324">        return key.equals(otherPlayer.key);</span>
     }
 
+    /**
+     * get player's hash code
+     * @return player's hash code
+     */
     @Override
     public int hashCode() {
-<span class="nc" id="L267">        return key.hashCode();</span>
+<span class="nc" id="L333">        return key.hashCode();</span>
     }
 
+    /**
+     * set player's winner
+     * @param isWinnerArg is player winner
+     */
     public void setWinner(boolean isWinnerArg) {
-<span class="fc" id="L271">        isWinner = isWinnerArg;</span>
-<span class="fc" id="L272">    }</span>
+<span class="fc" id="L341">        isWinner = isWinnerArg;</span>
+<span class="fc" id="L342">    }</span>
 
+    /**
+     * check if player is winner
+     * @return is player winner
+     */
     public boolean isWinner() {
-<span class="fc" id="L275">        return isWinner;</span>
+<span class="fc" id="L349">        return isWinner;</span>
     }
 
+    /**
+     * set player's money
+     * @param amount player's money
+     */
     public void setBet(int amount) {
-<span class="fc" id="L279">        bet = amount;</span>
-<span class="fc" id="L280">    }</span>
+<span class="fc" id="L357">        bet = amount;</span>
+<span class="fc" id="L358">    }</span>
 
+    /**
+     * set player's money
+     * @param amount player's money
+     */
     public void addMoney(int amount) {
-<span class="fc" id="L283">        money += amount;</span>
-<span class="fc" id="L284">    }</span>
+<span class="fc" id="L365">        money += amount;</span>
+<span class="fc" id="L366">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
