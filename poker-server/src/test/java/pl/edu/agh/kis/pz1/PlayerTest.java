@@ -6,7 +6,13 @@ import java.nio.channels.SelectionKey;
 
 import static org.testng.Assert.*;
 
+/**
+ * Player test class
+ */
 public class PlayerTest {
+    /**
+     * Test for the construction of Player
+     */
     @Test
     public void testPlayerCreation() {
         // given
@@ -17,6 +23,9 @@ public class PlayerTest {
         assertNotNull(player);
     }
 
+    /**
+     * player test
+     */
     @Test
     public void testResetPlayerForNextRound() {
         // given
@@ -38,6 +47,9 @@ public class PlayerTest {
         assertFalse(player.nextRoundReady, "Player should be start ready");
     }
 
+    /**
+     * player test
+     */
     @Test
     public void testGetNextRoundReady() {
         // given
@@ -51,6 +63,9 @@ public class PlayerTest {
         assertFalse(result, "Player should not be start ready");
     }
 
+    /**
+     * player test
+     */
     @Test
     public void testSetNextRoundReady() {
         // given
@@ -65,6 +80,9 @@ public class PlayerTest {
         assertTrue(player.nextRoundReady, "Player should be start ready");
     }
 
+    /**
+     * player test
+     */
     @Test
     public void testGetKey() {
         // given
@@ -78,6 +96,9 @@ public class PlayerTest {
         assertNull(result);
     }
 
+    /**
+     * player test
+     */
     @Test
     public void testGetName() {
         // given
@@ -91,6 +112,9 @@ public class PlayerTest {
         assertNull(result);
     }
 
+    /**
+     * player test
+     */
     @Test
     public void testSetName() {
         // given
@@ -105,6 +129,9 @@ public class PlayerTest {
         assertFalse(player.isStartReady, "Player should not be starting");
     }
 
+    /**
+     * player test
+     */
     @Test
     public void testGetMoney() {
         // given

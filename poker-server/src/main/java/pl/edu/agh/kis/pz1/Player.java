@@ -140,6 +140,7 @@ public class Player implements Comparable<Player> {
 
     /**
      * set player's money
+     * @return player's money
      */
     public int getMoney() {
         return money;
@@ -147,6 +148,7 @@ public class Player implements Comparable<Player> {
 
     /**
      * set player's bet
+     * @return player's bet
      */
     public int getBet() {
         return bet;

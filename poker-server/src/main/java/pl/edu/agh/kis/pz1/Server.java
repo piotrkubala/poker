@@ -20,6 +20,9 @@ import java.util.logging.Logger;
  */
 public class Server {
     static final Logger logger = Logger.getLogger(Server.class.getName());
+    /**
+     * Now it is your turn constant String
+     */
     public static final String NOW_IT_IS_YOUR_TURN = "Now it is your turn";
 
     final Map<SelectionKey, Player> clients = new HashMap<>();

@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertNotNull;
 
+/**
+ * Game PokerClient test class
+ */
 public class PokerClientTest {
     /**
      * Test for the construction of Main and the
