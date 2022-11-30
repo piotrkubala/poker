@@ -2,92 +2,92 @@
 <testng-results ignored="0" total="20" passed="20" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-11-30T10:04:05 CET" name="Surefire suite" finished-at="2022-11-30T10:04:05 CET" duration-ms="261">
+  <suite started-at="2022-11-30T10:27:59 CET" name="Surefire suite" finished-at="2022-11-30T10:28:00 CET" duration-ms="275">
     <groups>
     </groups>
-    <test started-at="2022-11-30T10:04:05 CET" name="Surefire test" finished-at="2022-11-30T10:04:05 CET" duration-ms="261">
+    <test started-at="2022-11-30T10:27:59 CET" name="Surefire test" finished-at="2022-11-30T10:28:00 CET" duration-ms="275">
       <class name="pl.edu.agh.kis.pz1.ServerTest">
-        <test-method signature="testCardsChangeHandle()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testCardsChangeHandle" finished-at="2022-11-30T10:04:05 CET" duration-ms="79" status="PASS">
+        <test-method signature="testCardsChangeHandle()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:27:59 CET" name="testCardsChangeHandle" finished-at="2022-11-30T10:27:59 CET" duration-ms="91" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCardsChangeHandle -->
-        <test-method signature="testHandleMultipleCommandsWhileInBettingPhase()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testHandleMultipleCommandsWhileInBettingPhase" finished-at="2022-11-30T10:04:05 CET" duration-ms="3" status="PASS">
+        <test-method signature="testHandleMultipleCommandsWhileInBettingPhase()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:27:59 CET" name="testHandleMultipleCommandsWhileInBettingPhase" finished-at="2022-11-30T10:27:59 CET" duration-ms="3" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHandleMultipleCommandsWhileInBettingPhase -->
-        <test-method signature="testHandleUsernameCommand()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testHandleUsernameCommand" finished-at="2022-11-30T10:04:05 CET" duration-ms="1" status="PASS">
+        <test-method signature="testHandleUsernameCommand()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:27:59 CET" name="testHandleUsernameCommand" finished-at="2022-11-30T10:27:59 CET" duration-ms="2" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testHandleUsernameCommand -->
-        <test-method signature="testServerCreation()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testServerCreation" finished-at="2022-11-30T10:04:05 CET" duration-ms="1" status="PASS">
+        <test-method signature="testServerCreation()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:28:00 CET" name="testServerCreation" finished-at="2022-11-30T10:28:00 CET" duration-ms="2" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testServerCreation -->
-        <test-method signature="testServerHandleCommands()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testServerHandleCommands" finished-at="2022-11-30T10:04:05 CET" duration-ms="2" status="PASS">
+        <test-method signature="testServerHandleCommands()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:28:00 CET" name="testServerHandleCommands" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testServerHandleCommands -->
-        <test-method signature="testServerHandleMultipleCommands()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testServerHandleMultipleCommands" finished-at="2022-11-30T10:04:05 CET" duration-ms="2" status="PASS">
+        <test-method signature="testServerHandleMultipleCommands()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:28:00 CET" name="testServerHandleMultipleCommands" finished-at="2022-11-30T10:28:00 CET" duration-ms="2" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testServerHandleMultipleCommands -->
-        <test-method signature="testServerHandleMultipleCommands2()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testServerHandleMultipleCommands2" finished-at="2022-11-30T10:04:05 CET" duration-ms="2" status="PASS">
+        <test-method signature="testServerHandleMultipleCommands2()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:28:00 CET" name="testServerHandleMultipleCommands2" finished-at="2022-11-30T10:28:00 CET" duration-ms="2" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testServerHandleMultipleCommands2 -->
-        <test-method signature="testServerStart()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testServerStart" finished-at="2022-11-30T10:04:05 CET" duration-ms="3" status="PASS">
+        <test-method signature="testServerStart()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:28:00 CET" name="testServerStart" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testServerStart -->
-        <test-method signature="testUsernameSetTest()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testUsernameSetTest" finished-at="2022-11-30T10:04:05 CET" duration-ms="6" status="PASS">
+        <test-method signature="testUsernameSetTest()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:28:00 CET" name="testUsernameSetTest" finished-at="2022-11-30T10:28:00 CET" duration-ms="2" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testUsernameSetTest -->
-        <test-method signature="testWriteMessageToAllClients()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testWriteMessageToAllClients" finished-at="2022-11-30T10:04:05 CET" duration-ms="2" status="PASS">
+        <test-method signature="testWriteMessageToAllClients()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:28:00 CET" name="testWriteMessageToAllClients" finished-at="2022-11-30T10:28:00 CET" duration-ms="3" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testWriteMessageToAllClients -->
-        <test-method signature="testWriteMessageToClient()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:04:05 CET" name="testWriteMessageToClient" finished-at="2022-11-30T10:04:05 CET" duration-ms="3" status="PASS">
+        <test-method signature="testWriteMessageToClient()[pri:0, instance:pl.edu.agh.kis.pz1.ServerTest@3da30852]" started-at="2022-11-30T10:28:00 CET" name="testWriteMessageToClient" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testWriteMessageToClient -->
       </class> <!-- pl.edu.agh.kis.pz1.ServerTest -->
       <class name="pl.edu.agh.kis.pz1.GameTest">
-        <test-method signature="testGameCreation()[pri:0, instance:pl.edu.agh.kis.pz1.GameTest@294a6b8e]" started-at="2022-11-30T10:04:05 CET" name="testGameCreation" finished-at="2022-11-30T10:04:05 CET" duration-ms="1" status="PASS">
+        <test-method signature="testGameCreation()[pri:0, instance:pl.edu.agh.kis.pz1.GameTest@294a6b8e]" started-at="2022-11-30T10:28:00 CET" name="testGameCreation" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGameCreation -->
       </class> <!-- pl.edu.agh.kis.pz1.GameTest -->
       <class name="pl.edu.agh.kis.pz1.PlayerTest">
-        <test-method signature="testGetKey()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:04:05 CET" name="testGetKey" finished-at="2022-11-30T10:04:05 CET" duration-ms="1" status="PASS">
+        <test-method signature="testGetKey()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:28:00 CET" name="testGetKey" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGetKey -->
-        <test-method signature="testGetMoney()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:04:05 CET" name="testGetMoney" finished-at="2022-11-30T10:04:05 CET" duration-ms="0" status="PASS">
+        <test-method signature="testGetMoney()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:28:00 CET" name="testGetMoney" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGetMoney -->
-        <test-method signature="testGetName()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:04:05 CET" name="testGetName" finished-at="2022-11-30T10:04:05 CET" duration-ms="1" status="PASS">
+        <test-method signature="testGetName()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:28:00 CET" name="testGetName" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGetName -->
-        <test-method signature="testGetNextRoundReady()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:04:05 CET" name="testGetNextRoundReady" finished-at="2022-11-30T10:04:05 CET" duration-ms="1" status="PASS">
+        <test-method signature="testGetNextRoundReady()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:28:00 CET" name="testGetNextRoundReady" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testGetNextRoundReady -->
-        <test-method signature="testPlayerCreation()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:04:05 CET" name="testPlayerCreation" finished-at="2022-11-30T10:04:05 CET" duration-ms="0" status="PASS">
+        <test-method signature="testPlayerCreation()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:28:00 CET" name="testPlayerCreation" finished-at="2022-11-30T10:28:00 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testPlayerCreation -->
-        <test-method signature="testResetPlayerForNextRound()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:04:05 CET" name="testResetPlayerForNextRound" finished-at="2022-11-30T10:04:05 CET" duration-ms="1" status="PASS">
+        <test-method signature="testResetPlayerForNextRound()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:28:00 CET" name="testResetPlayerForNextRound" finished-at="2022-11-30T10:28:00 CET" duration-ms="1" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testResetPlayerForNextRound -->
-        <test-method signature="testSetName()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:04:05 CET" name="testSetName" finished-at="2022-11-30T10:04:05 CET" duration-ms="0" status="PASS">
+        <test-method signature="testSetName()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:28:00 CET" name="testSetName" finished-at="2022-11-30T10:28:00 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testSetName -->
-        <test-method signature="testSetNextRoundReady()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:04:05 CET" name="testSetNextRoundReady" finished-at="2022-11-30T10:04:05 CET" duration-ms="0" status="PASS">
+        <test-method signature="testSetNextRoundReady()[pri:0, instance:pl.edu.agh.kis.pz1.PlayerTest@5b1ebf56]" started-at="2022-11-30T10:28:00 CET" name="testSetNextRoundReady" finished-at="2022-11-30T10:28:00 CET" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testSetNextRoundReady -->
