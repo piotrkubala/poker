@@ -1,9 +1,13 @@
 # Poker dobierany pięciokartowy - aplikacja klient - serwer
 
 Zasady zgodne z zasadami pokera pięciokartowego: bez all in, z obsługą showdown w dowolnym momencie betowania
+
 Możliwość obstawiania, zaimplementowano mechanikę small i big blind
+
 Obsługa do 5 graczy
+
 Możliwość rozpoczęcia kolejnych rund gry
+
 Możliwość rozpoczęcia nowej gry
 
 # Sposób uruchomienia:
@@ -15,14 +19,23 @@ Możliwość rozpoczęcia nowej gry
 
 # Możliwe komunikaty klienta:
 help - pokazuje dostępne komendy
+
 username - ustawia nazwę użytkownika, konieczne przed rozpoczęciem gry
+
 exit - opuszcza grę dla wszystkich użytkowników
+
 showdown - pokazuje wszystkich graczy i ich karty
+
 raise <amount> - podbija stawkę do podanej kwoty
+
 fold - pasuje
+
 change <card number 1> [<card number 2>] ... [<card number 5>] - zmienia karty
+
 nextround - umożliwia rozpoczęcie kolejnej tury rozgrywki, następnie trzeba pokazać gotowość przy użyciu komendy start
+
 show - pokazuje karty i inne potrzebne informacje
+
 start - rozpoczyna rozgrywkę
 
 Każdy komunikat może być wysłany w dowolnym momencie gry, w przypadku nieodpowiedniego momentu gry zostanie wysłana informacja o błędzie
